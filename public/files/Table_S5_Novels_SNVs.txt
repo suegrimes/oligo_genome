@@ -1,0 +1,249 @@
+sample	assay	chr	loc	refb	gene	exon	rsnum	LRS_F	LRS_R	type	genotype
+NA06995	capture assay 1	1	11224544	T	NA	NA	NA	12.376	18.036	Het_ref/mut	T/C
+
+NA07037	capture assay 1	5	112202576	T	APC_ex15	exon	NA	30.144	32.751	Het_ref/mut	T/C
+
+NA07435	capture assay 1	7	55235415	G	NA	NA	NA	5.723	4.172	Het_ref/mut	G/A
+
+NA07037	capture assay 2	1	6089234	C	CHD5_ex39	roi5	NA	63.597	80.418	Het_mut/ref	T/C
+NA07037	capture assay 2	1	150590171	G	FLG2_ex2	exon	NA	21.122	37.99	Het_ref/mut	G/T
+NA07037	capture assay 2	1	150593602	T	FLG2_ex2	exon	NA	32.655	35.872	Het_ref/mut	T/C
+NA07037	capture assay 2	1	173591143	A	NA	NA	NA	13.424	17.112	Het_mut/ref	G/T
+NA07037	capture assay 2	1	173641873	C	NA	NA	NA	23.392	37.227	Het_ref/mut	C/T
+NA07037	capture assay 2	2	79990302	C	CTNNA2_ex6	exon	NA	17.117	11.426	Het_ref/mut	C/G
+NA07037	capture assay 2	2	148401421	T	NA	NA	NA	10.279	11.133	Het_ref/mut	T/C
+NA07037	capture assay 2	3	180418786	A	PIK3CA_ex9	exon	NA	38.424	61.681	Het_ref/mut	A/C
+NA07037	capture assay 2	5	112202576	T	APC_ex15	exon	NA	8.667	18.817	Het_mut/ref	C/T
+NA07037	capture assay 2	6	41663238	T	FOXP4_ex6	roi3	NA	15.914	11.071	Het_ref/mut	T/A
+NA07037	capture assay 2	6	69842778	C	NA	NA	NA	10.1	4.009	Het_ref/mut	C/T
+NA07037	capture assay 2	6	80806560	G	NA	NA	NA	11.309	15.849	Het_ref/mut	G/A
+NA07037	capture assay 2	7	98341785	C	TRRAP_ex12	exon	NA	21.428	21.612	Het_mut/ref	T/C
+NA07037	capture assay 2	7	151535387	C	MLL3_ex24	exon	NA	58.012	92.674	Het_mut/ref	T/C
+NA07037	capture assay 2	7	151535509	A	NA	NA	NA	77.122	40.594	Het_mut/ref	C/A
+NA07037	capture assay 2	7	151548497	T	MLL3_ex23	roi5	NA	29.753	55.757	Het_mut/ref	G/T
+NA07037	capture assay 2	7	151548643	A	MLL3_ex23	exon	NA	108.049	104.336	Het_mut/ref	G/A
+NA07037	capture assay 2	7	151550684	A	MLL3_ex21	exon	NA	20.411	32.078	Het_mut/ref	G/A
+NA07037	capture assay 2	7	151550984	A	NA	NA	NA	18.013	7.424	Het_mut/ref	C/A
+NA07037	capture assay 2	7	151558253	C	MLL3_ex17	exon	NA	8.126	4.743	Het_ref/mut	C/T
+NA07037	capture assay 2	7	151576059	T	MLL3_ex14	exon	NA	15.851	12.443	Het_ref/mut	T/C
+NA07037	capture assay 2	7	151576457	T	MLL3_ex14	exon	NA	41.325	49.604	Het_mut/ref	C/T
+NA07037	capture assay 2	7	151576666	C	MLL3_ex14	roi3	NA	27.357	10.156	Het_mut/ref	T/C
+NA07037	capture assay 2	7	151593287	T	NA	NA	NA	31.873	46.02	Het_ref/mut	T/C
+NA07037	capture assay 2	7	151601708	C	MLL3_ex7	roi5	NA	13.167	7.633	Het_ref/mut	C/G
+NA07037	capture assay 2	7	151602203	A	NA	NA	NA	9.275	5.88	Het_mut/ref	G/A
+NA07037	capture assay 2	8	37809879	G	GPR124_ex9	exon	NA	33.912	25.929	Het_ref/mut	G/A
+NA07037	capture assay 2	9	32620312	C	TAF1L_ex1	exon	NA	13.988	5.178	Het_ref/mut	C/G
+NA07037	capture assay 2	9	32623451	T	TAF1L_ex1	exon	NA	7.422	6.897	Het_mut/ref	C/T
+NA07037	capture assay 2	9	93535106	G	NA	NA	NA	8.597	14.862	Het_mut/ref	A/G
+NA07037	capture assay 2	10	42927764	G	NA	NA	NA	6.446	7.033	Het_ref/mut	G/T
+NA07037	capture assay 2	10	55519618	A	NA	NA	NA	19.096	17.446	Het_mut/ref	C/A
+NA07037	capture assay 2	10	89715339	C	NA	NA	NA	25.147	13.542	Het_ref/mut	C/G
+NA07037	capture assay 2	11	64333723	G	MEN1_ex1	exon	NA	27.401	32.21	Het_ref/mut	G/A
+NA07037	capture assay 2	11	69172497	G	NA	NA	NA	25.178	15.636	Het_mut/ref	A/G
+NA07037	capture assay 2	11	107603671	A	ATM_ex1	roi3	NA	16.94	9.802	Het_ref/mut	A/T
+NA07037	capture assay 2	11	107656917	T	ATM_ex23	roi5	NA	17.109	8.083	Het_ref/mut	T/A
+NA07037	capture assay 2	12	25269723	T	NA	NA	NA	18.037	37.695	Het_ref/mut	T/C
+NA07037	capture assay 2	12	119921857	C	HNF1A_ex9	roi3	NA	28.637	23.768	Het_mut/ref	T/C
+NA07037	capture assay 2	13	31828353	G	NA	NA	NA	1.085	3.771	Hom	A/A
+NA07037	capture assay 2	13	31848571	C	NA	NA	NA	1.482	-1.457	Hom	T/T
+NA07037	capture assay 2	14	102498837	C	NA	NA	NA	4.523	4.13	Het_ref/mut	C/G
+NA07037	capture assay 2	15	20479978	G	CYFIP1_ex4	roi3	NA	95.18	123.534	Het_mut/ref	C/G
+NA07037	capture assay 2	15	20480172	G	NA	NA	NA	15.44	18.729	Het_mut/ref	T/G
+NA07037	capture assay 2	16	86317838	A	KLHDC4_ex7	roi5	NA	-2.2	-2.037	Hom	C/C
+NA07037	capture assay 2	17	10376059	C	NA	NA	NA	-3.841	-4.978	Hom	T/T
+NA07037	capture assay 2	17	11983876	T	MAP2K4_ex10	roi5	NA	62.365	24.795	Het_ref/mut	T/A
+NA07037	capture assay 2	17	26578353	T	NF1_ex19	roi5	NA	22.305	28.029	Het_ref/mut	T/G
+NA07037	capture assay 2	17	26578574	T	NA	NA	NA	19.695	19.225	Het_mut/ref	C/T
+NA07037	capture assay 2	17	26580233	C	NF1_ex21	exon	NA	57.374	54.27	Het_ref/mut	C/G
+NA07037	capture assay 2	17	26580327	C	NF1_ex21	exon	NA	87.208	82.629	Het_ref/mut	C/T
+NA07037	capture assay 2	17	26580449	G	NF1_ex21	exon	NA	24.483	18.389	Het_ref/mut	G/A
+NA07037	capture assay 2	17	26580568	T	NF1_ex21	exon	NA	26.924	28.751	Het_ref/mut	T/C
+NA07037	capture assay 2	17	26580619	T	NF1_ex21	roi3	NA	12.171	26.56	Het_ref/mut	T/G
+NA07037	capture assay 2	17	26580720	T	NA	NA	NA	18.075	5.971	Het_mut/ref	G/T
+NA07037	capture assay 2	17	26586831	C	NF1_ex28	exon	NA	21.114	45.195	Het_ref/mut	C/G
+NA07037	capture assay 2	17	26586905	T	NF1_ex28	exon	NA	25.922	28.533	Het_ref/mut	T/C
+NA07037	capture assay 2	17	26586990	G	NA	NA	NA	28.927	28.061	Het_ref/mut	G/A
+NA07037	capture assay 2	17	35134104	A	NA	NA	NA	13.486	9.276	Het_ref/mut	A/C
+NA07037	capture assay 2	17	35135435	A	ERBB2_ex23	roi5	NA	27.334	44.995	Het_ref/mut	A/G
+NA07037	capture assay 2	18	32446158	C	NA	NA	NA	51.872	53.152	Het_ref/mut	C/T
+NA07037	capture assay 2	18	32574910	G	NA	NA	NA	15.312	8.925	Het_mut/ref	A/G
+NA07037	capture assay 2	19	994103	G	ABCA7_ex7	exon	NA	203.45	164.561	Het_mut/ref	A/G
+NA07037	capture assay 2	19	997009	C	NA	NA	NA	7.819	8.439	Het_ref/mut	C/A
+NA07037	capture assay 2	19	10326563	A	NA	NA	NA	9.592	6.22	Het_ref/mut	A/T
+NA07037	capture assay 2	19	10960716	C	NA	NA	NA	32.378	30.546	Het_mut/ref	T/C
+NA07037	capture assay 2	19	14940078	T	SLC1A6_ex3	roi5	NA	17.551	21.544	Het_ref/mut	T/C
+NA07037	capture assay 2	19	14944916	C	NA	NA	NA	10.727	9.019	Het_ref/mut	C/A
+NA07037	capture assay 2	22	28365021	G	NA	NA	NA	22.373	19.279	Het_ref/mut	G/A
+NA07037	capture assay 2	23	70596592	A	NA	NA	NA	13.976	13.625	Het_mut/ref	T/A
+NA07037	capture assay 2	23	85954778	T	DACH2_ex9	roi5	NA	12.67	6.121	Het_mut/ref	C/T
+NA07037	capture assay 2	23	122378926	T	GRIA3_ex11	roi5	NA	49.497	41.195	Het_ref/mut	T/A
+
+NA18507	capture assay 3 -replicate 1	6	80777210	T	TTK_ex4	roi5	NA	5.196	5.759	Het_mut/ref	A/T
+NA18507	capture assay 3 -replicate 1	17	26578574	T	NA	NA	NA	9.404	5.664	Het_mut/ref	C/T
+NA18507	capture assay 3 -replicate 1	1	6117547	G	CHD5_ex19	roi3	NA	111.326	136.943	Het_mut/ref	A/G
+NA18507	capture assay 3 -replicate 1	1	6129336	A	CHD5_ex10	exon	NA	5.572	6.775	Het_mut/ref	G/A
+NA18507	capture assay 3 -replicate 1	1	6135208	C	CHD5_ex6	roi3	NA	45.4	36.129	Het_mut/ref	G/C
+NA18507	capture assay 3 -replicate 1	1	173589897	C	NA	NA	NA	6.407	10.509	Het_mut/ref	A/C
+NA18507	capture assay 3 -replicate 1	2	179364924	T	NA	NA	NA	13.327	15.621	Het_mut/ref	C/T
+NA18507	capture assay 3 -replicate 1	5	14333284	C	NA	NA	NA	24.953	27.823	Het_mut/ref	T/C
+NA18507	capture assay 3 -replicate 1	5	14551835	C	NA	NA	NA	55.434	63.118	Het_mut/ref	T/C
+NA18507	capture assay 3 -replicate 1	6	41653566	T	NA	NA	NA	82.039	78.086	Het_mut/ref	C/T
+NA18507	capture assay 3 -replicate 1	6	70149221	G	NA	NA	NA	9.244	14.276	Het_mut/ref	A/G
+NA18507	capture assay 3 -replicate 1	7	98430030	C	NA	NA	NA	13.996	13.82	Het_mut/ref	T/C
+NA18507	capture assay 3 -replicate 1	8	113432479	A	NA	NA	NA	5.888	19.243	Het_mut/ref	G/A
+NA18507	capture assay 3 -replicate 1	11	64331734	G	MEN1_ex3	roi3	NA	43.964	71.233	Het_mut/ref	A/G
+NA18507	capture assay 3 -replicate 1	16	23619314	G	ERN2_ex13	roi5	NA	19.428	30.647	Het_mut/ref	T/G
+NA18507	capture assay 3 -replicate 1	16	23619470	A	ERN2_ex13	exon	NA	24.091	18.945	Het_mut/ref	G/A
+NA18507	capture assay 3 -replicate 1	16	23621630	G	NA	NA	NA	18.396	10.274	Het_mut/ref	A/G
+NA18507	capture assay 3 -replicate 1	16	23632316	T	NA	NA	NA	4.372	5.367	Het_mut/ref	C/T
+NA18507	capture assay 3 -replicate 1	16	86299653	G	NA	NA	NA	27.948	30.405	Het_mut/ref	A/G
+NA18507	capture assay 3 -replicate 1	18	19028563	G	NA	NA	NA	109.035	90.082	Het_mut/ref	C/G
+NA18507	capture assay 3 -replicate 1	19	1009635	C	ABCA7_ex37	exon	NA	53.24	51.613	Het_mut/ref	T/C
+NA18507	capture assay 3 -replicate 1	19	10979796	G	NA	NA	NA	19.662	17.342	Het_mut/ref	A/G
+NA18507	capture assay 3 -replicate 1	5	24527677	G	CDH10_ex10	exon	NA	6.79	5.381	Het_ref/mut	G/C
+NA18507	capture assay 3 -replicate 1	6	70099730	G	NA	NA	NA	6.668	5.138	Het_ref/mut	G/C
+NA18507	capture assay 3 -replicate 1	7	151580668	T	MLL3_ex10	exon	NA	44.569	34.121	Het_ref/mut	T/C
+NA18507	capture assay 3 -replicate 1	8	37810809	T	GPR124_ex11	roi3	NA	50.365	40.187	Het_ref/mut	T/C
+NA18507	capture assay 3 -replicate 1	10	55260975	G	NA	NA	NA	13.756	17.663	Het_ref/mut	G/A
+NA18507	capture assay 3 -replicate 1	11	107708080	T	NA	NA	NA	11.476	7.826	Het_ref/mut	T/A
+NA18507	capture assay 3 -replicate 1	12	77058296	T	NA	NA	NA	7.775	5.63	Het_ref/mut	T/A
+NA18507	capture assay 3 -replicate 1	19	10999460	G	SMARCA4_ex23	exon	NA	7.227	4.126	Het_ref/mut	G/C
+NA18507	capture assay 3 -replicate 1	1	6095415	C	NA	NA	NA	41.218	54.197	Het_ref/mut	C/A
+NA18507	capture assay 3 -replicate 1	1	6095427	C	NA	NA	NA	39.596	46.879	Het_ref/mut	C/T
+NA18507	capture assay 3 -replicate 1	1	11187351	T	FRAP1_ex25	roi3	NA	63.326	56.335	Het_ref/mut	T/C
+NA18507	capture assay 3 -replicate 1	1	64287811	G	NA	NA	NA	10.773	17.551	Het_ref/mut	G/A
+NA18507	capture assay 3 -replicate 1	1	150592079	C	FLG2_ex2	exon	NA	19.738	23.629	Het_ref/mut	C/T
+NA18507	capture assay 3 -replicate 1	1	173573381	G	TNR_ex17	exon	NA	98.831	100.328	Het_ref/mut	G/A
+NA18507	capture assay 3 -replicate 1	1	173642543	C	NA	NA	NA	77.516	80.858	Het_ref/mut	C/T
+NA18507	capture assay 3 -replicate 1	2	106789493	C	NA	NA	NA	21.498	17.301	Het_ref/mut	C/T
+NA18507	capture assay 3 -replicate 1	2	106826541	T	ST6GAL2_ex1	exon	NA	44.831	57.208	Het_ref/mut	T/C
+NA18507	capture assay 3 -replicate 1	2	179350196	G	TTN_ex26	exon	NA	13.899	19.172	Het_ref/mut	G/A
+NA18507	capture assay 3 -replicate 1	2	179350910	G	TTN_ex24	exon	NA	23.245	19.207	Het_ref/mut	G/A
+NA18507	capture assay 3 -replicate 1	2	197989964	C	NA	NA	NA	45.745	33.025	Het_ref/mut	C/T
+NA18507	capture assay 3 -replicate 1	5	14390162	C	NA	NA	NA	14.465	15.512	Het_ref/mut	C/G
+NA18507	capture assay 3 -replicate 1	5	14518755	G	TRIO_ex37	roi3	NA	33.786	24.09	Het_ref/mut	G/T
+NA18507	capture assay 3 -replicate 1	5	14557537	A	TRIO_ex55	exon	NA	38.467	31.326	Het_ref/mut	A/G
+NA18507	capture assay 3 -replicate 1	7	81474786	G	NA	NA	NA	6.609	8.614	Het_ref/mut	G/A
+NA18507	capture assay 3 -replicate 1	7	81531704	T	NA	NA	NA	13.109	11.023	Het_ref/mut	T/C
+NA18507	capture assay 3 -replicate 1	7	98397141	A	NA	NA	NA	36.876	34.872	Het_ref/mut	A/G
+NA18507	capture assay 3 -replicate 1	7	98429016	G	NA	NA	NA	39.059	38.858	Het_ref/mut	G/C
+NA18507	capture assay 3 -replicate 1	7	151480588	C	NA	NA	NA	8.998	11.977	Het_ref/mut	C/A
+NA18507	capture assay 3 -replicate 1	7	151482109	C	MLL3_ex48	exon	NA	13.325	12.117	Het_ref/mut	C/T
+NA18507	capture assay 3 -replicate 1	8	37810025	G	NA	NA	NA	17.571	7.219	Het_ref/mut	G/A
+NA18507	capture assay 3 -replicate 1	8	113726783	A	NA	NA	NA	43.654	42.81	Het_ref/mut	A/G
+NA18507	capture assay 3 -replicate 1	8	114180332	C	CSMD3_ex6	exon	NA	87.337	64.658	Het_ref/mut	C/T
+NA18507	capture assay 3 -replicate 1	8	114518067	C	CSMD3_ex1	roi5	NA	93.712	81.025	Het_ref/mut	C/G
+NA18507	capture assay 3 -replicate 1	11	85646396	A	NA	NA	NA	16.895	13.316	Het_ref/mut	A/C
+NA18507	capture assay 3 -replicate 1	11	85654680	A	NA	NA	NA	31.937	53.74	Het_ref/mut	A/T
+NA18507	capture assay 3 -replicate 1	12	77037548	T	NAV3_ex15	exon	NA	21.012	9.303	Het_ref/mut	T/C
+NA18507	capture assay 3 -replicate 1	12	130064755	T	GPR133_ex13	exon	NA	73.704	85.025	Het_ref/mut	T/G
+NA18507	capture assay 3 -replicate 1	14	102502612	C	NA	NA	NA	26.811	28.059	Het_ref/mut	C/T
+NA18507	capture assay 3 -replicate 1	16	86317946	T	KLHDC4_ex7	exon	NA	8.832	7.498	Het_ref/mut	T/C
+NA18507	capture assay 3 -replicate 1	17	10383173	T	NA	NA	NA	12.452	24.596	Het_ref/mut	T/A
+NA18507	capture assay 3 -replicate 1	18	32446085	C	FHOD3_ex9	roi3	NA	30.744	33.386	Het_ref/mut	C/G
+NA18507	capture assay 3 -replicate 1	18	32552166	G	FHOD3_ex16	exon	NA	12.176	13.805	Het_ref/mut	G/A
+NA18507	capture assay 3 -replicate 1	18	41918445	G	ATP5A1_ex11	roi5	NA	54.1	36.303	Het_ref/mut	G/T
+NA18507	capture assay 3 -replicate 1	18	41925819	T	ATP5A1_ex3	roi3	NA	43.357	29.04	Het_ref/mut	T/C
+NA18507	capture assay 3 -replicate 1	18	48996228	G	NA	NA	NA	53.249	31.042	Het_ref/mut	G/A
+NA18507	capture assay 3 -replicate 1	18	49102555	T	DCC_ex14	roi3	NA	76.396	65.402	Het_ref/mut	T/G
+NA18507	capture assay 3 -replicate 1	19	993554	G	NA	NA	NA	38.029	39.109	Het_ref/mut	G/T
+NA18507	capture assay 3 -replicate 1	19	10982030	T	SMARCA4_ex14	roi5	NA	29.14	31.01	Het_ref/mut	T/C
+NA18507	capture assay 3 -replicate 1	20	35448045	C	NA	NA	NA	29.741	31.539	Het_ref/mut	C/T
+NA18507	capture assay 3 -replicate 1	15	20498539	C	CYFIP1_ex12	roi3	NA	-24.542	-24.03	Hom	T/T
+NA18507	capture assay 3 -replicate 1	16	86317838	A	KLHDC4_ex7	roi5	NA	-3.327	-3.81	Hom	C/C
+NA18507	capture assay 3 -replicate 1	22	28399723	A	NA	NA	NA	-0.686	-3.272	Hom	G/G
+
+NA18507	capture assay 3 -replicate 2	6	70099730	G	NA	NA	NA	5.72	4.639	Het_mut/ref	C/G
+NA18507	capture assay 3 -replicate 2	17	26578574	T	NA	NA	NA	27.967	13.554	Het_mut/ref	C/T
+NA18507	capture assay 3 -replicate 2	1	6117547	G	CHD5_ex19	roi3	NA	105.182	198.182	Het_mut/ref	A/G
+NA18507	capture assay 3 -replicate 2	1	173642543	C	NA	NA	NA	72.254	71.819	Het_mut/ref	T/C
+NA18507	capture assay 3 -replicate 2	5	14390162	C	NA	NA	NA	22.75	18.767	Het_mut/ref	G/C
+NA18507	capture assay 3 -replicate 2	5	14551835	C	NA	NA	NA	54.761	65.204	Het_mut/ref	T/C
+NA18507	capture assay 3 -replicate 2	7	81531704	T	NA	NA	NA	5.76	7.855	Het_mut/ref	C/T
+NA18507	capture assay 3 -replicate 2	8	113432479	A	NA	NA	NA	10.93	17.213	Het_mut/ref	G/A
+NA18507	capture assay 3 -replicate 2	8	113726783	A	NA	NA	NA	30.32	28.713	Het_mut/ref	G/A
+NA18507	capture assay 3 -replicate 2	8	114518067	C	CSMD3_ex1	roi5	NA	92.616	66.122	Het_mut/ref	G/C
+NA18507	capture assay 3 -replicate 2	11	64331734	G	MEN1_ex3	roi3	NA	48.112	79.452	Het_mut/ref	A/G
+NA18507	capture assay 3 -replicate 2	16	23621630	G	NA	NA	NA	15.765	8.491	Het_mut/ref	A/G
+NA18507	capture assay 3 -replicate 2	16	23632316	T	NA	NA	NA	8.838	7.581	Het_mut/ref	C/T
+NA18507	capture assay 3 -replicate 2	16	86299653	G	NA	NA	NA	34.154	31.517	Het_mut/ref	A/G
+NA18507	capture assay 3 -replicate 2	18	19022946	T	NA	NA	NA	4.812	6.447	Het_mut/ref	G/T
+NA18507	capture assay 3 -replicate 2	18	32346660	A	NA	NA	NA	5.422	4.977	Het_mut/ref	C/A
+NA18507	capture assay 3 -replicate 2	18	32552166	G	FHOD3_ex16	exon	NA	15.478	18.364	Het_mut/ref	A/G
+NA18507	capture assay 3 -replicate 2	19	999829	C	NA	NA	NA	4.287	4.918	Het_mut/ref	A/C
+NA18507	capture assay 3 -replicate 2	5	24527677	G	CDH10_ex10	exon	NA	6.933	6.3	Het_ref/mut	G/C
+NA18507	capture assay 3 -replicate 2	7	151580668	T	MLL3_ex10	exon	NA	50.424	36.96	Het_ref/mut	T/C
+NA18507	capture assay 3 -replicate 2	8	37810809	T	GPR124_ex11	roi3	NA	39.848	30.611	Het_ref/mut	T/C
+NA18507	capture assay 3 -replicate 2	10	55260975	G	NA	NA	NA	11.735	8.324	Het_ref/mut	G/A
+NA18507	capture assay 3 -replicate 2	11	107708080	T	NA	NA	NA	10.071	6.157	Het_ref/mut	T/A
+NA18507	capture assay 3 -replicate 2	1	6095415	C	NA	NA	NA	41.846	46.052	Het_ref/mut	C/A
+NA18507	capture assay 3 -replicate 2	1	6095427	C	NA	NA	NA	40.823	43.192	Het_ref/mut	C/T
+NA18507	capture assay 3 -replicate 2	1	6135208	C	CHD5_ex6	roi3	NA	28.643	25.121	Het_ref/mut	C/G
+NA18507	capture assay 3 -replicate 2	1	11187351	T	FRAP1_ex25	roi3	NA	47.005	49.615	Het_ref/mut	T/C
+NA18507	capture assay 3 -replicate 2	1	64287811	G	NA	NA	NA	10.1	17.891	Het_ref/mut	G/A
+NA18507	capture assay 3 -replicate 2	1	150592079	C	FLG2_ex2	exon	NA	14.073	22.994	Het_ref/mut	C/T
+NA18507	capture assay 3 -replicate 2	1	150594695	T	FLG2_ex2	exon	NA	9.956	4.258	Het_ref/mut	T/C
+NA18507	capture assay 3 -replicate 2	1	173573381	G	TNR_ex17	exon	NA	81.723	134.038	Het_ref/mut	G/A
+NA18507	capture assay 3 -replicate 2	1	173589897	C	NA	NA	NA	5.632	15.411	Het_ref/mut	C/A
+NA18507	capture assay 3 -replicate 2	2	47886386	T	MSH6_ex7	roi3	NA	4.173	5.172	Het_ref/mut	T/A
+NA18507	capture assay 3 -replicate 2	2	106789493	C	NA	NA	NA	22.563	18.55	Het_ref/mut	C/T
+NA18507	capture assay 3 -replicate 2	2	106826541	T	ST6GAL2_ex1	exon	NA	28	51.315	Het_ref/mut	T/C
+NA18507	capture assay 3 -replicate 2	2	179350196	G	TTN_ex26	exon	NA	7.649	11.026	Het_ref/mut	G/A
+NA18507	capture assay 3 -replicate 2	2	179350910	G	TTN_ex24	exon	NA	22.589	20.564	Het_ref/mut	G/A
+NA18507	capture assay 3 -replicate 2	2	179364924	T	NA	NA	NA	12.622	17.747	Het_ref/mut	T/C
+NA18507	capture assay 3 -replicate 2	2	197989964	C	NA	NA	NA	73.785	47.292	Het_ref/mut	C/T
+NA18507	capture assay 3 -replicate 2	3	73522812	T	PDZRN3_ex6	roi5	NA	15.045	40.156	Het_ref/mut	T/C
+NA18507	capture assay 3 -replicate 2	3	73740228	G	NA	NA	NA	18.264	8.34	Het_ref/mut	G/C
+NA18507	capture assay 3 -replicate 2	5	14333284	C	NA	NA	NA	24.536	43.337	Het_ref/mut	C/T
+NA18507	capture assay 3 -replicate 2	5	14518755	G	TRIO_ex37	roi3	NA	29.105	20.284	Het_ref/mut	G/T
+NA18507	capture assay 3 -replicate 2	5	14557537	A	TRIO_ex55	exon	NA	40.017	25.705	Het_ref/mut	A/G
+NA18507	capture assay 3 -replicate 2	6	41653566	T	NA	NA	NA	35.434	44.209	Het_ref/mut	T/C
+NA18507	capture assay 3 -replicate 2	6	70149221	G	NA	NA	NA	6.492	17.901	Het_ref/mut	G/A
+NA18507	capture assay 3 -replicate 2	7	81474786	G	NA	NA	NA	5.079	12.655	Het_ref/mut	G/A
+NA18507	capture assay 3 -replicate 2	7	98397141	A	NA	NA	NA	35.617	34.372	Het_ref/mut	A/G
+NA18507	capture assay 3 -replicate 2	7	98429016	G	NA	NA	NA	50.724	52.185	Het_ref/mut	G/C
+NA18507	capture assay 3 -replicate 2	7	98430030	C	NA	NA	NA	8.167	11.747	Het_ref/mut	C/T
+NA18507	capture assay 3 -replicate 2	7	151480588	C	NA	NA	NA	7.909	15.185	Het_ref/mut	C/A
+NA18507	capture assay 3 -replicate 2	7	151482109	C	MLL3_ex48	exon	NA	12.247	11.628	Het_ref/mut	C/T
+NA18507	capture assay 3 -replicate 2	7	151535217	G	NA	NA	NA	4.654	9.909	Het_ref/mut	G/T
+NA18507	capture assay 3 -replicate 2	7	151535220	G	NA	NA	NA	5.668	10.28	Het_ref/mut	G/T
+NA18507	capture assay 3 -replicate 2	7	151558253	C	MLL3_ex17	exon	NA	15.992	4.912	Het_ref/mut	C/T
+NA18507	capture assay 3 -replicate 2	8	37817544	C	GPR124_ex18	roi3	NA	7.03	8.494	Het_ref/mut	C/T
+NA18507	capture assay 3 -replicate 2	8	114180332	C	CSMD3_ex6	exon	NA	57.432	43.24	Het_ref/mut	C/T
+NA18507	capture assay 3 -replicate 2	10	89682754	A	PTEN_ex5	exon	NA	6.912	4.016	Het_ref/mut	A/G
+NA18507	capture assay 3 -replicate 2	11	85646396	A	NA	NA	NA	13.846	15.905	Het_ref/mut	A/C
+NA18507	capture assay 3 -replicate 2	11	85654680	A	NA	NA	NA	23.733	34.427	Het_ref/mut	A/T
+NA18507	capture assay 3 -replicate 2	11	107656917	T	ATM_ex23	roi5	NA	11.272	4.15	Het_ref/mut	T/A
+NA18507	capture assay 3 -replicate 2	12	130064755	T	GPR133_ex13	exon	NA	55.013	74.887	Het_ref/mut	T/G
+NA18507	capture assay 3 -replicate 2	14	102502612	C	NA	NA	NA	22.208	23.229	Het_ref/mut	C/T
+NA18507	capture assay 3 -replicate 2	16	23619314	G	ERN2_ex13	roi5	NA	15.506	39.84	Het_ref/mut	G/T
+NA18507	capture assay 3 -replicate 2	16	23619470	A	ERN2_ex13	exon	NA	23.143	14.401	Het_ref/mut	A/G
+NA18507	capture assay 3 -replicate 2	16	86317845	T	KLHDC4_ex7	roi5	NA	4.621	11.548	Het_ref/mut	T/C
+NA18507	capture assay 3 -replicate 2	16	86317946	T	KLHDC4_ex7	exon	NA	29.41	9.36	Het_ref/mut	T/C
+NA18507	capture assay 3 -replicate 2	17	10383173	T	NA	NA	NA	16.099	38.161	Het_ref/mut	T/A
+NA18507	capture assay 3 -replicate 2	17	26578365	G	NF1_ex19	exon	NA	10.585	12.494	Het_ref/mut	G/C
+NA18507	capture assay 3 -replicate 2	17	26578379	A	NF1_ex19	exon	NA	8.882	6.213	Het_ref/mut	A/G
+NA18507	capture assay 3 -replicate 2	17	26578465	C	NF1_ex19	roi3	NA	8.761	6.266	Het_ref/mut	C/T
+NA18507	capture assay 3 -replicate 2	17	26578482	A	NF1_ex19	roi3	NA	8.864	13.658	Het_ref/mut	A/T
+NA18507	capture assay 3 -replicate 2	17	26578583	C	NA	NA	NA	31.935	5.795	Het_ref/mut	C/T
+NA18507	capture assay 3 -replicate 2	17	26580720	T	NA	NA	NA	8.187	5.045	Het_ref/mut	T/G
+NA18507	capture assay 3 -replicate 2	17	35134104	A	NA	NA	NA	9.545	4.3	Het_ref/mut	A/C
+NA18507	capture assay 3 -replicate 2	17	35134151	C	NA	NA	NA	4.946	21.698	Het_ref/mut	C/G
+NA18507	capture assay 3 -replicate 2	18	19028563	G	NA	NA	NA	106.196	86.276	Het_ref/mut	G/C
+NA18507	capture assay 3 -replicate 2	18	32446085	C	FHOD3_ex9	roi3	NA	23.946	20.659	Het_ref/mut	C/G
+NA18507	capture assay 3 -replicate 2	18	41918445	G	ATP5A1_ex11	roi5	NA	59.716	62.17	Het_ref/mut	G/T
+NA18507	capture assay 3 -replicate 2	18	41925819	T	ATP5A1_ex3	roi3	NA	37.433	29.498	Het_ref/mut	T/C
+NA18507	capture assay 3 -replicate 2	18	48996228	G	NA	NA	NA	47.598	33.868	Het_ref/mut	G/A
+NA18507	capture assay 3 -replicate 2	18	49102555	T	DCC_ex14	roi3	NA	59.274	47.587	Het_ref/mut	T/G
+NA18507	capture assay 3 -replicate 2	19	993554	G	NA	NA	NA	49.303	50.855	Het_ref/mut	G/T
+NA18507	capture assay 3 -replicate 2	19	1009635	C	ABCA7_ex37	exon	NA	48.911	62.262	Het_ref/mut	C/T
+NA18507	capture assay 3 -replicate 2	19	10979796	G	NA	NA	NA	14.68	13.298	Het_ref/mut	G/A
+NA18507	capture assay 3 -replicate 2	19	10982030	T	SMARCA4_ex14	roi5	NA	23.442	27.82	Het_ref/mut	T/C
+NA18507	capture assay 3 -replicate 2	20	35448045	C	NA	NA	NA	19.096	16.653	Het_ref/mut	C/T
+NA18507	capture assay 3 -replicate 2	6	80777210	T	TTK_ex4	roi5	NA	3.57	1.217	Hom	A/A
+NA18507	capture assay 3 -replicate 2	1	6129177	C	NA	NA	NA	-10.674	-17.328	Hom	T/T
+NA18507	capture assay 3 -replicate 2	6	80777207	C	TTK_ex4	roi5	NA	3.352	3.086	Hom	T/T
+NA18507	capture assay 3 -replicate 2	6	80777209	T	TTK_ex4	roi5	NA	3.453	3.47	Hom	G/G
+NA18507	capture assay 3 -replicate 2	15	20498539	C	CYFIP1_ex12	roi3	NA	-26.703	-38.282	Hom	T/T
+NA18507	capture assay 3 -replicate 2	16	86317838	A	KLHDC4_ex7	roi5	NA	-3.901	-8.147	Hom	C/C
+NA18507	capture assay 3 -replicate 2	22	28399723	A	NA	NA	NA	-3.811	-1.368	Hom	G/G

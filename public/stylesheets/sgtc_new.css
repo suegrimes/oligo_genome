@@ -1,0 +1,406 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body {
+	margin: 0;
+	border: 0;
+	padding: 0;
+	height: 100%; 
+	max-height: 100%; 
+	background: #fff;
+	font-family: arial, verdana, sans-serif; 
+	font-size: .9em;
+	overflow: hidden; 
+}
+
+/* for internet explorer */
+* html body {
+	padding: 80px 0 50px 0; /* changed to 80px from 120px */
+}
+
+#container {
+	font-family: arial,helvetica,sans-serif;
+	/* font-size: 1.2em; */
+	position: fixed; 
+	top: 85px;
+	left: 0;
+	bottom: 25px; 
+	right:0; 
+	overflow:auto; 
+	background:#fff;
+	padding: 0px;
+	text-align: center;
+}
+
+* html #container {
+  height:100%; 
+  width:100%; 
+}
+
+#header {
+	position: absolute;
+	/* top: -1px; */
+	left: 0px;
+	width: 100%;
+	height: 80px;
+	overflow: hidden;
+	background: #f7f7f7;
+	border-bottom: 1px ridge #990000;
+	white-space: nowrap;
+}
+
+* html #header {
+	height: 80px;
+}
+
+#header img {
+	float: left;
+	margin: 1px 10px 0 10px;
+}
+	
+#header p {
+	float: right;
+	margin: -45px 45px 0 0;
+	font-size:.75em;
+	font-weight: 400;
+	color: #888;
+}
+
+#header h1 {
+	font: bold small-caps 2em/1.5em tahoma,serif;
+	padding: 1em 0 1em 7.5em;
+}
+
+#header h1.prod {
+	color: #990000;
+}
+
+#header h1.test {
+	color: #888;
+}
+
+#header ul {
+  clear:both; 
+  text-align:center; 
+  border-top:1px solid #73a2bd;
+  }
+
+#header ul {
+  margin:0; 
+  padding:0px;
+  list-style-type:none; 
+  background:transparent; 
+  height:3em;
+  }
+
+#header ul li {
+  display:inline; 
+  color:#73a2bd;
+  }
+
+#footer {
+	position: absolute; 
+	font-size:.75em;
+	color:#808080;
+	bottom: 0px; 
+	left: 0px;
+	width: 100%; 
+	height: 25px; 
+	background: #f7f7f7;
+	border-top: 1px solid #750404;
+    clear: both;
+  }
+
+* html #footer {
+	height: 40px;
+}
+
+/* end of bit that does the work */
+
+#footer a, a:visited {
+	color:#808080;
+	text-decoration:none;
+}
+
+#footer a:hover {
+	color:#808080;
+	text-decoration: underline;
+}
+
+#footer p {
+        line-height: inherit;
+        margin: 0 0 0 0;
+        padding: 0 1.5em .2em 1.5em;
+}
+
+.grey {color:#888;}
+.ltgrey {color:#ddd;}
+.dkred {color:#660000;}
+.sagegreen {color: #e8ead0;}
+
+.lft {float:left;}
+.rgt {float:right;}
+
+.notes {
+	/*font-weight: bold;*/
+	font-size: smaller;
+	font-style: italic;
+	color: #333;
+}
+
+/* start left navigation styles */
+#leftsidebar {
+	position: absolute;
+	left: 0px;
+	width:200px;
+	height: 100%;
+	text-align: left;
+	/*padding: 2em 0 0 0;*/
+	padding: 0;
+	background:  #e8ead0; 
+	border-right: 1px solid #b0aa91;
+	/*text-indent: .8em;*/
+}
+
+/* Menu items */
+#leftsidebar ul {
+	margin: 0 0 0 .5em;
+	/*margin: 0;*/
+	padding: 0;
+	/*text-indent: .5em;*/
+	list-style-type: none;
+}
+
+#leftsidebar ul a {
+	display: block;
+	/* width: 180px; */
+	font-weight: bold;
+	line-height: 2em;
+	color: #000;
+	text-decoration: none;
+	background: #e8ead0;
+}
+
+#leftsidebar a {
+	vertical-align: middle;
+}
+
+#leftsidebar a:hover{
+	color: #fff;
+	text-decoration: none;
+	background: #b3b393;
+}
+
+#leftsidebar a:active{
+	color: #990000;
+	text-decoration: underline;
+	background: #fff;
+	outline: none;
+}
+
+/* #leftsidebar a:focus{
+	color: #990000;
+	text-decoration: underline;
+	background: #fff;
+	outline: none;
+} */
+
+#leftsidebar ul ul{
+	text-indent: 1.2em;
+}
+
+#leftsidebar ul ul a:active{
+	color: #990000;
+	text-decoration: underline;
+	background: #fff;
+	outline: none;
+}
+
+#menu {
+	position: absolute;
+	float: left;
+	width:150px;
+	margin-top: 2px;
+	font-size: .85em;
+	text-align: left;
+	padding: 1em 0 0 0;
+	background:  #e8ead0; 
+	text-indent: .5em;
+}
+
+#loginout {
+	position: absolute;
+	float:left;
+	width:180px;
+	top: 240px;
+	text-align: left;
+	font-size: .8em;
+	padding: 1em 0 0 0;
+	margin: 0 0 0 .6em;
+	background:  #f1f2e3; 
+	border-top: 1px solid #b0aa91;
+	border-bottom: 1px solid #b0aa91;
+	/*text-indent: .8em; */
+} 
+
+#loginout ul a{
+	font-size: 1em;
+	background:  #f1f2e3; 
+} 
+
+/* Builds, and user info */
+/*#leftsidebar ul.user_info { */
+#loginout ul.user_info {
+	font: italic bold .8em Verdana, Arial, Helvetica, sans-serif;
+	font-size: .8em;
+	color: #666;
+	margin: 0 0 0 1em;
+	padding-bottom: 1em;
+}
+
+#loginout h5.user_info {
+	font: small-caps .9em tahoma,serif;
+	margin: 0 0 .1em 0;
+}
+
+/* end left navigation styles */
+
+#maincontent {
+	position: absolute;
+	left: 210px;
+	text-align: justify;
+	margin-right: 15px;
+	width: 80%;
+}
+
+#maincontent a {
+  text-decoration:none;
+  color:#006699;
+  font-size:inherit;
+  }
+  
+#maincontent a:visited {
+  text-decoration:none;
+  color:#006699;
+  font-size:inherit;
+  }
+
+#maincontent a:hover {
+  color:#990000;
+  text-decoration:underline;
+  font-size:inherit;
+  }
+  
+#maincontent a:visited:hover {
+ color: #990000;
+ font-size:inherit;
+ }
+
+p,h1,h2,h3,h4,h5,h6 {
+padding-left: .5em;
+padding-top: 0.2em;
+}
+
+h1 {
+	font-size:1.5em;
+	margin:0;
+	padding:0;
+}
+
+h3 {
+	font-size: 1.05em;
+	color: #333333;
+}
+
+hr {clear:both; border:0; height:1px; background-color:#888;}
+
+/* styles for tables */
+table {
+	/* border: 1px solid #b0aa91;
+	border-collapse: separate; /* collapse */
+	/* empty-cells: show; */
+	margin-bottom: 1em;
+	/* table-layout: fixed; */
+	/* width: 95%; */
+}
+
+.button-to { 
+  display: inline; 
+} 
+ 
+.button-to div { 
+  display: inline; 
+} 
+
+.hardbreak {
+	word-break: break-all;
+	white-space: nowrap;  /* css-3 */
+	white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+	word-wrap: break-word;/* Internet Explorer 5.5+ */	
+}
+
+/* tables with borders */
+.border {
+	border: 1px solid #b0aa91;
+	border-collapse: separate; /* collapse */
+	empty-cells: show;
+	margin-bottom: 1em;
+	width: 95%;
+	/* table-layout: fixed; */
+}
+
+.border tr {
+	border: 1px solid #b0aa91;
+}
+
+.border th {
+	background-color: #e8ead0;
+	white-space: nowrap;
+	padding: .1em .5em;
+	text-align: left;
+}
+
+.border td {
+	border: 1px dotted #dedacb; /* #b0aa91; */
+	padding: .1em .3em;
+}
+	
+/* end styles for tables */
+
+/* styles for Rails error messages */
+.fieldWithErrors {
+  padding: 2px;
+  background-color: #990000;
+  display: table;
+}
+
+#errorExplanation {
+  width: 400px;
+  border: solid thin #990000;
+  padding: 7px;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+}
+
+#errorExplanation h2 {
+  text-align: left;
+  font-weight: bold;
+  padding: 5px 5px 5px 15px;
+  font-size: 12px;
+  margin: -7px;
+  background-color: #990000; 
+  color: #fff;
+}
+
+#errorExplanation p {
+  color: #333;
+  margin-bottom: 0;
+  padding: 5px;
+}
+
+#errorExplanation ul li {
+  font-size: 12px;
+  list-style: square;
+}
+/* end styles for Rails error messages */

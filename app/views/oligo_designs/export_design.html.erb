@@ -1,0 +1,25 @@
+<% xfmt = ExportField::EXPORT_FMT %>
+
+<table>
+  <tr>
+	<% ExportField.headings(xfmt).each do |hdg| %>
+	  <th><%= hdg %></th>
+	<% end %>
+	  <th>Extract Date</th>
+  </tr>
+
+<% for oligo_design in @oligo_designs %>
+  <tr>
+	<% ExportField.fld_names(xfmt).each do |model, fld| %>
+	  <% if model == 'oligo_design' %>
+	    <td><%=h oligo_design.send(fld) %></td>
+	  <% elsif model == 'oligo_annotation' && oligo_design.oligo_annotation %>
+		<td><%=h oligo_design.oligo_annotation.send(fld)%></td>
+	  <% else %>
+		<td>&nbsp;</td>
+	  <% end %>
+	<% end %>
+	  <td><%=h Date.today.to_s %></td>
+  </tr>
+<% end %>
+</table>

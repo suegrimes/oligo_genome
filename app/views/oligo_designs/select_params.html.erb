@@ -1,0 +1,8 @@
+<h1>Query Capture Sequences - Select Parameters</h1>
+
+<% form_tag :action=> 'list_selected'  do %>
+
+    <%= render :partial => 'shared/gene_select' %>
+
+<%= break_clear(submit_tag "Submit") %>
+<%end%>

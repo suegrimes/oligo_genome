@@ -1,0 +1,42 @@
+<% form_tag :action => "export_design" do %>
+
+<p>
+<% if @oligo_designs.size > 0 %>
+  <b>To export all details for these <%=h @oligo_designs.size %> oligos, please click here: <%= submit_tag "Export Oligos" -%></b> 
+<% else %>
+  No oligos match the criteria given, please try your search again
+<% end %>
+</p>
+
+<%= hidden_field_tag("version_id", @version_id)%>
+<table class="list">
+  <tr>
+	<% if @version_id < 3 %><th>ID</th><% end %>
+	<th>Oligo Name</th>
+	<th>Chromosome</th>
+	<th>Capture Start</th>
+	<th>Length</th>
+	<th>Flags</th>
+	<th>Annot</th>
+	<th>5prime Capture Arm</th>
+	<th>3prime Capture Arm</th>
+	<th>Polarity</th>
+  </tr>
+	
+<% for oligo_design in @oligo_designs %>
+  <tr>
+	<% if @version_id < 3 %><td><%=h oligo_design.id %></td><%end%>
+	<td><%= link_to oligo_design.oligo_name, oligo_design %></td>
+	<td><%=h oligo_design.chromosome_nr %></td>
+	<td><%=h oligo_design.amplicon_chr_start_pos %></td>
+	<td align=center><%=h oligo_design.amplicon_length %></td>
+	<td><%=h oligo_design.annotation_codes %></td>
+	<td><%=h oligo_design.other_annotations %></td>
+	<td width=220><%=h oligo_design.sel_5prime %></td>
+	<td width=220><%=h oligo_design.sel_3prime %></td>
+	<td align=center><%=h oligo_design.sel_polarity %></td>
+	<td width=10><%= hidden_field_tag("export_id[]", oligo_design.id)%>
+  </tr>
+<% end %>
+<% end %>
+</table>

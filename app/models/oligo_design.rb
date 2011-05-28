@@ -28,8 +28,6 @@
 #
 
 class OligoDesign < ActiveRecord::Base
-# PilotOligoDesign inherits from this model class, therefore any table name references must be generic, 
-# or method must be passed a parameter to indicate which model the method is accessing
   acts_as_commentable
  
   has_one  :oligo_annotation, :foreign_key => :oligo_design_id
@@ -38,15 +36,8 @@ class OligoDesign < ActiveRecord::Base
                           :on  => :create  
                           
   named_scope :curr_ver, :conditions => ['version_id = (?)', Version::DESIGN_VERSION.id ]
-  named_scope :qcpassed, :conditions => ['internal_QC IS NULL OR internal_QC = " " ']
-  named_scope :notflagged, :conditions => ['annotation_codes IS NULL OR annotation_codes < "A" ']
   
-  unique_enzymes = self.curr_ver.find(:all, 
-                                      :select => "DISTINCT(enzyme_code)",
-                                      :order  => :enzyme_code)
-  ENZYMES = unique_enzymes.map{ |design| design.enzyme_code }
-  ENZYMES_WO_GAPFILL = ENZYMES.reject { |enzyme| enzyme =~ /.*_gapfill/}
-  #VECTOR = 'ACGATAACGGTACAAGGCTAAAGCTTTGCTAACGGTCGAG'
+  ENZYMES = ['BfaI', 'CviQI', 'MseI', 'Sau3AI']
 
   #****************************************************************************************#
   #  Define virtual attributes                                                             #
@@ -56,48 +47,48 @@ class OligoDesign < ActiveRecord::Base
     (sel_polarity == 'p' ? 'plus' : 'minus')
   end
   
-  def usel_vector
-    selector_useq[21,40]
+  def selector_u
+    [usel_5prime, Vector::UVECTOR, usel_3prime].join
   end
   
   def selector
-    [sel_5prime, Vector::VECTOR, sel_3prime].join('')
+    [sel_5prime, Vector::VECTOR, sel_3prime].join
   end
   
   #****************************************************************************************#
   #  Class find methods   - Oligos                                                         #
   #****************************************************************************************#
   
-  def self.find_using_oligo_name_id(oligo_name)
-    # Use id or gene_code index to speed retrieval.
-    # Note: curr_oligo_format?, and get_gene_from_name are in OligoExtensions module
-    
-    if curr_oligo_format?(oligo_name)                            
-      # oligo name in current format, => use id as index
-      oligo_array  = oligo_name.split(/_/)
-      oligo_design = self.find_by_oligo_name_and_id(oligo_name, oligo_array[0])
-    else
-      # oligo name in old format => cannot use id, use gene code instead
-      #gene_code    = self.get_gene_from_name(oligo_name, false)
-      gene_code    = get_gene_from_oligo_name(oligo_name, false) 
-      oligo_design = self.find_by_oligo_name_and_gene_code(oligo_name, gene_code)
-    end
-    
-    return oligo_design
-  end
-  
-  def self.find_selectors_with_conditions(condition_array, version_id=Version::DESIGN_VERSION_ID)
-    condition_array[0] += ' AND version_id = ?'
-    condition_array.push(version_id)
-    
-    self.qcpassed.find(:all,
-                       :order => 'gene_code, enzyme_code',                               
-                       :conditions => condition_array) 
-  end
-  
+#  def self.find_using_oligo_name_id(oligo_name)
+#    # Use id or gene_code index to speed retrieval.
+#    # Note: curr_oligo_format?, and get_gene_from_name are in OligoExtensions module
+#    
+#    if curr_oligo_format?(oligo_name)                            
+#      # oligo name in current format, => use id as index
+#      oligo_array  = oligo_name.split(/_/)
+#      oligo_design = self.find_by_oligo_name_and_id(oligo_name, oligo_array[0])
+#    else
+#      # oligo name in old format => cannot use id, use gene code instead
+#      #gene_code    = self.get_gene_from_name(oligo_name, false)
+#      gene_code    = get_gene_from_oligo_name(oligo_name, false) 
+#      oligo_design = self.find_by_oligo_name_and_gene_code(oligo_name, gene_code)
+#    end
+#    
+#    return oligo_design
+#  end
+#  
+#  def self.find_selectors_with_conditions(condition_array, version_id=Version::DESIGN_VERSION_ID)
+#    condition_array[0] += ' AND version_id = ?'
+#    condition_array.push(version_id)
+#    
+#    self.qcpassed.find(:all,
+#                       :order => 'gene_code, enzyme_code',                               
+#                       :conditions => condition_array) 
+#  end
+#  
   def self.find_with_id_list(id_list)
     self.find(:all, :include => :oligo_annotation,
-                    :order => 'gene_code, enzyme_code',
+                    :order => 'chromosome_nr, amplicon_chr_start_pos',
                     :conditions => ["id IN (?)", id_list])
   end
   

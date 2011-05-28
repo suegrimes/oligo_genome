@@ -19,12 +19,14 @@ ActionController::Routing::Routes.draw do |map|
   
   # Oligo Designs
   map.resources :oligo_designs
-  map.designquery 'designquery',       :controller => 'oligo_designs', :action => 'select_params'
-  map.list_selected 'list_oligos',     :controller => 'oligo_designs', :action => 'list_selected'
-  map.export 'export',                 :controller => 'oligo_designs', :action => 'export'
   
-  # Zip download (entire exome of designs)
-  map.zip_download 'zip_download',     :controller => 'oligo_designs', :action => 'zip_download'
+  # Design Queries
+  map.resources :design_queries, :only => :index
+  map.designquery 'designquery', :controller => 'design_queries', :action => 'new_query'
+  map.export 'export',           :controller => 'design_queries', :action => 'export'
+  
+  # Zip download (entire genome of designs)
+  map.zip_download 'zip_download',     :controller => 'design_queries', :action => 'zip_download'
   
   # Error/not implemented
   map.notimplemented 'notimplemented', :controller => 'dummy',         :action => 'notimplemented'

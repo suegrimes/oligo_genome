@@ -1,0 +1,23 @@
+<h1>Query Capture Sequences</h1>
+
+<% form_for(@design_query, :action => 'index') do |f| %>
+<%= f.error_messages(:header_message => "Error(s) in query parameters") %>
+
+<fieldset class="form">
+<legend>Select chromosome coordinates</legend>
+<table class="form">
+  <tr>
+  	<th>Chromosome Number:</th>
+	<td><%= f.text_field(:chromosome_nr, :size => 2) %></td>
+  </tr>
+  <tr>
+  	<th>Chr Start Position:</th>
+	<td><%= f.text_field(:chr_start_pos, :size => 12) %></td>
+	<th>Chr End Position:</th>
+	<td><%= f.text_field(:chr_end_pos, :size => 12) %></td>
+  </tr>
+</table>
+</fieldset>
+<%= break_clear(f.submit 'Submit')%>
+<% end %>
+  

@@ -13,4 +13,5 @@
 class Vector < ActiveRecord::Base
 #VECTOR = 'ACGATAACGGTACAAGGCTAAAGCTTTGCTAACGGTCGAG'
 VECTOR = self.find(1).vector
+UVECTOR = self.find(1).u_vector
 end

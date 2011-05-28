@@ -8,34 +8,29 @@
 <% end %>
 </p>
 
-<%= hidden_field_tag("version_id", @version_id)%>
 <table class="list">
   <tr>
-	<% if @version_id < 3 %><th>ID</th><% end %>
 	<th>Oligo Name</th>
 	<th>Chromosome</th>
 	<th>Capture Start</th>
+	<th>Capture End</th>
 	<th>Length</th>
-	<th>Flags</th>
-	<th>Annot</th>
 	<th>5prime Capture Arm</th>
 	<th>3prime Capture Arm</th>
 	<th>Polarity</th>
   </tr>
 	
 <% for oligo_design in @oligo_designs %>
+  <%= hidden_field_tag("export_id[]", oligo_design.id)%>
   <tr>
-	<% if @version_id < 3 %><td><%=h oligo_design.id %></td><%end%>
 	<td><%= link_to oligo_design.oligo_name, oligo_design %></td>
-	<td><%=h oligo_design.chromosome_nr %></td>
+	<td style="text-align:center"><%=h oligo_design.chromosome_nr %></td>
 	<td><%=h oligo_design.amplicon_chr_start_pos %></td>
-	<td align=center><%=h oligo_design.amplicon_length %></td>
-	<td><%=h oligo_design.annotation_codes %></td>
-	<td><%=h oligo_design.other_annotations %></td>
+	<td><%=h oligo_design.amplicon_chr_end_pos %></td>
+	<td style="text-align:center"><%=h oligo_design.amplicon_length %></td>
 	<td width=220><%=h oligo_design.sel_5prime %></td>
 	<td width=220><%=h oligo_design.sel_3prime %></td>
 	<td align=center><%=h oligo_design.sel_polarity %></td>
-	<td width=10><%= hidden_field_tag("export_id[]", oligo_design.id)%>
   </tr>
 <% end %>
 <% end %>

@@ -18,10 +18,10 @@ class DesignQuery < NoTable
   column :chr_start_pos, :integer
   column :chr_end_pos,   :integer
   
-  validates_presence_of :chromosome_nr, :chr_start_pos, :chr_end_pos
-  validates_inclusion_of :chromosome_nr, :in => %w{1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X Y}
-  validates_numericality_of :chr_start_pos, :only_integer => true
-  validates_numericality_of :chr_end_pos, :only_integer => true
+  #validates_presence_of :chromosome_nr, chr_start_pos, chr_end_pos
+  validates_inclusion_of :chromosome_nr, :in => %w{1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X Y}, :message => "is blank or not a valid chromosome"
+  validates_numericality_of :chr_start_pos, :only_integer => true, :allow_nil => false, :message => "is blank or not an integer"
+  validates_numericality_of :chr_end_pos, :only_integer => true, :allow_nil => false, :message => "is blank or not an integer"
   validate :end_gt_start?, :if => Proc.new{|query| !query.chr_start_pos.blank? && !query.chr_end_pos.blank?}
   
   ALL_FLDS     = %w{chromosome_nr, chr_start_pos, chr_end_pos}

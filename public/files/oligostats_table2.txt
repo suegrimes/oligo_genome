@@ -1,9 +1,0 @@
-Parameter	Human OligoExome
-Total number of genes from CCDS	"17,049"
-Total number of ROI sequences	"157,624"
-Average ROIs per gene	9.25
-Total ROI bases derived from CCDS (Mb)	44.6
-Total number of designed capture oligonucleotides	"784,783"
-Number of captured ROI bases by design for all restriction enzymes	98.30%
-Average number of capture oligonucleotides per gene	46
-Average number of capture oligonucleotides per ROI	5

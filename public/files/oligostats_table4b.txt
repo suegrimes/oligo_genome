@@ -1,7 +1,0 @@
-Capture oligonucleotide enzymes	"BfaI, CviQI, MseI, Sau3AI"		"BfaI, CviQI, MseI"	
-Number of enzymes	4		3	
-Total ROI target of CCDS (Mb)	44.6		44.6	
-Filtering with all flags	No	Yes	No	Yes
-Percentage of total ROI target covered by 1 capture oligonucleotide	98.30%	94.20%	95.90%	91.10%
-Percentage of total ROI target with greater than 1 capture oligonucleotide	91.90%	83.90%	81.70%	72.20%
-Percentage of ROI target missed by exome design	1.70%	5.80%	4.10%	8.90%

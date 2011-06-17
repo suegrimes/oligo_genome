@@ -1,8 +1,0 @@
-Restriction enzyme	BfaI	CviQI	MseI	Sau3AI	Total per category
-Total designed capture oligonucleotides	"190,900"	"191,315"	"186,011"	"216,557"	"784,783"
-Oligonucleotides with no flag	"169,776"	"171,320"	"161,813"	"184,754"	"687,663"
-Oligonucleotides - whole genome (W-flag)	"20,992"	"19,882"	"24,021"	"31,670"	"96,565"
-Oligonucleotides - paralog (P-flag)	"4,915"	"4,983"	"4,854"	"6,179"	"20,931"
-Oligonucleotides - Alu (A-flag)	290	183	58	460	991
-Oligonucleotides - repeat sequence (R-flag) 	379	379	578	456	"1,792"
-Total flagged capture oligonucleotides per restriction enzyme (union of all flagged oligos)	"21,124"	"19,995"	"24,198"	"31,803"	"97,120"

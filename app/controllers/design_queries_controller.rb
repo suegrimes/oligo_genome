@@ -62,29 +62,7 @@ class DesignQueriesController < ApplicationController
     end
   end 
   
-  #*******************************************************************************************#
-  # Method for download of zip file of oligos for entire exonome                              #
-  #*******************************************************************************************#
-  def zip_download
-    add_one_to_counter('zip')
-    download_zip_file if request.post?
-  end
-
 private
-  #*******************************************************************************************#
-  # Increment download counter                                                                #
-  #*******************************************************************************************#
-  def add_one_to_counter(fld_type)
-    case fld_type
-      when 'export'
-        fld = 'export_cnt'
-      when 'zip' 
-        fld = 'zipdownload_cnt'
-    end
-
-    ExportCount.increment_counter(fld.to_sym, 1) if fld
-  end
-
   #*******************************************************************************************#
   # Export oligo designs to csv file                                                          #
   #*******************************************************************************************#
@@ -111,20 +89,6 @@ private
         end
     end
     return csv_string
-  end
-
-  #*******************************************************************************************#
-  # Download zip file                                                                         #
-  #*******************************************************************************************#
-  def download_zip_file(version_id=Version::DESIGN_VERSION.id)
-    filepath = File.join(RAILS_ROOT, "public", "oligo_genome_V#{version_id}.zip")
-
-    if FileTest.file?(filepath)
-      flash[:notice] = "Zip file successfully downloaded"
-      send_file(filepath, :disposition => "attachment")
-    else
-      flash[:notice] = "Error downloading zip file - file not found"
-    end
   end
 
 end

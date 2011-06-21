@@ -15,6 +15,7 @@ ActionController::Routing::Routes.draw do |map|
   # Help/FAQ
   map.faq_statistics  '/faq_statistics',  :controller => 'help', :action => 'statistics'
   map.faq_technology  '/faq_technology',  :controller => 'help', :action => 'technology'
+  map.faq_protocol    '/faq_protocol',    :controller => 'help', :action => 'protocol'
   
   # Oligo Designs
   map.resources :oligo_designs
@@ -24,8 +25,8 @@ ActionController::Routing::Routes.draw do |map|
   map.designquery 'designquery', :controller => 'design_queries', :action => 'new_query'
   map.export 'export',           :controller => 'design_queries', :action => 'export'
   
-  # Zip download (entire genome of designs)
-  map.zip_download 'zip_download',     :controller => 'design_queries', :action => 'zip_download'
+  # Downloads 
+  map.zip_download 'zip_download',     :controller => 'downloads', :action => 'index'
   
   # Error/not implemented
   map.notimplemented 'notimplemented', :controller => 'dummy',         :action => 'notimplemented'

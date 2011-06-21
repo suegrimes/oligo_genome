@@ -25,41 +25,28 @@ class ApplicationController < ActionController::Base
   # from your application log (in this case, all fields with names like "password"). 
   filter_parameter_logging :password
   
+  #*******************************************************************************************#
+  # Store user comment                                                                        #
+  #*******************************************************************************************#
   def store_comment(model_instance, params)
     comment = Comment.create(:user_id => current_user.id, 
                              :title => params[:title], 
                              :comment => params[:comment])
     model_instance.add_comment(comment) 
   end
-
-  def create_array_from_text_area(text, ret_type='text')
-    if text.blank? 
-      return []
-    else
-      param_list = (text.gsub(',', ' ')).split
-      param_list.pop if param_list.last =~ /^\s*$/
-    end  
-    
-    param_list.collect! { |value| value.to_i} if ret_type == 'integer'
-    return param_list
-  end
   
-  def wrap_long_string(text,max_width = 60)
-   (text.length < max_width) ?
-    text :
-    text.scan(/.{1,#{max_width}}/).join("<br>")
-  end
-  
-   def check_if_blank(model_object, model_text, param_type)
-    if model_object.nil? || model_object.empty?
-      error_found = true
-      flash[:notice] = "No #{model_text} found for #{param_type} entered - please try again"
-    else
-      error_found = false
+  #*******************************************************************************************#
+  # Increment download counter                                                                #
+  #*******************************************************************************************#
+  def add_one_to_counter(fld_type)
+    case fld_type
+      when 'export'
+        fld = 'export_cnt'
+      when 'zip' 
+        fld = 'zipdownload_cnt'
     end
-    
-    return error_found
+
+    ExportCount.increment_counter(fld.to_sym, 1) if fld
   end
-  
 
 end

@@ -1,0 +1,9 @@
+<h1>Download Zipped File</h1>
+
+<table class="list">
+<% @chromosomes.each do |chromosome| %>
+  <tr><td><%= link_to "Chromosome #{chromosome}", :action => :download_zip_file, :zip_file => ['chromosome', chromosome].join('_') %></td></tr>
+<% end %>
+</table>
+
+<%= link_to 'Back', :back %>

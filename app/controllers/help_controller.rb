@@ -9,7 +9,7 @@ class HelpController < ApplicationController
     @table1 = read_table(File.join(FILE_PATH, "Selector_Stats_06072011.txt"))
   end
   
-  def annotations 
+  def protocol 
   end
 
 protected

@@ -9,15 +9,19 @@ class DownloadsController < ApplicationController
   #*******************************************************************************************#
   # Download zip file                                                                         #
   #*******************************************************************************************#
-  def download_zip_file
-    filepath = File.join(FILE_PATH, params[:zip_file] + '.zip')
+  def zip_save
+    params[:chr_num] ||= 1
+    #file_name = 'oligo_design_v18_inf_flank_c_1000_24KmerMask_thresh1.0.chr1.reformatted.txt.gz'
+    #file_name.gsub!(/@/, params[:chr_num].to_s)
+    file_name = 'Selector_Stats_06072011.txt'
+    filepath = File.join(FILE_PATH, file_name)
 
     if FileTest.file?(filepath)
-      flash[:notice] = "Zip file successfully downloaded"
-      send_file(filepath, :disposition => "attachment")
+      flash[:notice] = "Zip file #{filepath} successfully downloaded"
+      #send_file(filepath, :disposition => "attachment")
       redirect_to :action => :index
     else
-      #flash[:notice] = "Error downloading zip file for " + params[:zip_file] + " - file not found"
+      #flash[:notice] = "Error downloading zip file for " + params[:chr_num] + " - file not found"
       flash[:notice] = "Error downloading zip file for " + filepath + " - file not found"
       redirect_to :action => :index
     end

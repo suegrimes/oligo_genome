@@ -1,6 +1,6 @@
 <h1>Query Capture Sequences</h1>
 
-<% form_for(@design_query, :action => 'index') do |f| %>
+<% upload_form_for(@design_query, :action => 'index') do |f| %>
 <%= f.error_messages(:header_message => "Error(s) in query parameters") %>
 
 <fieldset class="form">
@@ -18,6 +18,20 @@
   </tr>
 </table>
 </fieldset>
+<%= break_clear %>
+<p>-OR-</p>
+
+<fieldset class="form">
+<legend>Upload BED format file</legend>
+<% fields_for BedFile.new do |b|%>
+<table class="form">
+  <tr>
+	<td><%= b.upload_column_field :filenm, :size=>55%> </td>
+  </tr>
+</table>
+<% end %>
+</fieldset>
+
 <%= break_clear(f.submit 'Submit')%>
 <% end %>
   

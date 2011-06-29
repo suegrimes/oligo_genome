@@ -10,14 +10,21 @@ class DesignQueriesController < ApplicationController
   # Method for listing oligo designs, based on parameters entered above                       #
   #*******************************************************************************************#
   def index
-    @design_query = DesignQuery.new(params[:design_query])
+    if !params[:bed_file][:filenm].blank?
+      @bed_file = BedFile.new(params[:bed_file])
+      if @bed_file.valid?
+        @bed_file.save
+        @oligo_designs = build_query_from_file(@bed_file.id, params[:bed_file])
+      end
+      
+    else
+      @design_query = DesignQuery.new(params[:design_query])   
+      if @design_query.valid?
+        @oligo_designs = build_query_from_coords(params[:design_query])
+      end
+    end
     
-    if @design_query.valid?
-       @oligo_designs = OligoDesign.find(:all, 
-                                         :conditions => ['chromosome_nr = ? AND (amplicon_chr_start_pos BETWEEN ? AND ? OR amplicon_chr_end_pos BETWEEN ? AND ?)',
-                                                         params[:design_query][:chromosome_nr], 
-                                                         params[:design_query][:chr_start_pos], params[:design_query][:chr_end_pos],
-                                                         params[:design_query][:chr_start_pos], params[:design_query][:chr_end_pos]])                                      
+    if (@bed_file && @bed_file.valid?) || (@design_query && @design_query.valid?)
       render :action => :index
     else
       render :action => :new_query
@@ -89,6 +96,40 @@ private
         end
     end
     return csv_string
+  end
+  
+  def build_query_from_coords(params)
+    OligoDesign.find(:all, :conditions => ['chromosome_nr = ? AND (amplicon_chr_start_pos BETWEEN ? AND ? OR amplicon_chr_end_pos BETWEEN ? AND ?)',
+                                           params[:chromosome_nr], 
+                                           params[:chr_start_pos], params[:chr_end_pos],
+                                           params[:chr_start_pos], params[:chr_end_pos]]) 
+  end
+  
+  def build_query_from_file(id, params)
+    @bed_file = BedFile.find(id)
+    @bfn      = @bed_file.filenm.to_s.split('/')[-1]
+    @bfp      = File.join(FULL_PATH_TO_FILES, @bfn)
+    @bed_lines = []
+    FasterCSV.foreach(@bfp, {:headers => false, :col_sep => "\t", :force_quotes => false, :quote_char => "'"}) do |row|
+      @bed_lines.push(row) unless row[0].include?('track')
+    end
+    
+    condition_array = build_where_clause(@bed_lines)
+    OligoDesign.find(:all, :conditions => condition_array)
+  end
+  
+  def build_where_clause(bed_lines)
+    flds_for_where = []
+    values_for_where = []
+    
+    bed_lines.each do |bed_line|
+      chromosome = bed_line[0].gsub(/chr/,'') # Strip off 'chr'
+      start_position = bed_line[1]
+      end_position = bed_line[2]
+      flds_for_where.push('(chromosome_nr = ? AND (amplicon_chr_start_pos BETWEEN ? AND ? OR amplicon_chr_end_pos BETWEEN ? AND ?))')
+      values_for_where.push(chromosome, start_position, end_position, start_position, end_position)
+    end
+    return [flds_for_where.join(' OR ')].concat(values_for_where)
   end
 
 end

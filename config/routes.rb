@@ -26,8 +26,8 @@ ActionController::Routing::Routes.draw do |map|
   map.export 'export',           :controller => 'design_queries', :action => 'export'
   
   # Downloads 
-  map.zip_list   'zip_list',     :controller => 'downloads', :action => 'index'
-  map.zip_save   'zip_save',     :controller => 'downloads', :action => 'zip_save'
+  map.zip_list     'zip_list',     :controller => 'downloads', :action => 'index'
+  map.zip_download 'zip_download', :controller => 'downloads', :action => 'zip_download'
   
   # Error/not implemented
   map.notimplemented 'notimplemented', :controller => 'dummy',         :action => 'notimplemented'

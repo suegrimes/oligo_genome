@@ -1,1 +1,2 @@
+0.1(beta)	7/5/2011	Beta version (remove login requirement, add zip files for download, remove commenting capability)
 0.0(alpha)	5/24/2011	Initial alpha version 

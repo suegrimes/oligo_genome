@@ -1,0 +1,6 @@
+# Lines beginning with # are comment lines and are ignored
+# All other lines must follow BED format
+chr1  10520283  10520490  uc.1
+chr1  10655129  10655336  uc.2
+chr1  10673751  10673976  uc.3
+chr1  10680835  10681194  uc.4

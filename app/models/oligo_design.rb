@@ -22,9 +22,7 @@
 #  updated_at             :datetime
 #
 
-class OligoDesign < ActiveRecord::Base
-  acts_as_commentable
- 
+class OligoDesign < ActiveRecord::Base 
   has_one  :oligo_annotation, :foreign_key => :oligo_design_id
   
   validates_uniqueness_of :oligo_name,
@@ -51,36 +49,9 @@ class OligoDesign < ActiveRecord::Base
   end
   
   #****************************************************************************************#
-  #  Class find methods   - Oligos                                                         #
+  #  Class find methods                                                                    #
   #****************************************************************************************#
-  
-#  def self.find_using_oligo_name_id(oligo_name)
-#    # Use id or gene_code index to speed retrieval.
-#    # Note: curr_oligo_format?, and get_gene_from_name are in OligoExtensions module
-#    
-#    if curr_oligo_format?(oligo_name)                            
-#      # oligo name in current format, => use id as index
-#      oligo_array  = oligo_name.split(/_/)
-#      oligo_design = self.find_by_oligo_name_and_id(oligo_name, oligo_array[0])
-#    else
-#      # oligo name in old format => cannot use id, use gene code instead
-#      #gene_code    = self.get_gene_from_name(oligo_name, false)
-#      gene_code    = get_gene_from_oligo_name(oligo_name, false) 
-#      oligo_design = self.find_by_oligo_name_and_gene_code(oligo_name, gene_code)
-#    end
-#    
-#    return oligo_design
-#  end
-#  
-#  def self.find_selectors_with_conditions(condition_array, version_id=Version::DESIGN_VERSION_ID)
-#    condition_array[0] += ' AND version_id = ?'
-#    condition_array.push(version_id)
-#    
-#    self.qcpassed.find(:all,
-#                       :order => 'gene_code, enzyme_code',                               
-#                       :conditions => condition_array) 
-#  end
-#  
+   
   def self.find_with_id_list(id_list)
     self.find(:all, :include => :oligo_annotation,
                     :order => 'chromosome_nr, amplicon_chr_start_pos',

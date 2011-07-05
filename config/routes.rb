@@ -28,7 +28,7 @@ ActionController::Routing::Routes.draw do |map|
   # Downloads 
   map.zip_list     'zip_list',     :controller => 'downloads', :action => 'index'
   map.zip_download 'zip_download', :controller => 'downloads', :action => 'zip_download'
-  
+
   # Error/not implemented
   map.notimplemented 'notimplemented', :controller => 'dummy',         :action => 'notimplemented'
   

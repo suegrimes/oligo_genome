@@ -14,7 +14,7 @@ class DesignQueriesController < ApplicationController
       @bed_file = BedFile.new(params[:bed_file])
       if @bed_file.valid?
         @bed_file.save
-        @oligo_designs = build_query_from_file(@bed_file.id, params[:bed_file])
+        @oligo_designs = build_query_from_file(@bed_file.id)
       end
       
     else
@@ -99,19 +99,19 @@ private
   end
   
   def build_query_from_coords(params)
-    OligoDesign.find(:all, :conditions => ['chromosome_nr = ? AND (amplicon_chr_start_pos BETWEEN ? AND ? OR amplicon_chr_end_pos BETWEEN ? AND ?)',
+    OligoDesign.find(:all, :conditions => ['chromosome_nr = ? AND 
+                                           (amplicon_chr_start_pos <= ? AND amplicon_chr_end_pos >= ?)',
                                            params[:chromosome_nr], 
-                                           params[:chr_start_pos], params[:chr_end_pos],
-                                           params[:chr_start_pos], params[:chr_end_pos]]) 
+                                           params[:chr_end_pos], params[:chr_start_pos]]) 
   end
   
-  def build_query_from_file(id, params)
+  def build_query_from_file(id)
     @bed_file = BedFile.find(id)
     @bfn      = @bed_file.filenm.to_s.split('/')[-1]
-    @bfp      = File.join(FULL_PATH_TO_FILES, @bfn)
+    @bfp      = File.join(BED_ABS_PATH, @bfn)
     @bed_lines = []
     FasterCSV.foreach(@bfp, {:headers => false, :col_sep => "\t", :force_quotes => false, :quote_char => "'"}) do |row|
-      @bed_lines.push(row) unless row[0].include?('track')
+      @bed_lines.push(row) unless !row[0].include?('chr')
     end
     
     condition_array = build_where_clause(@bed_lines)
@@ -126,8 +126,8 @@ private
       chromosome = bed_line[0].gsub(/chr/,'') # Strip off 'chr'
       start_position = bed_line[1]
       end_position = bed_line[2]
-      flds_for_where.push('(chromosome_nr = ? AND (amplicon_chr_start_pos BETWEEN ? AND ? OR amplicon_chr_end_pos BETWEEN ? AND ?))')
-      values_for_where.push(chromosome, start_position, end_position, start_position, end_position)
+      flds_for_where.push('(chromosome_nr = ? AND (amplicon_chr_start_pos <= ? AND amplicon_chr_end_pos >= ?))')
+      values_for_where.push(chromosome, end_position, start_position)
     end
     return [flds_for_where.join(' OR ')].concat(values_for_where)
   end

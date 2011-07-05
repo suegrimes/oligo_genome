@@ -26,7 +26,6 @@
 		</script>
     </head>
 <body id='body'>
-    <% user_roles = (logged_in? ? current_user.roles.collect(&:name) : nil) %>
     
 <div id="container" style="width: 98%;">
     
@@ -39,14 +38,6 @@
     </tr>
     <tr>
       <td><div class="tagline">Ji Research Group - Stanford Genome Technology Center</div></td>      
-      <td valign="bottom">
-        <% if logged_in? %>
-        <div class="logout-link">
-          <!-- <%= link_to 'User Profile', edit_user_path(current_user) %>&nbsp;&nbsp;&nbsp;&nbsp; -->
-          <%= link_to 'Logout', logout_url %>
-        </div>
-        <% end %>
-      </td>   
     </tr>
   </table>  
 </div><!-- /header -->
@@ -103,11 +94,6 @@
 <div id="main">
 
 <div id="leftsidebar">
-  <% if logged_in? %> 
-  <div class="user_info">
-     <em>Logged in as: <%= current_user.login %></em>
-  </div>
-  <% end %>
   <ul class="opened">
     <li><%= link_to 'Home', {:controller=>'oligo_designs', :action=>'welcome'} %></li>                   
     <li><%= link_to 'Query Capture Seqs',  designquery_url %></li>

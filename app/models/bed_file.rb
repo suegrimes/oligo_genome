@@ -4,7 +4,7 @@
 #
 
 class BedFile < ActiveRecord::Base
-  # default directory for upload_column is RAILS_ROOT/public => go up additional directory from default
+  # default directory for upload_column is RAILS_ROOT/public 
   upload_column :filenm,   :store_dir => 'bed_files',
                            :extensions => %w(bed txt)
                               

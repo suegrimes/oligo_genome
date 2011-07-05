@@ -111,7 +111,7 @@ private
     @bfp      = File.join(BED_ABS_PATH, @bfn)
     @bed_lines = []
     FasterCSV.foreach(@bfp, {:headers => false, :col_sep => "\t", :force_quotes => false, :quote_char => "'"}) do |row|
-      @bed_lines.push(row) unless !row[0].include?('chr')
+      @bed_lines.push(row) unless (row[0].include?('track') or row[0][0,1] == '#')
     end
     
     condition_array = build_where_clause(@bed_lines)
@@ -123,7 +123,7 @@ private
     values_for_where = []
     
     bed_lines.each do |bed_line|
-      chromosome = bed_line[0].gsub(/chr/,'') # Strip off 'chr'
+      chromosome = bed_line[0].gsub(/chr/,'') # Strip off 'chr' if exists
       start_position = bed_line[1]
       end_position = bed_line[2]
       flds_for_where.push('(chromosome_nr = ? AND (amplicon_chr_start_pos <= ? AND amplicon_chr_end_pos >= ?))')

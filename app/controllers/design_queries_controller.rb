@@ -14,10 +14,9 @@ class DesignQueriesController < ApplicationController
     
     if @design_query.valid?
        @oligo_designs = OligoDesign.find(:all, 
-                                         :conditions => ['chromosome_nr = ? AND (amplicon_chr_start_pos BETWEEN ? AND ? OR amplicon_chr_end_pos BETWEEN ? AND ?)',
+                                         :conditions => ['chromosome_nr = ? AND (amplicon_chr_start_pos <= ? AND amplicon_chr_end_pos >= ?)',
                                                          params[:design_query][:chromosome_nr], 
-                                                         params[:design_query][:chr_start_pos], params[:design_query][:chr_end_pos],
-                                                         params[:design_query][:chr_start_pos], params[:design_query][:chr_end_pos]])                                      
+                                                         params[:design_query][:chr_end_pos], params[:design_query][:chr_start_pos]])                                      
       render :action => :index
     else
       render :action => :new_query

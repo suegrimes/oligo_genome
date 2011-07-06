@@ -109,10 +109,21 @@ private
     @bed_file = BedFile.find(id)
     @bfn      = @bed_file.filenm.to_s.split('/')[-1]
     @bfp      = File.join(BED_ABS_PATH, @bfn)
+    #@bfp      = File.join(RAILS_ROOT, "public", @bfn)  # For testing of file doesn't exist
     @bed_lines = []
-    FasterCSV.foreach(@bfp, {:headers => false, :col_sep => "\t", :force_quotes => false, :quote_char => "'"}) do |row|
-      @bed_lines.push(row) unless (row[0].include?('track') or row[0][0,1] == '#')
-    end
+    
+#    Validate that file exists before trying to read it?  (file comes from browse, so should always exist?)
+
+#    FasterCSV.foreach(@bfp, {:headers => false, :col_sep => "\t", :force_quotes => false, :quote_char => "'"}) do |row|
+#      @bed_lines.push(row) unless (row[0].include?('track') or row[0][0,1] == '#')
+#    end
+
+#   Use Ruby IO.foreach instead of FasterCSV to avoid possible issues with single or double quotes on track description lines
+#   Remove comment and track description lines before pushing to @bed_lines array
+    IO.foreach(@bfp) {|row| @bed_lines.push(row.chomp.split("\t")) unless (row[0,1] == '#' || row[0,5] == 'track')}
+    
+#   Do some validation here to ensure that there are not too many lines in the file,(and that the file is in bed format?)
+#   100 lines max?  Performance seems ok for 100 coordinates for a single chromosome, try higher limit, or multiple chromosomes?
     
     condition_array = build_where_clause(@bed_lines)
     OligoDesign.find(:all, :conditions => condition_array)

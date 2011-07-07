@@ -1,7 +1,7 @@
 <% form_tag :action => "export_design" do %>
 
 <p>
-<% if @oligo_designs.size > 0 %>
+<% if @oligo_designs && @oligo_designs.size > 0 %>
   <b>To export all details for these <%=h @oligo_designs.size %> oligos, please click here: <%= submit_tag "Export Oligos" -%></b> 
 <% else %>
   No oligos match the criteria given, please try your search again
@@ -19,7 +19,8 @@
 	<th>3prime Capture Arm</th>
 	<th>Polarity</th>
   </tr>
-	
+
+<% if @oligo_designs && @oligo_designs.size > 0 %>	
 <% for oligo_design in @oligo_designs %>
   <%= hidden_field_tag("export_id[]", oligo_design.id)%>
   <tr>
@@ -32,6 +33,7 @@
 	<td width=220><%=h oligo_design.sel_3prime %></td>
 	<td align=center><%=h oligo_design.sel_polarity %></td>
   </tr>
+<% end %>
 <% end %>
 <% end %>
 </table>

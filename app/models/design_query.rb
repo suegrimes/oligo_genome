@@ -43,5 +43,8 @@ private
     unless chr_end_pos > chr_start_pos
       errors.add(:chr_end_pos, "must be greater than start position")
     end
+    unless (chr_end_pos - chr_start_pos) < 100000
+      errors.add(:chr_end_pos, "must be within 100k of start position")
+    end
   end
 end

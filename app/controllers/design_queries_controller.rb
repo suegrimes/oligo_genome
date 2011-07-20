@@ -14,21 +14,24 @@ class DesignQueriesController < ApplicationController
       @bed_file = BedFile.new(params[:bed_file])
       if @bed_file.valid?
         @bed_file.save
-        @oligo_designs = build_query_from_file(@bed_file.id)
+        rc, @oligo_designs = build_query_from_file(@bed_file.id)
+        if rc >= 0
+          render :action => :index
+        else
+          redirect_to :action => :new_query
+        end
       end
       
     else
       @design_query = DesignQuery.new(params[:design_query])   
       if @design_query.valid?
         @oligo_designs = build_query_from_coords(params[:design_query])
+        render :action => :index
+      else
+        render :action => :new_query
       end
     end
     
-    if (@bed_file && @bed_file.valid?) || (@design_query && @design_query.valid?)
-      render :action => :index
-    else
-      render :action => :new_query
-    end
   end
 
   def export_design
@@ -99,62 +102,76 @@ private
   end
   
   def build_query_from_coords(params)
-    OligoDesign.find(:all, :conditions => ['chromosome_nr = ? AND 
+    oligo_designs = OligoDesign.find(:all, :conditions => ['chromosome_nr = ? AND 
                                            (amplicon_chr_start_pos <= ? AND amplicon_chr_end_pos >= ?)',
                                            params[:chromosome_nr], 
                                            params[:chr_end_pos], params[:chr_start_pos]]) 
+    return oligo_designs
   end
   
   def build_query_from_file(id)
-    @bed_file = BedFile.find(id)
-    @bfn      = @bed_file.filenm.to_s.split('/')[-1]
-    @bfp      = File.join(BED_ABS_PATH, @bfn)
-    #@bfp      = File.join(RAILS_ROOT, "public", @bfn)  # For testing of file doesn't exist
-    @bed_lines = []
+    rc, @bed_lines = read_and_validate_bedfile(id)
+    condition_array = build_where_clause(@bed_lines)  if rc == 0 
     
-#    Validate that file exists before trying to read it?  (file comes from browse, so should always exist?)
-
-#    FasterCSV.foreach(@bfp, {:headers => false, :col_sep => "\t", :force_quotes => false, :quote_char => "'"}) do |row|
-#      @bed_lines.push(row) unless (row[0].include?('track') or row[0][0,1] == '#')
-#    end
-
-#   Use Ruby IO.foreach instead of FasterCSV to avoid possible issues with single or double quotes on track description lines
-#   Remove comment and track description lines before pushing to @bed_lines array
-    IO.foreach(@bfp) {|row| @bed_lines.push(row.chomp.split("\t")) unless (row[0,1] == '#' || row[0,5] == 'track')}
-    
-#   Do some validation here to ensure that there are not too many lines in the file,(and that the file lines are in bed format)
-#   100 lines max?  Performance seems ok for 100 coordinates for a single chromosome, try higher limit, or multiple chromosomes?
-    if @bed_lines.size < 101
-      condition_array = build_where_clause(@bed_lines)
-      if condition_array && condition_array.size > 0
-        oligo_designs = OligoDesign.find(:all, :conditions => condition_array)
-      else
-        flash.now[:error] = 'ERROR: No valid bed format lines found in file'
-      end
-    else
-      flash.now[:error] = 'ERROR: Too many lines in bed file - please limit to 100 lines'
+    if condition_array && condition_array.size > 0
+      oligo_designs = OligoDesign.find(:all, :conditions => condition_array)
     end
     
-    return oligo_designs  # nil if oligo_designs not created
+    return rc, oligo_designs  # nil if oligo_designs not created
   end
   
-  def build_where_clause(bed_lines)
-    bad_lines = 0
-    flds_for_where = []
-    values_for_where = []
+  def read_and_validate_bedfile(id)
+    bad_lines = 0; nr_bases = 0;
+    bed_file = BedFile.find(id)
+    bfn      = bed_file.filenm.to_s.split('/')[-1]
+    bfp      = File.join(BED_ABS_PATH, bfn)
+    #bfp      = File.join(RAILS_ROOT, "public", bfn)  # For testing of file doesn't exist
+    raw_lines = []; bed_lines = [];
     
-    bed_lines.each do |bed_line|
-      bed_line[0].gsub!(/chr/,'') # Strip off 'chr' if exists
-      if BedFile.bed_line_valid?(bed_line)
-        flds_for_where.push('(chromosome_nr = ? AND (amplicon_chr_start_pos <= ? AND amplicon_chr_end_pos >= ?))')
-        values_for_where.push(bed_line[0], bed_line[2], bed_line[1])
+    #  Use Ruby IO.foreach instead of FasterCSV to avoid possible issues with single or double quotes on track description lines
+    #  Remove comment and track description lines before pushing to @bed_lines array
+    IO.foreach(bfp) {|row| raw_lines.push(row.chomp.split("\t")) unless (row[0,1] == '#' || row[0,5] == 'track')}
+    
+    #   Do some validation here to ensure that there are not too many lines in the file,(and that the file lines are in bed format)
+    #   100 lines max?  Performance seems ok for 100 coordinates for a single chromosome, try higher limit, or multiple chromosomes?
+    raw_lines.each do |raw_line|
+      raw_line[0].gsub!(/chr/,'') # Strip off 'chr' if exists
+      if BedFile.bed_line_valid?(raw_line)
+        nr_bases += raw_line[2].to_i - raw_line[1].to_i
+        bed_lines.push(raw_line)
       else
         bad_lines += 1
       end
     end
     
-    if bad_lines > 0 && bad_lines < bed_lines.size
-      flash.now[:notice] = 'WARNING: ' + bad_lines.to_s + ' invalid bed format lines found in file and ignored'
+    if bad_lines > 0 
+      if bad_lines < bed_lines.size
+        rc = 0
+        flash.now[:notice] = 'WARNING: ' + bad_lines.to_s + ' invalid bed format lines found in file and ignored'
+      else
+        rc = -1
+        flash[:error] = 'ERROR: No valid bed format lines found in file: ' + bfn
+      end
+    end
+    
+    if nr_bases > 100000
+      rc = -2
+      flash[:error] = 'ERROR: Genomic space of ' + nr_bases.to_s + ' is too large - please limit to 100k'
+    elsif bed_lines.size > 100
+      rc = -3
+      flash[:error] = 'ERROR: Too many lines in file - please limit to 100 lines'
+    end
+    
+    return rc, bed_lines
+  end
+  
+  def build_where_clause(bed_lines)
+    flds_for_where = []
+    values_for_where = []
+    
+    bed_lines.each do |bed_line|
+      flds_for_where.push('(chromosome_nr = ? AND (amplicon_chr_start_pos <= ? AND amplicon_chr_end_pos >= ?))')
+      values_for_where.push(bed_line[0], bed_line[2], bed_line[1])
     end
     
     if flds_for_where.size > 0 && values_for_where.size > 0

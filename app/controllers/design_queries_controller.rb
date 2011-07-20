@@ -122,25 +122,46 @@ private
 #   Remove comment and track description lines before pushing to @bed_lines array
     IO.foreach(@bfp) {|row| @bed_lines.push(row.chomp.split("\t")) unless (row[0,1] == '#' || row[0,5] == 'track')}
     
-#   Do some validation here to ensure that there are not too many lines in the file,(and that the file is in bed format?)
+#   Do some validation here to ensure that there are not too many lines in the file,(and that the file lines are in bed format)
 #   100 lines max?  Performance seems ok for 100 coordinates for a single chromosome, try higher limit, or multiple chromosomes?
+    if @bed_lines.size < 101
+      condition_array = build_where_clause(@bed_lines)
+      if condition_array && condition_array.size > 0
+        oligo_designs = OligoDesign.find(:all, :conditions => condition_array)
+      else
+        flash.now[:error] = 'ERROR: No valid bed format lines found in file'
+      end
+    else
+      flash.now[:error] = 'ERROR: Too many lines in bed file - please limit to 100 lines'
+    end
     
-    condition_array = build_where_clause(@bed_lines)
-    OligoDesign.find(:all, :conditions => condition_array)
+    return oligo_designs  # nil if oligo_designs not created
   end
   
   def build_where_clause(bed_lines)
+    bad_lines = 0
     flds_for_where = []
     values_for_where = []
     
     bed_lines.each do |bed_line|
-      chromosome = bed_line[0].gsub(/chr/,'') # Strip off 'chr' if exists
-      start_position = bed_line[1]
-      end_position = bed_line[2]
-      flds_for_where.push('(chromosome_nr = ? AND (amplicon_chr_start_pos <= ? AND amplicon_chr_end_pos >= ?))')
-      values_for_where.push(chromosome, end_position, start_position)
+      bed_line[0].gsub!(/chr/,'') # Strip off 'chr' if exists
+      if BedFile.bed_line_valid?(bed_line)
+        flds_for_where.push('(chromosome_nr = ? AND (amplicon_chr_start_pos <= ? AND amplicon_chr_end_pos >= ?))')
+        values_for_where.push(bed_line[0], bed_line[2], bed_line[1])
+      else
+        bad_lines += 1
+      end
     end
-    return [flds_for_where.join(' OR ')].concat(values_for_where)
+    
+    if bad_lines > 0 && bad_lines < bed_lines.size
+      flash.now[:notice] = 'WARNING: ' + bad_lines.to_s + ' invalid bed format lines found in file and ignored'
+    end
+    
+    if flds_for_where.size > 0 && values_for_where.size > 0
+      return [flds_for_where.join(' OR ')].concat(values_for_where)
+    else
+      return []
+    end
   end
-
+  
 end

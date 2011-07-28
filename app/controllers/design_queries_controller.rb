@@ -121,7 +121,7 @@ private
   end
   
   def read_and_validate_bedfile(id)
-    bad_lines = 0; nr_bases = 0;
+    bad_lines = 0; nr_bases = 0; rc = 0;
     bed_file = BedFile.find(id)
     bfn      = bed_file.filenm.to_s.split('/')[-1]
     bfp      = File.join(BED_ABS_PATH, bfn)
@@ -154,12 +154,12 @@ private
       end
     end
     
-    if nr_bases > 100000
+    if nr_bases > DesignQuery::MAX_BASES
       rc = -2
-      flash[:error] = 'ERROR: Genomic space of ' + nr_bases.to_s + ' is too large - please limit to 100k'
-    elsif bed_lines.size > 100
+      flash[:error] = 'ERROR: Genomic space of ' + nr_bases.to_s + ' is too large - please limit to ' + DesignQuery::MAX_BASES
+    elsif bed_lines.size > DesignQuery::MAX_BED_LINES
       rc = -3
-      flash[:error] = 'ERROR: Too many lines in file - please limit to 100 lines'
+      flash[:error] = "ERROR: Too many lines in file - please limit to #{DesignQuery::MAX_BED_LINES} lines"
     end
     
     return rc, bed_lines

@@ -29,6 +29,9 @@ class DesignQuery < NoTable
   
   ALL_FLDS     = %w{chromosome_nr, chr_start_pos, chr_end_pos}
   
+  MAX_BED_LINES = 500
+  MAX_BASES = 1000000
+  
 private
   def chr_coord
     unless !chromosome_nr.blank?
@@ -43,8 +46,8 @@ private
     unless chr_end_pos > chr_start_pos
       errors.add(:chr_end_pos, "must be greater than start position")
     end
-    unless (chr_end_pos - chr_start_pos) < 100000
-      errors.add(:chr_end_pos, "must be within 100k of start position")
+    unless (chr_end_pos - chr_start_pos) < MAX_BASES
+      errors.add(:chr_end_pos, "must be within #{MAX_BASES} of start position")
     end
   end
 end

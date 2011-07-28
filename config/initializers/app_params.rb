@@ -3,5 +3,7 @@ META_TAGS = {:description => "Stanford Human OligoGenome comprises capture oligo
                             cancer, cancer research, resequencing, dna sequencing, capture sequence, primer"]}
 
 CAPISTRANO_DEPLOY = RAILS_ROOT.include?('releases')
-FILES_ROOT = (CAPISTRANO_DEPLOY == true ? File.join(RAILS_ROOT, "..", "..", "shared", "files") :
-                                          File.join(RAILS_ROOT, "public", "files"))
+ZIP_REL_PATH = (CAPISTRANO_DEPLOY ? File.join("..", "..", "shared", "files") : File.join("..", "OligoFiles", "oligo_genome"))
+ZIP_ABS_PATH = File.join(RAILS_ROOT, ZIP_REL_PATH)
+
+BED_ABS_PATH = File.join(RAILS_ROOT, "public", "bed_files")

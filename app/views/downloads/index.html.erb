@@ -2,7 +2,7 @@
 
 <table class="list">
 <% @chromosomes.each do |chromosome| %>
-  <tr><td><%= link_to "Chromosome #{chromosome}", zip_save_path(:chr_num => chromosome) %></td></tr>
+  <tr><td><%= link_to "Chromosome #{chromosome}", zip_download_path(:chr_num => chromosome) %></td></tr>
 <% end %>
 </table>
 

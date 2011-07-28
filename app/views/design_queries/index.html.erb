@@ -2,7 +2,9 @@
 
 <p>
 <% if @oligo_designs && @oligo_designs.size > 0 %>
-  <b>To export all details for these <%=h @oligo_designs.size %> oligos, please click here: <%= submit_tag "Export Oligos" -%></b> 
+  <b>To view or download these oligos, click below: </b><br />
+  <%= submit_tag "Export Oligos" -%> <span class="notes">download to file,</span> 
+  <%= submit_tag "View in Bed Format" -%> <span class="notes">cut & paste in UCSC Genome Browser</span>
 <% else %>
   No oligos match the criteria given, please try your search again
 <% end %>

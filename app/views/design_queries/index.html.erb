@@ -1,12 +1,14 @@
 <% form_tag :action => "export_design" do %>
 
-<p>
+<table>
 <% if @oligo_designs && @oligo_designs.size > 0 %>
-  <b>To export all details for these <%=h @oligo_designs.size %> oligos, please click here: <%= submit_tag "Export Oligos" -%></b> 
+  <tr><th colspan="2">To view or download these <%=h @oligo_designs.size %> oligos click below:</th></tr>
+  <tr><td><%= submit_tag "Export Oligos" -%></td><td><%= submit_tag "View Bed File" -%></td></tr>
+  <tr><td class="notes">download to text file </td><td class="notes">for import to external sites/tools</td></tr>
 <% else %>
-  No oligos match the criteria given, please try your search again
+  <tr><td colspan="2">No oligos match the criteria given, please try your search again</td></tr>
 <% end %>
-</p>
+</table>
 
 <table class="list">
   <tr>

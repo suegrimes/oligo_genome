@@ -37,12 +37,17 @@ class DesignQueriesController < ApplicationController
   def export_design
     add_one_to_counter('export')
 #
-    export_type = 'T1'
+    export_type = (params[:commit] == 'Export Oligos'? 'T1' : 'B1')
     design_ids = params[:export_id]
     @oligo_designs = OligoDesign.find_with_id_list(design_ids)
     file_basename  = "oligodesigns_" + Date.today.to_s
 
     case export_type
+      when 'B1'
+        @filename = file_basename + ".bed"
+        write_bed_file(@filename, @oligo_designs)
+        send_file(@filename)
+      
       when 'T1'  # Export to tab-delimited text using csv_string
         @filename = file_basename + ".txt"
         csv_string = export_designs_csv(@oligo_designs)
@@ -73,6 +78,15 @@ class DesignQueriesController < ApplicationController
   end 
   
 private
+  def write_bed_file(filename, oligo_designs)
+    FasterCSV.open(filename, "w", {:col_sep => "\t", :quote_char => "'", :force_quotes => false}) do |csv|
+      csv << ['track name="OligoGenome" description="Oligos from Stanford OligoGenome resource" visibility=2 color=0,128,0']
+      oligo_designs.each do |oligo|
+        csv << ['chr' + oligo.chromosome_nr, oligo.amplicon_chr_start_pos, oligo.amplicon_chr_end_pos, oligo.oligo_name]
+      end
+    end
+  end
+  
   #*******************************************************************************************#
   # Export oligo designs to csv file                                                          #
   #*******************************************************************************************#

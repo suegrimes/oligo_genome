@@ -6,8 +6,8 @@ class HelpController < ApplicationController
   end
 
   def statistics
-    #@table1 = read_table(File.join(FILE_PATH, "selector_stats_06072011.txt"))
-    send_file(File.join(FILE_PATH, "selector_stats_06072011.txt"))
+    #@table1 = read_table(File.join(FILE_PATH, "Selector_Stats_06072011.txt"))
+    send_file(File.join(FILE_PATH, "Selector_Stats_06072011.txt"))
   end
   
   def protocol 

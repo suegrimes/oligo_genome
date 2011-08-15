@@ -53,6 +53,11 @@ class OligoDesign < ActiveRecord::Base
   #  Class find methods                                                                    #
   #****************************************************************************************#
    
+  def self.find_for_query(condition_array=nil)
+    self.find(:all, :order => 'chromosome_nr, amplicon_chr_start_pos',
+                    :conditions => condition_array)
+  end
+  
   def self.find_with_id_list(id_list)
     self.find(:all, :include => :oligo_annotation,
                     :order => 'chromosome_nr, amplicon_chr_start_pos',

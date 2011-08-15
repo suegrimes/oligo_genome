@@ -78,6 +78,15 @@ class DesignQueriesController < ApplicationController
   end 
   
 private
+  def write_bed_file(filename, oligo_designs)
+    FasterCSV.open(filename, "w", {:col_sep => "\t", :quote_char => "'", :force_quotes => false}) do |csv|
+      csv << ['track name="OligoGenome" description="Oligos from Stanford OligoGenome resource" visibility=2 color=0,128,0']
+      oligo_designs.each do |oligo|
+        csv << ['chr' + oligo.chromosome_nr, oligo.amplicon_chr_start_pos, oligo.amplicon_chr_end_pos, oligo.oligo_name]
+      end
+    end
+  end
+  
   #*******************************************************************************************#
   # Write .bed format file                                                                    #
   #*******************************************************************************************#

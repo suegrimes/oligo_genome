@@ -1,8 +1,35 @@
 <h1>OligoGenome Statistics</h1>
 
-<%= render :partial => 'stats_table', :locals => {:stats_table => @table1} %>
+Whole Genome <i>In Silico</i> Coverage <br/>
+<table class="list">
+<tr><th>Restriction Enzyme</th><th>BfaI</th><th>CviQI</th><th>MseI</th><th>Sau3AI</th><th>Total</th></tr>
+<tr><td>Total Number of Oligos</td><td>5,787,809</td><td>4,362,946</td><td>6,757,372</td><td>4,938,767</td><td>21,846,894</td></tr>
+<tr><td>Average Capture Length</td><td>410</td><td>496</td><td>280</td><td>426</td><td>391</td></tr>
+<tr><td>Total Bases Covered</td><td>2,160,412,134</td><td>1,977,714,818</td><td>1,759,938,713</td><td>1,938,321,961</td><td>2,852,444,206</td></tr>
+<tr><td>Percent of Genome Covered</td><td>69.79</td><td>63.89</td><td>56.85</td><td>62.61</td><td>92.14</td></tr>
+<tr><td>Percent of Oligos with U0 > 1</td><td>23.99</td><td>24.60</td><td>23.23</td><td>28.60</td><td>24.92</td></tr>
+<tr><td>Percent of Oligos with P > 0</td><td>6.96</td><td>6.48</td><td>7.25</td><td>8.90</td><td>7.39</td></tr>
+<tr><td>Percent of Genome Covered with Paralogs Removed</td><td>64.91</td><td>59.41</td><td>52.32</td><td>57.67</td><td>88.43</td></tr>
+<tr><td></td></tr>
+</table>
+<span class="notes">Genome coverage was calculated using chromosomes 1 through 22, X, and Y, which are the chromosomes over which the capture 
+oligonucleotides were designed.  See the <a href=http://oligogenome.stanford.edu/faq_annotations>Annotation Codes</a> section for 
+descriptions of the U0 and P annotations.</span><br />
+<br/><br/>
+
+<a href=”http://www.ncbi.nlm.nih.gov/CCDS/>CCDS</a> (April 22nd, 2011 build) <i>In Silico</i> Coverage
+<table class="list">
+<tr><th>Restriction Enyzmes</th><th>BfaI</th><th>CviQI</th><th>MseI</th><th>Sau3AI</th><th>Total</th></tr>
+<tr><td>Total Number of Oligos Covering CCDS Target Area </td><td>182,483</td><td>178,338</td><td>158,445</td><td>200,019</td><td>719,285</td></tr>
+<tr><td>Average Capture Length</td><td>521</td><td>550</td><td>419</td><td>489</td><td>497</td></tr>
+<tr><td>Total Bases Covered</td><td>25,286,188</td><td>23,270,225</td><td>22,161,990</td><td>24,040,941</td><td>31,697,623</td></tr>
+<tr><td>Percent of CCDS Covered</td><td>79.49</td><td>73.15</td><td>69.67</td><td>75.58</td><td>99.65</td></tr>
+<tr><td>Percent of Oligos with P > 0</td><td>2.89</td><td>2.85</td><td>3.00</td><td>3.03</td><td>2.94</td></tr>
+<tr><td>Percent of CCDS Covered with Paralogs Removed</td><td>76.96</td><td>70.85</td><td>67.36</td><td>73.02</td><td>97.12</td></tr>
+<tr><td></td></tr>
+</table>
+<span class="notes">See the <a href=http://oligogenome.stanford.edu/faq_annotations>Annotation Codes</a> section for 
+descriptions of the U0 and P annotations.</span><br />
 
 <br />
-<br />
-
 <%= link_to 'Back', :back %>

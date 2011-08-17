@@ -2,6 +2,14 @@
 #
 # Table name: bed_files
 #
+#  id                  :integer(4)      not null, primary key
+#  title               :string(255)
+#  filenm              :string(255)
+#  filenm_content_type :string(255)
+#  filenm_size         :integer(4)
+#  updated_by          :integer(4)
+#  created_at          :datetime
+#
 
 class BedFile < ActiveRecord::Base
   # default directory for upload_column is RAILS_ROOT/public 

@@ -22,7 +22,7 @@ All coordinates are in <a href="http://genome.ucsc.edu/FAQ/FAQformat.html#format
 </p>
 
 <table class="list">
-<% @chromosomes.each do |chromosome| %>
+<% @chromosomes[0..23].each do |chromosome| %>
   <tr><td><%= link_to "Chromosome #{chromosome}", zip_download_path(:chr_num => chromosome) %></td></tr>
 <% end %>
 </table>

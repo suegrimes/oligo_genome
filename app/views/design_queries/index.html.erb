@@ -12,28 +12,53 @@
 
 <table class="list">
   <tr>
-	<th>Oligo Name</th>
+  	<th colspan="8">&nbsp;</th>
+	<th colspan="4">5' Capture Arm</th>
+	<th colspan="4">3' Capture Arm</th>
+  </tr>
+  <tr>
+	<th>Oligo ID</th>
 	<th>Chromosome</th>
 	<th>Capture Start</th>
 	<th>Capture End</th>
 	<th>Length</th>
-	<th>5prime Capture Arm</th>
-	<th>3prime Capture Arm</th>
 	<th>Polarity</th>
+	<th>Enzyme</th>
+	<th>#Paralogs</th>
+	<th>U0</th>
+	<th>U1</th>
+	<th>U2</th>
+	<th>GC</th>
+	<th>U0</th>
+	<th>U1</th>
+	<th>U2</th>
+	<th>GC</th>
   </tr>
 
 <% if @oligo_designs && @oligo_designs.size > 0 %>	
 <% for oligo_design in @oligo_designs %>
   <%= hidden_field_tag("export_id[]", oligo_design.id)%>
   <tr>
-	<td><%= link_to oligo_design.oligo_name, oligo_design %></td>
+	<td><%= link_to oligo_design.id, oligo_design %></td>
 	<td style="text-align:center"><%=h oligo_design.chromosome_nr %></td>
 	<td><%=h oligo_design.amplicon_chr_start_pos %></td>
 	<td><%=h oligo_design.amplicon_chr_end_pos %></td>
 	<td style="text-align:center"><%=h oligo_design.amplicon_length %></td>
-	<td width=220><%=h oligo_design.sel_5prime %></td>
-	<td width=220><%=h oligo_design.sel_3prime %></td>
-	<td align=center><%=h oligo_design.sel_polarity %></td>
+	<td><%=h oligo_design.polarity %></td>
+	<td><%=h oligo_design.enzyme_code %></td>
+	<% if oligo_design.oligo_annotation %>
+	<td style="text-align:center"><%=h oligo_design.oligo_annotation.sel_paralog_cnt %></td>
+	<td><%=h oligo_design.oligo_annotation.sel_5prime_U0 %></td>
+	<td><%=h oligo_design.oligo_annotation.sel_5prime_U1 %></td>
+	<td><%=h oligo_design.oligo_annotation.sel_5prime_U2 %></td>
+	<td><%=h oligo_design.oligo_annotation.sel_5prime_GC %></td>
+	<td><%=h oligo_design.oligo_annotation.sel_3prime_U0 %></td>
+	<td><%=h oligo_design.oligo_annotation.sel_3prime_U1 %></td>
+	<td><%=h oligo_design.oligo_annotation.sel_3prime_U2 %></td>
+	<td><%=h oligo_design.oligo_annotation.sel_3prime_GC %></td>
+	<% else %>
+	<td colspan="9">&nbsp;</td>
+	<% end %>
   </tr>
 <% end %>
 <% end %>

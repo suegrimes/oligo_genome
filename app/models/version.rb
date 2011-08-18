@@ -4,9 +4,8 @@
 #
 #  id                    :integer(4)      not null, primary key
 #  version_for_synthesis :string(1)
-#  exonome_or_partial    :string(1)
+#  genome_or_partial     :string(1)
 #  genome_build          :string(15)      default(""), not null
-#  ccds_build            :string(15)
 #  dbsnp_build           :string(15)
 #  design_version        :string(15)      default(""), not null
 #  version_name          :string(50)

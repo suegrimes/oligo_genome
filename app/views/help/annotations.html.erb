@@ -1,0 +1,13 @@
+<h1>Annotation Codes</h1>
+
+<p>This page describes the abbreviations for the oligo annotation codes.</p>
+
+<table class="list">
+<tr><th>Code</th><th>Full Name</th><th>Description</th></tr>
+<tr><td>P</td><td>Paralog</td><td>The number of predicted off-target capture regions the for the oligonucleotide.  We considered an off target capture to occur if the capture arms aligned between 100 and 1000 base pairs from each other with zero mismatches and opposite orientation.</td></tr>
+<tr><td>U0</td><td>Whole Genome Exact Matches</td><td>This field applies to one of the two targeting arms in the capture oligonucleotide.  It is the number of exact sequence matches present in the human genome for that 20-mer.  A unique 20-mer will have a U0 of 1, and any value over 255 is reported as 255.</td></tr>
+<tr><td>U1</td><td>Whole Genome 1bp Mismatches</td><td>Same as U0, but for genomic locations with exactly 1 mismatch to the targeting arm.</td></tr>
+<tr><td>U2</td><td>Whole Genome 2bp Mismatches</td><td>Same as U0, but for genomic locations with exactly 2 mismatch to the targeting arm.</td></tr>
+</table>
+   
+<%= link_to 'Back', :back %>

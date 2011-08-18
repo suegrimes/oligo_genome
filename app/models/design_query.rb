@@ -2,11 +2,9 @@
 #
 # Table name: design_queries
 #
-#  chromosome_nr :string(3)
-#  chr_start_pos :integer(4)
-#  chr_end_pos   :integer(4)
-#  bed_file      :string(255)
-#  content_type  :string
+#  chromosome_nr :string
+#  chr_start_pos :integer
+#  chr_end_pos   :integer
 #
 
 class DesignQuery < NoTable

@@ -6,11 +6,17 @@ class HelpController < ApplicationController
   end
 
   def statistics
-    #@table1 = read_table(File.join(FILE_PATH, "Selector_Stats_06072011.txt"))
-    send_file(File.join(FILE_PATH, "Selector_Stats_06072011.txt"))
+    @table1 = read_table(File.join(FILE_PATH, "Selector_Stats_06072011.txt"))
+    #send_file(File.join(FILE_PATH, "Selector_Stats_06072011.txt"))
   end
   
   def protocol 
+  end
+
+  def annotations
+  end
+
+  def contact
   end
 
 protected

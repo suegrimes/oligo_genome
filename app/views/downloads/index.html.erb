@@ -1,7 +1,28 @@
 <h1>Download Zipped File</h1>
+<p>
+All coordinates are in <a href="http://genome.ucsc.edu/FAQ/FAQformat.html#format3"> GFF format </a> 
+(chromosome starts at base 1, interval includes end coordinate).  If you have a large set of genomic regions you wish to capture, we recommend
+ that you download these files and use <a href="http://code.google.com/p/bedtools/">BEDtools</a> to extract the appropriate oligonucleotide
+  sequences.  You can do this using the following steps:
+<ol>
+  <li>Download and unzip the oligo files for the chromosome(s) of interest.</li>
+  <li>Download and install BEDTools (v. 0.1.12+) as described on the BEDtools <a href="http://code.google.com/p/bedtools/">site</a></li>
+  <li>Format a set of intervals of interest as a <a href="http://genome.ucsc.edu/FAQ/FAQformat.html#format3">GFF</a> file or a 
+       <a href="http://genome.ucsc.edu/FAQ/FAQformat.html#format1">BED</a> file.  Bed format is preferable because only the chromosome, 
+	   start, and end fields are required.</li>
+  <li>Run the BEDtools intersectBed command to find the oligonucleotides that capture regions the target regions:<br/><br/>
+      <code>
+      	intersectBed -u -a oligofile.gff -b target_intervals.bed >oligos_in_intervals.gff
+      </code><br/><br/>
+      The file oligofile.gff is the GFF formatted file containing all the downloaded oligo information, target_intervals.bed (or .gff) 
+	  is the set of target regions, and oligos_in_intervals.gff is the output from the program.  
+	  If you want to capture regions from multiple chromosomes, you can either combine the downloaded files or run the command on each
+	  downloaded file separately.</li>
+</ol>
+</p>
 
 <table class="list">
-<% @chromosomes.each do |chromosome| %>
+<% @chromosomes[0..23].each do |chromosome| %>
   <tr><td><%= link_to "Chromosome #{chromosome}", zip_download_path(:chr_num => chromosome) %></td></tr>
 <% end %>
 </table>

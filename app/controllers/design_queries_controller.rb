@@ -39,7 +39,7 @@ class DesignQueriesController < ApplicationController
 #
     export_type = (params[:commit] == 'Export Oligos'? 'T1' : 'B1')
     design_ids = params[:export_id]
-    @oligo_designs = OligoDesign.find_with_id_list(design_ids)
+    @oligo_designs = OligoDesign.find_and_sort_for_query(["id IN (?)", design_ids])
     file_basename  = "oligodesigns_" + Date.today.to_s
 
     case export_type
@@ -128,9 +128,10 @@ private
   end
   
   def build_query_from_coords(params)
-    oligo_designs = OligoDesign.find_for_query(['chromosome_nr = ? AND 
-                                           (amplicon_chr_start_pos <= ? AND amplicon_chr_end_pos >= ?)',
-                                           params[:chromosome_nr], params[:chr_end_pos], params[:chr_start_pos]]) 
+    condition_array = ['chromosome_nr = ? AND 
+                       (amplicon_chr_start_pos <= ? AND amplicon_chr_end_pos >= ?)',
+                        params[:chromosome_nr], params[:chr_end_pos], params[:chr_start_pos]]
+    oligo_designs = OligoDesign.find_and_sort_for_query(condition_array)
     return oligo_designs
   end
   
@@ -139,7 +140,7 @@ private
     condition_array = build_where_clause(@bed_lines)  if rc == 0 
     
     if condition_array && condition_array.size > 0
-      oligo_designs = OligoDesign.find_for_query(condition_array)
+      oligo_designs = OligoDesign.find_and_sort_for_query(condition_array)
     end
     
     return rc, oligo_designs  # nil if oligo_designs not created

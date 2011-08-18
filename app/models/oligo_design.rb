@@ -6,8 +6,8 @@
 #  oligo_name             :string(100)     default(""), not null
 #  chromosome_nr          :string(3)
 #  enzyme_code            :string(20)
+#  selector_nr            :integer(4)
 #  annotation_codes       :string(20)
-#  other_annotations      :string(20)
 #  sel_polarity           :string(1)
 #  sel_5prime             :string(30)
 #  sel_3prime             :string(30)
@@ -53,15 +53,10 @@ class OligoDesign < ActiveRecord::Base
   #  Class find methods                                                                    #
   #****************************************************************************************#
    
-  def self.find_for_query(condition_array=nil)
-    self.find(:all, :order => 'chromosome_nr, amplicon_chr_start_pos',
-                    :conditions => condition_array)
-  end
-  
-  def self.find_with_id_list(id_list)
+  def self.find_and_sort_for_query(condition_array)
     self.find(:all, :include => :oligo_annotation,
                     :order => 'chromosome_nr, amplicon_chr_start_pos',
-                    :conditions => ["id IN (?)", id_list])
+                    :conditions => condition_array)
   end
   
 end

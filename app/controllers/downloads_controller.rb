@@ -1,5 +1,5 @@
 class DownloadsController < ApplicationController
-  FILE_NAME = 'oligo_design_v18_chr#.txt.gz'
+  FILE_NAME = 'oligo_design_v18_chr#.' + (CAPISTRANO_DEPLOY ? 'coordinates.gff.zip' : 'txt.gz')
   
   def index
     @chromosomes = OligoDesign::CHROMOSOMES

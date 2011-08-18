@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   #before_filter :login_required
   
   include OligoExtensions
+  include CoverageDepth
   require 'fastercsv'
   
   helper :all # include all helpers, all the time

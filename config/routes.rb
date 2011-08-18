@@ -25,6 +25,7 @@ ActionController::Routing::Routes.draw do |map|
   # Design Queries
   map.resources :design_queries, :only => :index
   map.designquery 'designquery', :controller => 'design_queries', :action => 'new_query'
+  map.showdepth   'showdepth',   :controller => 'design_queries', :action => 'show_depth'
   map.export 'export',           :controller => 'design_queries', :action => 'export'
   
   # Downloads 

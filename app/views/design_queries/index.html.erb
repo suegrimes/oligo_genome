@@ -1,7 +1,7 @@
 <% form_tag :action => "export_design" do %>
 
 <table>
-<% if @oligo_designs && @oligo_designs.size > 0 %
+<% if @oligo_designs && @oligo_designs.size > 0 %>
   <tr><th colspan="2">To view or download these <%=h @oligo_designs.size %> oligos click below:</th></tr>
   <tr><td><%= submit_tag "Export Oligos" -%></td><td><%= submit_tag "View Bed File" -%></td></tr>
   <tr><td class="notes">download to text file </td><td class="notes">for import to external sites/tools</td></tr>

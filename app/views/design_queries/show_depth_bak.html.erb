@@ -1,0 +1,31 @@
+Bed File <%= debug(@bed_file) %>
+Bed Lines <%= debug(@bed_lines) %>
+
+<table class="list">
+<% @rpt_array.each do |rpt_line| %>
+<% if rpt_line[0] == 'H1' %>
+  <tr><th><%= rpt_line[1] %></th></tr>
+
+<% elsif rpt_line[0] == 'H2' %>
+  <tr>
+  <% rpt_line[1..4].each do |rpt_col| %>
+    <th><%= rpt_col %></th>
+  <% end %>
+  </tr>
+  
+<% else %>
+  <tr>
+  <% rpt_line[1..4].each do |dtl_col| %>
+    <td><%= dtl_col%></td>
+  <% end %>
+  </tr>
+<% end %>
+<% end %>
+</table>
+
+
+Oligo Designs <%= debug(@oligo_designs) %>
+Coverage Depth <%= debug(@depth_array) %>
+<br/>
+Rpt Array <%= debug(@rpt_array)%>
+

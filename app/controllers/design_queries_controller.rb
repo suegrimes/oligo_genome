@@ -16,7 +16,13 @@ class DesignQueriesController < ApplicationController
         @bed_file.save
         rc, @oligo_designs = build_query_from_file(@bed_file.id)
         if rc >= 0
-          render :action => :index
+          if params[:design_query] && params[:design_query][:chromosome_nr] == 'DC'
+            bed_cnts, @bed_lines = read_and_validate_bedfile(@bed_file.id)
+            @depth_array = calculate_depth(@oligo_designs, @bed_lines)
+            render :action => :show_depth
+          else
+            render :action => :index
+          end
         else
           redirect_to :action => :new_query
         end
@@ -30,8 +36,23 @@ class DesignQueriesController < ApplicationController
       else
         render :action => :new_query
       end
-    end
+    end   
+  end
+  
+  def show_depth
+    # Test files for chromosome 17, range: 100000-101000
+    #@bed_file = [['17',100000,100200], ['17',100247,100810], ['17',100850,101000]]
+    #@bed_file = [['17', 100000, 100200], ['17', 100001, 100200], ['17', 100150, 100205], ['17', 100192, 100700],
+    #             ['17', 100812, 100922]]
+    @bed_file = [['17', 100000, 100200]]
+    bed_cnts, @bed_lines = read_and_validate_bed_array(@bed_file)
     
+    condition_array = ['chromosome_nr = ? AND (amplicon_chr_start_pos <= ? AND amplicon_chr_end_pos >= ?)',
+                        '17', '101000', '100000']                      
+    @oligo_designs = OligoDesign.find_and_sort_for_query(condition_array)
+    
+    @depth_array = calculate_depth(@oligo_designs, @bed_lines)
+    @rpt_array = depth_rpt(@depth_array, @bed_lines)  
   end
 
   def export_design
@@ -127,8 +148,8 @@ private
   end
   
   def build_query_from_file(id)
-    rc, @bed_lines = read_and_validate_bedfile(id)
-    condition_array = build_where_clause(@bed_lines)  if rc == 0 
+    rc, bed_lines = read_and_validate_bedfile(id)
+    condition_array = build_where_clause(bed_lines)  if rc == 0 
     
     if condition_array && condition_array.size > 0
       oligo_designs = OligoDesign.find_and_sort_for_query(condition_array)
@@ -138,41 +159,19 @@ private
   end
   
   def read_and_validate_bedfile(id)
-    bad_lines = 0; nr_bases = 0; rc = 0;
+    rc = 0;
     bed_file = BedFile.find(id)
     bfn      = bed_file.filenm.to_s.split('/')[-1]
     bfp      = File.join(BED_ABS_PATH, bfn)
     #bfp      = File.join(RAILS_ROOT, "public", bfn)  # For testing of file doesn't exist
-    bf_lines = []; bed_lines = []; chr_contig = ['None', '0', '0'];
+    bf_lines = []
     
     #  Use Ruby IO.foreach instead of FasterCSV to avoid possible issues with single or double quotes on track description lines
     #  Remove comment and track description lines before pushing to @bed_lines array
     IO.foreach(bfp) {|row| bf_lines.push(row.chomp.split("\t")) unless (row[0,1] == '#' || row[0,5] == 'track')}
     
-    # Sort rows by chromosome, start position, end position
-    raw_lines = bf_lines.sort_by {|row| row[0..2].join}
-    
-    #   Do some validation here to ensure that there are not too many lines in the file,(and that the file lines are in bed format)
-    #   100 lines max?  Performance seems ok for 100 coordinates for a single chromosome, try higher limit, or multiple chromosomes?
-    raw_lines.each do |raw_line|
-      raw_line[0].gsub!(/chr/,'') # Strip off 'chr' if exists
-      if BedFile.bed_line_valid?(raw_line)
-        chr_contig = raw_line if chr_contig.size == 0
-        # if same chromsome, and start position on this line is <= end position in last row (chr_contig), then just update contig
-        # otherwise, write out contig to bed lines file, and start new contig
-        if raw_line[0] == chr_contig[0] && raw_line[1].to_i <= chr_contig[2].to_i
-          chr_contig[2] = raw_line[2]
-        else
-          nr_bases += chr_contig[2].to_i - chr_contig[1].to_i
-          bed_lines.push(chr_contig)
-          chr_contig = raw_line
-        end
-      else
-        bad_lines += 1
-      end
-    end
-    
-    bed_lines.push(chr_contig)  # Write last line
+    bed_cnts, bed_lines = read_and_validate_bed_array(bf_lines)
+    nr_bases = bed_cnts[0]; bad_lines = bed_cnts[1];
     
     if bad_lines > 0 
       if bad_lines < bed_lines.size
@@ -193,6 +192,35 @@ private
     end
     
     return rc, bed_lines
+  end
+  
+  def read_and_validate_bed_array(bf_lines)
+    # Sort rows by chromosome, start position, end position
+    raw_lines = bf_lines.sort_by {|row| row[0..2].join}
+    bed_lines = []; nr_bases = 0; bad_lines = 0;
+    chr_contig = raw_lines[0]
+    
+    #   Do some validation here to ensure that there are not too many lines in the file,(and that the file lines are in bed format)
+    #   100 lines max?  Performance seems ok for 100 coordinates for a single chromosome, try higher limit, or multiple chromosomes?
+    raw_lines.each do |raw_line|
+      raw_line[0].gsub!(/chr/,'') # Strip off 'chr' if exists
+      if BedFile.bed_line_valid?(raw_line)
+        # if same chromosome, and start position on this line is <= end position in prev row (chr_contig), then just update contig
+        # otherwise, write out contig to bed lines file, and start new contig
+        if raw_line[0] == chr_contig[0] && raw_line[1].to_i <= chr_contig[2].to_i
+          chr_contig[2] = raw_line[2].to_i if raw_line[2].to_i > chr_contig[2].to_i
+        else
+          nr_bases += chr_contig[2].to_i - chr_contig[1].to_i
+          bed_lines.push([chr_contig[0], chr_contig[1].to_i, chr_contig[2].to_i])
+          chr_contig = raw_line
+        end
+      else
+        bad_lines += 1
+      end
+    end
+    
+    bed_lines.push([chr_contig[0], chr_contig[1].to_i, chr_contig[2].to_i])  # Write last line
+    return [nr_bases, bad_lines], bed_lines
   end
   
   def build_where_clause(bed_lines)

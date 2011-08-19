@@ -22,8 +22,13 @@ All coordinates are in <a href="http://genome.ucsc.edu/FAQ/FAQformat.html#format
 </p>
 
 <table class="list">
-<% @chromosomes[0..23].each do |chromosome| %>
-  <tr><td><%= link_to "Chromosome #{chromosome}", zip_download_path(:chr_num => chromosome) %></td></tr>
+  <tr><th colspan="3">Chromosome Files</th></tr>
+  <% @chromosomes[0..23].each do |chromosome| %>
+    <tr>
+      <td><%=h chromosome %></td>
+      <td><%= link_to "Coordinates", zip_download_path(:chr_num => chromosome, :file_type => 'Coord') %></td>
+	  <td><%= link_to "Annotations", zip_download_path(:chr_num => chromosome, :file_type => 'Annot') %></td>
+	</tr>
 <% end %>
 </table>
 

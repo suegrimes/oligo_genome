@@ -17,7 +17,7 @@ class DesignQueriesController < ApplicationController
         rc, @oligo_designs = build_query_from_file(@bed_file.id)
         if rc >= 0
           if params[:design_query] && params[:design_query][:chromosome_nr] == 'DC'
-            bed_cnts, @bed_lines = read_and_validate_bedfile(@bed_file.id)
+            #bed_cnts, @bed_lines = read_and_validate_bedfile(@bed_file.id)
             @depth_array = calculate_depth(@oligo_designs, @bed_lines)
             render :action => :show_depth
           else
@@ -170,11 +170,11 @@ private
     #  Remove comment and track description lines before pushing to @bed_lines array
     IO.foreach(bfp) {|row| bf_lines.push(row.chomp.split("\t")) unless (row[0,1] == '#' || row[0,5] == 'track')}
     
-    bed_cnts, bed_lines = read_and_validate_bed_array(bf_lines)
+    bed_cnts, @bed_lines = read_and_validate_bed_array(bf_lines)
     nr_bases = bed_cnts[0]; bad_lines = bed_cnts[1];
     
     if bad_lines > 0 
-      if bad_lines < bed_lines.size
+      if bad_lines < @bed_lines.size
         rc = 0
         flash.now[:notice] = 'WARNING: ' + bad_lines.to_s + ' invalid bed format lines found in file and ignored'
       else
@@ -186,32 +186,34 @@ private
     if nr_bases > DesignQuery::MAX_BASES
       rc = -2
       flash[:error] = 'ERROR: Genomic space of ' + nr_bases.to_s + ' is too large - please limit to ' + DesignQuery::MAX_BASES
-    elsif bed_lines.size > DesignQuery::MAX_BED_LINES
+    elsif @bed_lines.size > DesignQuery::MAX_BED_LINES
       rc = -3
       flash[:error] = "ERROR: Too many lines in file - please limit to #{DesignQuery::MAX_BED_LINES} lines"
     end
     
-    return rc, bed_lines
+    return rc, @bed_lines
   end
   
-  def read_and_validate_bed_array(bf_lines)
+  def read_and_validate_bed_array(bf_lines, bed_convert=true)
     # Sort rows by chromosome, start position, end position
-    raw_lines = bf_lines.sort_by {|row| row[0..2].join}
+    raw_lines = bf_lines.sort_by {|row| [row[0], row[1].to_i, row[2].to_i]}
     bed_lines = []; nr_bases = 0; bad_lines = 0;
-    chr_contig = raw_lines[0]
+    
+    chr_contig = coord_convert(raw_lines[0], bed_convert)
     
     #   Do some validation here to ensure that there are not too many lines in the file,(and that the file lines are in bed format)
     #   100 lines max?  Performance seems ok for 100 coordinates for a single chromosome, try higher limit, or multiple chromosomes?
     raw_lines.each do |raw_line|
-      raw_line[0].gsub!(/chr/,'') # Strip off 'chr' if exists
+      
       if BedFile.bed_line_valid?(raw_line)
+        raw_line = coord_convert(raw_line, bed_convert)
         # if same chromosome, and start position on this line is <= end position in prev row (chr_contig), then just update contig
         # otherwise, write out contig to bed lines file, and start new contig
-        if raw_line[0] == chr_contig[0] && raw_line[1].to_i <= chr_contig[2].to_i
-          chr_contig[2] = raw_line[2].to_i if raw_line[2].to_i > chr_contig[2].to_i
+        if raw_line[0] == chr_contig[0] && (raw_line[1] <= chr_contig[2])
+          chr_contig[2] = raw_line[2]    if raw_line[2] >  chr_contig[2]
         else
-          nr_bases += chr_contig[2].to_i - chr_contig[1].to_i
-          bed_lines.push([chr_contig[0], chr_contig[1].to_i, chr_contig[2].to_i])
+          nr_bases += chr_contig[2] - chr_contig[1]
+          bed_lines.push(chr_contig)
           chr_contig = raw_line
         end
       else
@@ -219,7 +221,7 @@ private
       end
     end
     
-    bed_lines.push([chr_contig[0], chr_contig[1].to_i, chr_contig[2].to_i])  # Write last line
+    bed_lines.push(chr_contig)  # Write last line
     return [nr_bases, bad_lines], bed_lines
   end
   
@@ -237,6 +239,14 @@ private
     else
       return []
     end
+  end
+  
+  def coord_convert(bed_line, bed_convert=false)
+    bed_line[0].gsub!(/chr/,'')                                             # Strip off 'chr' if exists 
+    bed_line[1] = (bed_convert ? bed_line[1].to_i + 1 : bed_line[1].to_i)  # Add 1 to chromosome start position for bed format files
+    #bed_line[1] = bed_line[1].to_i
+    bed_line[2] = bed_line[2].to_i 
+    return bed_line
   end
   
 end

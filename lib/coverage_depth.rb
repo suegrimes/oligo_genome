@@ -31,9 +31,7 @@ def calculate_depth(oligo_array, bed_array)
     
     # while the interval and oligo have the same chromosome, cycle through oligos until an oligo coordinate is past the start of the interval
     while(i < oligo_sorted.length && (interval[0] == oligo_sorted[i][0] && interval[1] > oligo_sorted[i][1] || interval[0] > oligo_sorted[i][0] )) do
-      if interval[0] == oligo_sorted[i][0]
-        curr_depth += (oligo_sorted[i][2] == "s") ? 1 : -1
-      end
+      curr_depth += (oligo_sorted[i][2] == "s") ? 1 : -1
       i += 1
     end
 

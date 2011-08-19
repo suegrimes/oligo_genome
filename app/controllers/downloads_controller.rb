@@ -1,5 +1,5 @@
 class DownloadsController < ApplicationController
-  FILE_NAME = 'oligo_design_v18_chr#.txt.gz'
+  FILE_NAME = 'oligo_design_v18_chr#.' + (CAPISTRANO_DEPLOY ? 'coordinates.gff.zip' : 'txt.gz')
   
   def index
     @chromosomes = OligoDesign::CHROMOSOMES
@@ -11,7 +11,7 @@ class DownloadsController < ApplicationController
   def zip_download
     params[:chr_num] ||= 'X'
     file_name = FILE_NAME.gsub(/#/, params[:chr_num].to_s)
-    filepath = File.join(FILES_ABS_PATH, file_name)
+    filepath = File.join(ZIP_ABS_PATH, file_name)
 #
     if FileTest.file?(filepath)
       flash.now[:notice] = "Zip file for chromosome " + params[:chr_num] + " successfully downloaded"

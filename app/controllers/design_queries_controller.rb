@@ -106,7 +106,7 @@ private
     FasterCSV.open(filename, "w", {:col_sep => "\t", :quote_char => "'", :force_quotes => false}) do |csv|
       csv << ['track name="OligoGenome" description="Oligos from Stanford OligoGenome resource" visibility=2 color=0,128,0']
       oligo_designs.each do |oligo|
-        csv << ['chr' + oligo.chromosome_nr, oligo.amplicon_chr_start_pos, oligo.amplicon_chr_end_pos, oligo.oligo_name]
+        csv << ['chr' + oligo.chromosome_nr, oligo.amplicon_chr_start_pos-1, oligo.amplicon_chr_end_pos, oligo.oligo_name]
       end
     end
   end
@@ -148,8 +148,10 @@ private
   end
   
   def build_query_from_file(id)
-    rc, bed_lines = read_and_validate_bedfile(id)
-    condition_array = build_where_clause(bed_lines)  if rc == 0 
+    bed_std_lines = read_and_standardize_bedfile(id)
+    
+    rc, @bed_lines = validate_bed_lines(id, bed_std_lines)
+    condition_array = build_where_clause(@bed_lines)  if rc == 0 
     
     if condition_array && condition_array.size > 0
       oligo_designs = OligoDesign.find_and_sort_for_query(condition_array)
@@ -158,8 +160,7 @@ private
     return rc, oligo_designs  # nil if oligo_designs not created
   end
   
-  def read_and_validate_bedfile(id)
-    rc = 0;
+  def read_and_standardize_bedfile(id)
     bed_file = BedFile.find(id)
     bfn      = bed_file.filenm.to_s.split('/')[-1]
     bfp      = File.join(BED_ABS_PATH, bfn)
@@ -170,11 +171,45 @@ private
     #  Remove comment and track description lines before pushing to @bed_lines array
     IO.foreach(bfp) {|row| bf_lines.push(row.chomp.split("\t")) unless (row[0,1] == '#' || row[0,5] == 'track')}
     
-    bed_cnts, @bed_lines = read_and_validate_bed_array(bf_lines)
-    nr_bases = bed_cnts[0]; bad_lines = bed_cnts[1];
+    srt_lines = bf_lines.sort_by {|row| [row[0], row[1].to_i, row[2].to_i]}
+    srt_lines.each {|row| row = coord_convert(row, 'bed2gff')}
     
+    # Return rows sorted by chromosome, start position, end position
+    return srt_lines
+  end
+  
+  def validate_bed_lines(id, bf_lines)  
+    val_lines = []; nr_bases = 0; bad_lines = 0;
+    chr_contig = bf_lines[0]
+    
+    bf_lines.each do |bf_line|
+      
+      if BedFile.bed_line_valid?(bf_line)
+        # if same chromosome, and start position on this line is <= end position in prev row (chr_contig), then just update contig
+        # otherwise, write out contig to bed lines file, and start new contig
+        if bf_line[0] == chr_contig[0] && (bf_line[1] <= chr_contig[2])
+          chr_contig[2] = bf_line[2]    if bf_line[2] >  chr_contig[2]
+        else
+          nr_bases += chr_contig[2] - chr_contig[1]
+          val_lines.push(chr_contig)
+          chr_contig = bf_line
+        end
+      else
+        bad_lines += 1
+      end
+    end 
+    val_lines.push(chr_contig)  # Write last line
+    
+    rc = handle_bed_errors(id, nr_bases, bf_lines.size, bad_lines)
+    
+    return rc, val_lines
+  end
+  
+  def handle_bed_errors(id, nr_bases, bed_lines_size, bad_lines)
+    bfn = BedFile.find(id).filenm.to_s.split('/')[-1]
+    rc = 0
     if bad_lines > 0 
-      if bad_lines < @bed_lines.size
+      if bad_lines < bed_lines_size
         rc = 0
         flash.now[:notice] = 'WARNING: ' + bad_lines.to_s + ' invalid bed format lines found in file and ignored'
       else
@@ -186,43 +221,11 @@ private
     if nr_bases > DesignQuery::MAX_BASES
       rc = -2
       flash[:error] = 'ERROR: Genomic space of ' + nr_bases.to_s + ' is too large - please limit to ' + DesignQuery::MAX_BASES
-    elsif @bed_lines.size > DesignQuery::MAX_BED_LINES
+    elsif bed_lines_size > DesignQuery::MAX_BED_LINES
       rc = -3
       flash[:error] = "ERROR: Too many lines in file - please limit to #{DesignQuery::MAX_BED_LINES} lines"
     end
-    
-    return rc, @bed_lines
-  end
-  
-  def read_and_validate_bed_array(bf_lines, bed_convert=true)
-    # Sort rows by chromosome, start position, end position
-    raw_lines = bf_lines.sort_by {|row| [row[0], row[1].to_i, row[2].to_i]}
-    bed_lines = []; nr_bases = 0; bad_lines = 0;
-    
-    chr_contig = coord_convert(raw_lines[0], bed_convert)
-    
-    #   Do some validation here to ensure that there are not too many lines in the file,(and that the file lines are in bed format)
-    #   100 lines max?  Performance seems ok for 100 coordinates for a single chromosome, try higher limit, or multiple chromosomes?
-    raw_lines.each do |raw_line|
-      
-      if BedFile.bed_line_valid?(raw_line)
-        raw_line = coord_convert(raw_line, bed_convert)
-        # if same chromosome, and start position on this line is <= end position in prev row (chr_contig), then just update contig
-        # otherwise, write out contig to bed lines file, and start new contig
-        if raw_line[0] == chr_contig[0] && (raw_line[1] <= chr_contig[2])
-          chr_contig[2] = raw_line[2]    if raw_line[2] >  chr_contig[2]
-        else
-          nr_bases += chr_contig[2] - chr_contig[1]
-          bed_lines.push(chr_contig)
-          chr_contig = raw_line
-        end
-      else
-        bad_lines += 1
-      end
-    end
-    
-    bed_lines.push(chr_contig)  # Write last line
-    return [nr_bases, bad_lines], bed_lines
+    return rc
   end
   
   def build_where_clause(bed_lines)
@@ -241,10 +244,12 @@ private
     end
   end
   
-  def coord_convert(bed_line, bed_convert=false)
-    bed_line[0].gsub!(/chr/,'')                                             # Strip off 'chr' if exists 
-    bed_line[1] = (bed_convert ? bed_line[1].to_i + 1 : bed_line[1].to_i)  # Add 1 to chromosome start position for bed format files
-    #bed_line[1] = bed_line[1].to_i
+  def coord_convert(bed_line, convert='bed2gff')
+    # Strip off 'chr' if exists 
+    # Adjust chromosome start position for conversion to or from bed format
+    bed_line[0].gsub!(/chr/,'')                                                    
+    coord_adjust = (convert == 'bed2gff' ? 1 : (convert == 'gff2bed' ? -1 : 0))
+    bed_line[1] = (convert == 'bed2gff' ? bed_line[1].to_i + coord_adjust : bed_line[1].to_i)  
     bed_line[2] = bed_line[2].to_i 
     return bed_line
   end

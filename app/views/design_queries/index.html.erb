@@ -1,4 +1,4 @@
-<h1>Capture Sequences - Query Results</h1>
+<h1>Capture Sequences - Query Results<a name="top"></a></h1>
 
 <% form_tag :action => "export_design" do %>
 <table>
@@ -11,6 +11,7 @@
 <% end %>
 </table>
 
+<span><b>Oligo Details<a name="oligo"></a></b></span>&nbsp;&nbsp;&nbsp;<a href="#stats">Coverage Statistics</a>
 <table class="list">
   <tr>
   	<th colspan="8">&nbsp;</th>
@@ -65,3 +66,12 @@
 <% end %>
 <% end %>
 </table>
+
+<span><b>Coverage Statistics<a name="stats"></a></b></span>&nbsp;&nbsp;&nbsp;<a href="#oligo">Oligo Details</a>
+<% if @oligo_designs && @oligo_designs.size > 0 && @depth_array && @depth_array.size > 0 %>	
+  <%= render :partial => 'coverage_stats' %>
+<% end %>
+
+<br/>
+<a href='#top'>Top</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#oligo">Oligo Details</a>&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="#stats">Coverage Statistics</a>

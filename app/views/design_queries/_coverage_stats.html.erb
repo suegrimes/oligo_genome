@@ -1,0 +1,52 @@
+<% tot_len = 0 %>
+
+<!--- print out depths at each region individually --->
+<table class="list">
+<% @bed_lines.each_with_index do |bed_line, i| %>
+  <tr>
+  	<th colspan="4">Region: <%=h bed_line[0]%>:<%=h bed_line[1]%>-<%=h bed_line[2]%></th>
+  </tr>
+  <tr>
+  	<th>Depth</th>
+	<th>Bases at depth</th>
+	<th>Bases in interval</th>
+	<th>Percent bases at depth</th>
+  </tr>
+  
+  <% len = bed_line[2] - bed_line[1] + 1 %>
+  <% tot_len += len %>
+  
+  <% @depth_array[i].each_with_index do |depth, j| %> 
+    <tr>
+      <td><%= j %></td>
+	  <td><%= (depth.nil? ? 0 : depth) %></td>
+	  <td><%= len %></td>
+	  <td><%= number_with_precision((depth.nil? ? 0 : (100.0 * depth / len)), :precision => 3) %></td>
+	</tr>
+  <% end %>
+  <tr><td colspan="4"></td></tr>
+<% end %>
+</table>
+
+<!--- print out depths over all regions combined --->
+<table class="list">
+  <tr>
+  	<th colspan="4">All Regions:</th>
+  </tr>
+  <tr>
+  	<th>Depth</th>
+	<th>Bases at depth</th>
+	<th>Bases in interval</th>
+	<th>Percent bases at depth</th>
+  </tr>
+  
+  <% @depth_array[-1].each_with_index do |depth_tot, k| %>
+  <tr>
+  	<td><%= k %></td>
+	<td><%= (depth_tot.nil? ? 0 : depth_tot) %></td>
+	<td><%= tot_len %></td>
+	<td><%= number_with_precision((depth_tot.nil? ? 0 : (100.0 * depth_tot / tot_len)), :precision => 3) %></td>
+  </tr>
+  <% end %>
+  <tr><td colspan="4"></td></tr>
+</table>

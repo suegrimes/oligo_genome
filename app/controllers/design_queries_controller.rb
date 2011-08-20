@@ -5,56 +5,68 @@ class DesignQueriesController < ApplicationController
   def new_query
     @design_query = DesignQuery.new
   end
+  
+  def index_debug_file
+    bed_lines = read_bedfile(25)
+    rc, val_lines = validate_bed_lines(25, bed_lines)
+    @bed_lines = flatten_bed_lines(val_lines)
+    @test = build_where_clause(@bed_lines)
+    @oligo_designs = OligoDesign.find_and_sort_for_query(@test)
+    render :action => :debug
+  end
+  
+  def index_debug_coord
+    params[:design_query] = {:chromosome_nr => '1',
+                            :chr_start_pos => 1986764,
+                             :chr_end_pos   => 1989000}
+    @oligo_designs = build_query_from_coords(params[:design_query])
+    @bed_lines = [[params[:design_query][:chromosome_nr], params[:design_query][:chr_end_pos], params[:design_query][:chr_start_pos]]]
+    @test = calculate_depth(@oligo_designs, @bed_lines) if @oligo_designs.size > 0
+    render :action => :debug
+  end
 
   #*******************************************************************************************#
   # Method for listing oligo designs, based on parameters entered above                       #
   #*******************************************************************************************#
   def index
+    dc_view = ((params[:design_query] && params[:design_query][:chromosome_nr] == 'DC') ? 'dc' : 'oc')
     if !params[:bed_file][:filenm].blank?
       @bed_file = BedFile.new(params[:bed_file])
-      if @bed_file.valid?
-        @bed_file.save
-        rc, @oligo_designs = build_query_from_file(@bed_file.id)
-        if rc >= 0
-          if params[:design_query] && params[:design_query][:chromosome_nr] == 'DC'
-            #bed_cnts, @bed_lines = read_and_validate_bedfile(@bed_file.id)
-            @depth_array = calculate_depth(@oligo_designs, @bed_lines)
-            render :action => :show_depth
-          else
-            render :action => :index
-          end
-        else
-          redirect_to :action => :new_query
-        end
+      
+      rc1 = (@bed_file.filenm.nil? ? -5 : 0)  # Filename set to nil by upload_column plug-in if invalid file extension
+      if rc1 == 0
+        @bed_file.save                                               
+        rc2, @oligo_designs = build_query_from_file(@bed_file.id)
+        @depth_array = calculate_depth(@oligo_designs, @bed_lines)  if rc2 == 0 && !@oligo_designs.nil?
+      else
+        flash.now[:error] = 'ERROR: File is not in .bed format, or is not a recognized file type - please use .bed or .txt'
+      end
+      
+      if rc1 < 0 || rc2 < 0
+        @design_query = DesignQuery.new
+        render :action => :new_query
+      else
+        render :action => (dc_view == 'dc' ? 'show_depth' : 'index')
       end
  
     else
       @design_query = DesignQuery.new(params[:design_query])   
       if @design_query.valid?
         @oligo_designs = build_query_from_coords(params[:design_query])
+        qparam = params[:design_query]
+        @bed_lines = [[qparam[:chromosome_nr].to_s, qparam[:chr_start_pos].to_i, qparam[:chr_end_pos].to_i]]
+        @depth_array = calculate_depth(@oligo_designs, @bed_lines) if @oligo_designs.size > 0
         render :action => :index
       else
+        @bed_file = BedFile.new
         render :action => :new_query
       end
     end   
   end
   
-  def show_depth
-    # Test files for chromosome 17, range: 100000-101000
-    #@bed_file = [['17',100000,100200], ['17',100247,100810], ['17',100850,101000]]
-    #@bed_file = [['17', 100000, 100200], ['17', 100001, 100200], ['17', 100150, 100205], ['17', 100192, 100700],
-    #             ['17', 100812, 100922]]
-    @bed_file = [['17', 100000, 100200]]
-    bed_cnts, @bed_lines = read_and_validate_bed_array(@bed_file)
-    
-    condition_array = ['chromosome_nr = ? AND (amplicon_chr_start_pos <= ? AND amplicon_chr_end_pos >= ?)',
-                        '17', '101000', '100000']                      
-    @oligo_designs = OligoDesign.find_and_sort_for_query(condition_array)
-    
-    @depth_array = calculate_depth(@oligo_designs, @bed_lines)
-    @rpt_array = depth_rpt(@depth_array, @bed_lines)  
-  end
-
+  #*******************************************************************************************#
+  # Export to text or bed format                                                              #
+  #*******************************************************************************************#
   def export_design
     add_one_to_counter('export')
 #
@@ -99,7 +111,7 @@ class DesignQueriesController < ApplicationController
   end 
   
 private
- #*******************************************************************************************#
+  #*******************************************************************************************#
   # Write .bed format file                                                                    #
   #*******************************************************************************************#
   def write_bed_file(filename, oligo_designs)
@@ -139,6 +151,9 @@ private
     return csv_string
   end
   
+  #*******************************************************************************************#
+  # Build and execute query based on single set of chromosome coordinates                     #
+  #*******************************************************************************************#
   def build_query_from_coords(params)
     condition_array = ['chromosome_nr = ? AND 
                        (amplicon_chr_start_pos <= ? AND amplicon_chr_end_pos >= ?)',
@@ -147,11 +162,19 @@ private
     return oligo_designs
   end
   
+  #*******************************************************************************************#
+  # Build and execute query based on bed file containing up to 500 lines of coordinates       #
+  #*******************************************************************************************#
   def build_query_from_file(id)
-    bed_std_lines = read_and_standardize_bedfile(id)
+    bed_raw_lines = read_bedfile(id)
     
-    rc, @bed_lines = validate_bed_lines(id, bed_std_lines)
-    condition_array = build_where_clause(@bed_lines)  if rc == 0 
+    if bed_raw_lines.size > 0
+      rc, val_lines   = validate_bed_lines(id, bed_raw_lines)
+      @bed_lines      = flatten_bed_lines(val_lines)    if rc == 0
+      condition_array = build_where_clause(@bed_lines)  if rc == 0
+    else
+      rc = handle_bed_errors(id, 0, 0, 1)
+    end
     
     if condition_array && condition_array.size > 0
       oligo_designs = OligoDesign.find_and_sort_for_query(condition_array)
@@ -160,7 +183,10 @@ private
     return rc, oligo_designs  # nil if oligo_designs not created
   end
   
-  def read_and_standardize_bedfile(id)
+  #*******************************************************************************************#
+  # Read bed file, removing comment and track lines                                           #
+  #*******************************************************************************************#
+  def read_bedfile(id)
     bed_file = BedFile.find(id)
     bfn      = bed_file.filenm.to_s.split('/')[-1]
     bfp      = File.join(BED_ABS_PATH, bfn)
@@ -171,40 +197,47 @@ private
     #  Remove comment and track description lines before pushing to @bed_lines array
     IO.foreach(bfp) {|row| bf_lines.push(row.chomp.split("\t")) unless (row[0,1] == '#' || row[0,5] == 'track')}
     
-    srt_lines = bf_lines.sort_by {|row| [row[0], row[1].to_i, row[2].to_i]}
-    srt_lines.each {|row| row = coord_convert(row, 'bed2gff')}
-    
-    # Return rows sorted by chromosome, start position, end position
-    return srt_lines
+    return (bf_lines.empty? ? [] : bf_lines)
   end
   
+  #*******************************************************************************************#
+  # Remove any invalid bed file lines                                                         #
+  #*******************************************************************************************#
   def validate_bed_lines(id, bf_lines)  
-    val_lines = []; nr_bases = 0; bad_lines = 0;
-    chr_contig = bf_lines[0]
+    val_lines = []; bad_lines = 0;
     
-    bf_lines.each do |bf_line|
-      
-      if BedFile.bed_line_valid?(bf_line)
-        # if same chromosome, and start position on this line is <= end position in prev row (chr_contig), then just update contig
-        # otherwise, write out contig to bed lines file, and start new contig
-        if bf_line[0] == chr_contig[0] && (bf_line[1] <= chr_contig[2])
-          chr_contig[2] = bf_line[2]    if bf_line[2] >  chr_contig[2]
-        else
-          nr_bases += chr_contig[2] - chr_contig[1]
-          val_lines.push(chr_contig)
-          chr_contig = bf_line
-        end
-      else
-        bad_lines += 1
-      end
-    end 
-    val_lines.push(chr_contig)  # Write last line
-    
-    rc = handle_bed_errors(id, nr_bases, bf_lines.size, bad_lines)
-    
+    bf_lines.each {|bf_line| (BedFile.bed_line_valid?(bf_line) ? val_lines.push(bf_line) : bad_lines += 1)}
+
+    rc = handle_bed_errors(id, 0, bf_lines.size, bad_lines)
     return rc, val_lines
   end
   
+  #*******************************************************************************************#
+  # Flatten bed file coordinates into unique contiguous blocks                                #
+  #*******************************************************************************************#
+  def flatten_bed_lines(bf_lines)
+    bedf_lines = []; nr_bases = 0;
+    # Convert chromosome coordinates to integer, and sort by chromosome, start position, end position
+    bf_lines.each {|row| row = coord_convert(row, 'bed2gff')}
+    srt_lines = bf_lines.sort_by {|row| [row[0], row[1], row[2]]}   
+    
+    chr_contig = srt_lines[0]
+    srt_lines.each do |srt_line|
+      if srt_line[0] == chr_contig[0] && (srt_line[1] <= chr_contig[2])
+        chr_contig[2] = srt_line[2]    if srt_line[2] >  chr_contig[2]
+      else
+        nr_bases += chr_contig[2] - chr_contig[1]
+        bedf_lines.push(chr_contig)
+        chr_contig = srt_line
+      end
+    end
+    bedf_lines.push(chr_contig)
+    return bedf_lines
+  end
+  
+  #*******************************************************************************************#
+  # Populate error messages as appropriate                                                    #
+  #*******************************************************************************************#
   def handle_bed_errors(id, nr_bases, bed_lines_size, bad_lines)
     bfn = BedFile.find(id).filenm.to_s.split('/')[-1]
     rc = 0
@@ -228,6 +261,9 @@ private
     return rc
   end
   
+  #*******************************************************************************************#
+  # Build SQL where clause based on bed file coordinates                                      #
+  #*******************************************************************************************#
   def build_where_clause(bed_lines)
     flds_for_where = []
     values_for_where = []
@@ -244,6 +280,9 @@ private
     end
   end
   
+  #*******************************************************************************************#
+  # Convert chromosome start position to/from bed format                                      #
+  #*******************************************************************************************#
   def coord_convert(bed_line, convert='bed2gff')
     # Strip off 'chr' if exists 
     # Adjust chromosome start position for conversion to or from bed format

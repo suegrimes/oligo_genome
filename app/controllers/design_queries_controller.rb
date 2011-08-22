@@ -4,6 +4,8 @@ class DesignQueriesController < ApplicationController
   #*******************************************************************************************#
   def new_query
     @design_query = DesignQuery.new
+    @enzymes = []
+    OligoDesign::ENZYMES.each {|enzyme| @enzymes.push([enzyme, false])}
   end
   
   def index_debug_file
@@ -16,11 +18,11 @@ class DesignQueriesController < ApplicationController
   end
   
   def index_debug_coord
-    params[:design_query] = {:chromosome_nr => '1',
-                            :chr_start_pos => 1986764,
-                             :chr_end_pos   => 1989000}
-    @oligo_designs = build_query_from_coords(params[:design_query])
-    @bed_lines = [[params[:design_query][:chromosome_nr], params[:design_query][:chr_end_pos], params[:design_query][:chr_start_pos]]]
+    #params[:design_query] = {:chromosome_nr => '1',
+     #                       :chr_start_pos => 1986764,
+      #                       :chr_end_pos   => 1989000}
+    @oligo_designs = build_query_from_coords(params)
+    @bed_lines = [[params[:design_query][:chromosome_nr], params[:design_query][:chr_start_pos].to_i, params[:design_query][:chr_end_pos].to_i]]
     @test = calculate_depth(@oligo_designs, @bed_lines) if @oligo_designs.size > 0
     render :action => :debug
   end
@@ -36,7 +38,7 @@ class DesignQueriesController < ApplicationController
       rc1 = (@bed_file.filenm.nil? ? -5 : 0)  # Filename set to nil by upload_column plug-in if invalid file extension
       if rc1 == 0
         @bed_file.save                                               
-        rc2, @oligo_designs = build_query_from_file(@bed_file.id)
+        rc2, @oligo_designs = build_query_from_file(@bed_file.id, params)
         @depth_array = calculate_depth(@oligo_designs, @bed_lines)  if rc2 == 0 && !@oligo_designs.nil?
       else
         flash.now[:error] = 'ERROR: File is not in .bed format, or is not a recognized file type - please use .bed or .txt'
@@ -44,6 +46,8 @@ class DesignQueriesController < ApplicationController
       
       if rc1 < 0 || rc2 < 0
         @design_query = DesignQuery.new
+        @enzymes = []
+        OligoDesign::ENZYMES.each {|enzyme| @enzymes.push([enzyme, false])}
         render :action => :new_query
       else
         render :action => (dc_view == 'dc' ? 'show_depth' : 'index')
@@ -52,12 +56,14 @@ class DesignQueriesController < ApplicationController
     else
       @design_query = DesignQuery.new(params[:design_query])   
       if @design_query.valid?
-        @oligo_designs = build_query_from_coords(params[:design_query])
+        @oligo_designs = build_query_from_coords(params)
         qparam = params[:design_query]
         @bed_lines = [[qparam[:chromosome_nr].to_s, qparam[:chr_start_pos].to_i, qparam[:chr_end_pos].to_i]]
         @depth_array = calculate_depth(@oligo_designs, @bed_lines) if @oligo_designs.size > 0
         render :action => :index
       else
+        @enzymes = []
+        OligoDesign::ENZYMES.each {|enzyme| @enzymes.push([enzyme, false])}
         @bed_file = BedFile.new
         render :action => :new_query
       end
@@ -156,23 +162,22 @@ private
   # Build and execute query based on single set of chromosome coordinates                     #
   #*******************************************************************************************#
   def build_query_from_coords(params)
-    condition_array = ['chromosome_nr = ? AND 
-                       (amplicon_chr_start_pos <= ? AND amplicon_chr_end_pos >= ?)',
-                        params[:chromosome_nr], params[:chr_end_pos], params[:chr_start_pos]]
-    oligo_designs = OligoDesign.find_and_sort_for_query(condition_array)
+    coord_array = [[params[:design_query][:chromosome_nr], params[:design_query][:chr_start_pos].to_i, params[:design_query][:chr_end_pos].to_i]]
+    @condition_array = build_where_clause(coord_array, params)
+    oligo_designs = OligoDesign.find_and_sort_for_query(@condition_array)
     return oligo_designs
   end
   
   #*******************************************************************************************#
   # Build and execute query based on bed file containing up to 500 lines of coordinates       #
   #*******************************************************************************************#
-  def build_query_from_file(id)
+  def build_query_from_file(id, params)
     bed_raw_lines = read_bedfile(id)
     
     if bed_raw_lines.size > 0
       rc, val_lines   = validate_bed_lines(id, bed_raw_lines)
-      @bed_lines      = flatten_bed_lines(val_lines)    if rc == 0
-      condition_array = build_where_clause(@bed_lines)  if rc == 0
+      @bed_lines      = flatten_bed_lines(val_lines)            if rc == 0
+      condition_array = build_where_clause(@bed_lines, params)  if rc == 0
     else
       rc = handle_bed_errors(id, 0, 0, 1)
     end
@@ -265,17 +270,55 @@ private
   #*******************************************************************************************#
   # Build SQL where clause based on bed file coordinates                                      #
   #*******************************************************************************************#
-  def build_where_clause(bed_lines)
+  def build_where_clause(bed_lines, params)
     flds_for_where = []
     values_for_where = []
     
     bed_lines.each do |bed_line|
-      flds_for_where.push('(chromosome_nr = ? AND (amplicon_chr_start_pos <= ? AND amplicon_chr_end_pos >= ?))')
+      flds_for_where.push('(chromosome_nr = ? AND amplicon_chr_start_pos <= ? AND amplicon_chr_end_pos >= ?)')
       values_for_where.push(bed_line[0], bed_line[2], bed_line[1])
     end
     
     if flds_for_where.size > 0 && values_for_where.size > 0
-      return [flds_for_where.join(' OR ')].concat(values_for_where)
+      where_for_coord = ['(' + flds_for_where.join(' OR ') + ')'].concat(values_for_where)
+      where_for_exclusions = build_exclusions(params)
+      if where_for_exclusions.empty?
+        return where_for_coord
+      else
+        where_for_coord[0] = [where_for_coord[0], where_for_exclusions[0]].join(' AND ')
+        return where_for_coord.concat(where_for_exclusions[1..-1])
+      end
+    else
+      return []
+    end
+  end
+  
+  def build_exclusions(params)
+    flds_for_where = []
+    values_for_where = []
+    
+    if params[:enzyme_params]
+      @enzymes = []
+      @enzymes.push(OligoDesign::ENZYMES[0]) if params[:enzyme_params]['0']
+      @enzymes.push(OligoDesign::ENZYMES[1]) if params[:enzyme_params]['1']
+      @enzymes.push(OligoDesign::ENZYMES[2]) if params[:enzyme_params]['2']
+      @enzymes.push(OligoDesign::ENZYMES[2]) if params[:enzyme_params]['3']
+      flds_for_where.push('enzyme_code NOT IN (?)')
+      values_for_where.push(@enzymes)
+    end
+    
+    if params[:design_query][:sel_5prime_U0] && params[:design_query][:sel_5prime_U0].to_i > 0
+      flds_for_where.push('oligo_annotations.sel_5prime_U0 < ?')
+      values_for_where.push(params[:design_query][:sel_5prime_U0].to_i)
+    end
+    
+    if params[:design_query][:sel_3prime_U0] && params[:design_query][:sel_3prime_U0].to_i > 0
+      flds_for_where.push('oligo_annotations.sel_3prime_U0 < ?')
+      values_for_where.push(params[:design_query][:sel_3prime_U0].to_i)
+    end
+    
+    if flds_for_where.size > 0 && values_for_where.size > 0
+      return [flds_for_where.join(' AND ')].concat(values_for_where)
     else
       return []
     end

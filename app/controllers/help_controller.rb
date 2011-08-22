@@ -16,6 +16,9 @@ class HelpController < ApplicationController
   def annotations
   end
 
+  def ucsc_view
+  end
+
   def contact
   end
 

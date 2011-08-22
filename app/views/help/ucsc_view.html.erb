@@ -1,0 +1,19 @@
+<h1>Viewing Capture Regions in UCSC Genome Browser</h1>
+
+<p>The UCSC Genome Browser provides a simple but powerful interface for viewing genomic regions. We recommend uploading queried 
+oligonucleotide capture regions to the Genome Browser if you wish to explore the coverage afforded by different enzymes or genomic
+features (such as segmental duplications) that may affect the capture reaction.  To view the capture regions as tracks in the UCSC
+Genome Browser, please follow the steps below: </p>
+<ul>
+<li>After querying a region or set of target regions using the Query Capture Seqs page, click on the View Bed File button to download
+ a bed formatted file for display in the UCSC Genome Browser</li>  
+<li>Go to the UCSC Genome Browser Gateway page <a href="http://genome.ucsc.edu/cgi-bin/hgGateway">(http://genome.ucsc.edu/cgi-bin/hgGateway)</a>
+ and select Feb. 2009 (GRCh37 / hg19) as the genome assembly</li>  
+<li>Click the "add custom tracks" button (located below the assembly selection)</li>
+<li>Click "add custom tracks" once again on the Custom Track page, select the oligo track file saved above, 
+then click "Submit" to upload it</li>
+<li>Click "go to genome browser".  This will display the set of exported oligonucleotide capture regions in the UCSC Genome Browser,
+with each enzyme represented by a different color</li>
+</ul>
+
+<%= link_to 'Back', :back %>

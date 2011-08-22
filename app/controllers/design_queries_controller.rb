@@ -116,9 +116,10 @@ private
   #*******************************************************************************************#
   def write_bed_file(filename, oligo_designs)
     FasterCSV.open(filename, "w", {:col_sep => "\t", :quote_char => "'", :force_quotes => false}) do |csv|
-      csv << ['track name="OligoGenome" description="Oligos from Stanford OligoGenome resource" visibility=2 color=0,128,0']
+      csv << ['track name="OligoGenome" description="Oligos from Stanford OligoGenome resource" visibility=2 itemRgb="On"']
       oligo_designs.each do |oligo|
-        csv << ['chr' + oligo.chromosome_nr, oligo.amplicon_chr_start_pos-1, oligo.amplicon_chr_end_pos, oligo.oligo_name]
+        csv << ['chr' + oligo.chromosome_nr, oligo.amplicon_chr_bed_start, oligo.amplicon_chr_end_pos, oligo.oligo_name,
+        0, oligo.strand, oligo.amplicon_chr_bed_start, oligo.amplicon_chr_end_pos, oligo.ucsc_track_color]
       end
     end
   end

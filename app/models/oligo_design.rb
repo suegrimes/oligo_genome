@@ -41,12 +41,30 @@ class OligoDesign < ActiveRecord::Base
     (sel_polarity == 'p' ? 'plus' : 'minus')
   end
   
+  def strand
+    (sel_polarity == 'p' ? '+' : '-')
+  end
+  
+  def amplicon_chr_bed_start
+    (amplicon_chr_start_pos - 1)
+  end
+  
   def selector_u
     [usel_5prime, Vector::UVECTOR, usel_3prime].join
   end
   
   def selector
     [sel_5prime, Vector::VECTOR, sel_3prime].join
+  end
+  
+  def ucsc_track_color
+    case enzyme_code
+      when 'BfaI'   then '255,0,0'
+      when 'MseI'   then '0,255,0'
+      when 'CviQI'  then '0,0,255'
+      when 'Sau3AI' then '255,255,0'
+      else '192,192,192'
+    end
   end
   
   #****************************************************************************************#

@@ -212,6 +212,8 @@ private
   def validate_bed_lines(id, bf_lines)  
     val_lines = []; bad_lines = 0;
     
+    # Remove 'chr' at beginning of of chromosome# (if exists); convert chromosome coordinates to integer
+    bf_lines.each {|row| row = coord_convert(row, 'bed2gff')}
     bf_lines.each {|bf_line| (BedFile.bed_line_valid?(bf_line) ? val_lines.push(bf_line) : bad_lines += 1)}
 
     rc = handle_bed_errors(id, 0, bf_lines.size, bad_lines)
@@ -223,8 +225,7 @@ private
   #*******************************************************************************************#
   def flatten_bed_lines(bf_lines)
     bedf_lines = []; nr_bases = 0;
-    # Convert chromosome coordinates to integer, and sort by chromosome, start position, end position
-    bf_lines.each {|row| row = coord_convert(row, 'bed2gff')}
+    # Sort file by chromosome, start position, end position
     srt_lines = bf_lines.sort_by {|row| [row[0], row[1], row[2]]}   
     
     chr_contig = srt_lines[0]
@@ -268,7 +269,7 @@ private
   end
   
   #*******************************************************************************************#
-  # Build SQL where clause based on bed file coordinates                                      #
+  # Build SQL where clause based on supplied coordinates                                      #
   #*******************************************************************************************#
   def build_where_clause(bed_lines, params)
     flds_for_where = []
@@ -296,26 +297,34 @@ private
   def build_exclusions(params)
     flds_for_where = []
     values_for_where = []
+    filter_notes = []
     
     if params[:enzyme_params]
-      @enzymes = []
-      @enzymes.push(OligoDesign::ENZYMES[0]) if params[:enzyme_params]['0']
-      @enzymes.push(OligoDesign::ENZYMES[1]) if params[:enzyme_params]['1']
-      @enzymes.push(OligoDesign::ENZYMES[2]) if params[:enzyme_params]['2']
-      @enzymes.push(OligoDesign::ENZYMES[2]) if params[:enzyme_params]['3']
+      enzymes = []
+      enzymes.push(OligoDesign::ENZYMES[0]) if params[:enzyme_params]['0']
+      enzymes.push(OligoDesign::ENZYMES[1]) if params[:enzyme_params]['1']
+      enzymes.push(OligoDesign::ENZYMES[2]) if params[:enzyme_params]['2']
+      enzymes.push(OligoDesign::ENZYMES[2]) if params[:enzyme_params]['3']
       flds_for_where.push('enzyme_code NOT IN (?)')
-      values_for_where.push(@enzymes)
+      values_for_where.push(enzymes)
+      filter_notes.push('Enzymes: ' + enzymes.join(','))
     end
     
+    if params[:design_query]   
     if params[:design_query][:sel_5prime_U0] && params[:design_query][:sel_5prime_U0].to_i > 0
       flds_for_where.push('oligo_annotations.sel_5prime_U0 <= ?')
       values_for_where.push(params[:design_query][:sel_5prime_U0].to_i)
+      filter_notes.push('5prime U0 > ' + params[:design_query][:sel_5prime_U0])
     end
     
     if params[:design_query][:sel_3prime_U0] && params[:design_query][:sel_3prime_U0].to_i > 0
       flds_for_where.push('oligo_annotations.sel_3prime_U0 <= ?')
       values_for_where.push(params[:design_query][:sel_3prime_U0].to_i)
+      filter_notes.push('3prime U0 > ' + params[:design_query][:sel_3prime_U0])
     end
+    end
+  
+    @filter_text = (filter_notes.empty? ? '' : 'FILTER (exclude): ' + filter_notes.join('; '))
     
     if flds_for_where.size > 0 && values_for_where.size > 0
       return [flds_for_where.join(' AND ')].concat(values_for_where)

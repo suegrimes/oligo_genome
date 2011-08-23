@@ -33,15 +33,17 @@
 <legend>Exclusions (optional)</legend>
 <table class="form">
   <tr>
-  	<th>5' U0 >:</th><td><%= f.text_field(:sel_5prime_U0, :size => 3) %></td>
-	<th>3' U0 >:</th><td><%= f.text_field(:sel_3prime_U0, :size => 3) %></td>
+  	<th>5' exact matches (U0) &gt;</th><td><%= f.text_field(:sel_5prime_U0, :size => 3) %></td>
+	<th>3' exact matches (U0) &gt;</th><td><%= f.text_field(:sel_3prime_U0, :size => 3) %></td>
   </tr>
   <tr><td></td></tr>
   <tr>
   	<th>Restriction Enzyme(s):</th>
-	<% @enzymes.each_with_index do |enzyme, i|%>
-  	  <td><%= enzyme[0] %><%= check_box_tag("enzyme_params[#{i}]", enzyme[0], enzyme[1]) -%></td>
-	<% end %>
+	<td colspan="2">
+	  <% @enzymes.each_with_index do |enzyme, i|%>
+  	    <%= enzyme[0] %><%= check_box_tag("enzyme_params[#{i}]", enzyme[0], enzyme[1]) -%>
+	  <% end %>
+	</td>
   </tr>
 </table>
 </fieldset>

@@ -24,6 +24,10 @@
   	<th>Upload .bed format file:</th>
 	<td colspan="5"><%= b.upload_column_field :filenm, :size=>55%> </td>
   </tr>
+  <tr>
+  	<td></td>
+  	<td colspan="5" class="notes">Note: Maximum of 50 bed intervals in file; large queries may take several minutes</td>
+  </tr>
 </table>
 <% end %>
 </fieldset>
@@ -35,6 +39,9 @@
   <tr>
   	<th>5' exact matches (U0) &gt;</th><td><%= f.text_field(:sel_5prime_U0, :size => 3) %></td>
 	<th>3' exact matches (U0) &gt;</th><td><%= f.text_field(:sel_3prime_U0, :size => 3) %></td>
+  </tr>
+  <tr>
+	<th>Paralogs &gt;</th><td><%= f.text_field(:sel_paralog_cnt, :size => 3) %></td>
   </tr>
   <tr><td></td></tr>
   <tr>

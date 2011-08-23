@@ -31,7 +31,6 @@ class DesignQueriesController < ApplicationController
   # Method for listing oligo designs, based on parameters entered above                       #
   #*******************************************************************************************#
   def index
-    dc_view = ((params[:design_query] && params[:design_query][:chromosome_nr] == 'DC') ? 'dc' : 'oc')
     if !params[:bed_file][:filenm].blank?
       @bed_file = BedFile.new(params[:bed_file])
       
@@ -50,7 +49,7 @@ class DesignQueriesController < ApplicationController
         OligoDesign::ENZYMES.each {|enzyme| @enzymes.push([enzyme, false])}
         render :action => :new_query
       else
-        render :action => (dc_view == 'dc' ? 'show_depth' : 'index')
+        render :action => :index
       end
  
     else
@@ -321,6 +320,12 @@ private
       flds_for_where.push('oligo_annotations.sel_3prime_U0 <= ?')
       values_for_where.push(params[:design_query][:sel_3prime_U0].to_i)
       filter_notes.push('3prime U0 > ' + params[:design_query][:sel_3prime_U0])
+    end
+    
+    if params[:design_query][:sel_paralog_cnt] && !params[:design_query][:sel_paralog_cnt].blank?
+      flds_for_where.push('oligo_annotations.sel_paralog_cnt <= ?')
+      values_for_where.push(params[:design_query][:sel_paralog_cnt].to_i)
+      filter_notes.push('Paralogs > ' + params[:design_query][:sel_paralog_cnt])
     end
     end
   

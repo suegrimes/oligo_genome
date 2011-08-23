@@ -14,39 +14,28 @@ class DesignQuery < NoTable
     end
   end
   
-  column :chromosome_nr, :string
-  column :chr_start_pos, :integer
-  column :chr_end_pos,   :integer
-  column :enzyme_code,   :string
-  column :sel_3prime_U0, :integer
-  column :sel_5prime_U0, :integer
+  column :chromosome_nr,   :string
+  column :chr_start_pos,   :integer
+  column :chr_end_pos,     :integer
+  column :enzyme_code,     :string
+  column :sel_3prime_U0,   :integer
+  column :sel_5prime_U0,   :integer
+  column :sel_paralog_cnt, :integer
                               
   validates_inclusion_of :chromosome_nr, :in => OligoDesign::CHROMOSOMES.push(''), :message => "is not a valid chromosome"
-  validates_numericality_of :chr_start_pos, :chr_end_pos, :sel_3prime_U0, :sel_5prime_U0, 
+  validates_numericality_of :chr_start_pos, :chr_end_pos, :sel_3prime_U0, :sel_5prime_U0, :sel_paralog_cnt, 
                   {:only_integer => true, :allow_nil => true, :message => "is not an integer"}
-  #validates_numericality_of :chr_start_pos, :only_integer => true, :allow_nil => true, :message => "is not an integer"
-  #validates_numericality_of :chr_end_pos,   :only_integer => true, :allow_nil => true, :message => "is not an integer"
-  #validates_numericality_of :sel_3prime_U0, :only_integer => true, :allow_nil => true, :message => "is not an integer"
-  #validates_numericality_of :sel_5prime_U0, :only_integer => true, :allow_nil => true, :message => "is not an integer"
+  validates_presence_of :chromosome_nr, :chr_start_pos, :chr_end_pos
   
-  validate :chr_coord, :if => Proc.new{|query| !query.chromosome_nr.blank? || !query.chr_start_pos.blank? || !query.chr_end_pos.blank?}
+  validate :chr_coord, :if => Proc.new{|query| !query.chromosome_nr.blank? && !query.chr_start_pos.blank? && !query.chr_end_pos.blank?}
   
-  ALL_FLDS     = %w{chromosome_nr, chr_start_pos, chr_end_pos}
+  ALL_FLDS     = %w{chromosome_nr chr_start_pos chr_end_pos enzyme_code sel_3prime_U0 sel_5prime_U0 sel_paralog_cnt}
   
-  MAX_BED_LINES = 500
+  MAX_BED_LINES = 50
   MAX_BASES = 1000000
   
 private
   def chr_coord
-    unless !chromosome_nr.blank?
-      errors.add(:chromosome_nr, "cannot be blank")
-    end
-    unless !chr_start_pos.blank? 
-      errors.add(:chr_start_pos, "cannot be blank")
-    end
-    unless !chr_end_pos.blank? 
-      errors.add(:chr_end_pos, "cannot be blank")
-    end
     unless chr_end_pos > chr_start_pos
       errors.add(:chr_end_pos, "must be greater than start position")
     end

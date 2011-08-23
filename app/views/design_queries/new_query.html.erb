@@ -37,11 +37,14 @@
 <legend>Exclusions (optional)</legend>
 <table class="form">
   <tr>
-  	<th>5' exact matches (U0) &gt;</th><td><%= f.text_field(:sel_5prime_U0, :size => 3) %></td>
-	<th>3' exact matches (U0) &gt;</th><td><%= f.text_field(:sel_3prime_U0, :size => 3) %></td>
+  	<th>5' exact matches <a href=http://oligogenome.stanford.edu/faq_annotations>(U0)</a> &gt;</th>
+	<td><%= f.text_field(:sel_5prime_U0, :size => 3) %></td>
+	<th>3' exact matches <a href=http://oligogenome.stanford.edu/faq_annotations>(U0)</a> &gt;</th>
+	<td><%= f.text_field(:sel_3prime_U0, :size => 3) %></td>
   </tr>
   <tr>
-	<th>Paralogs &gt;</th><td><%= f.text_field(:sel_paralog_cnt, :size => 3) %></td>
+	<th><a href=http://oligogenome.stanford.edu/faq_annotations>Paralogs</a> &gt;</th>
+	<td><%= f.text_field(:sel_paralog_cnt, :size => 3) %></td>
   </tr>
   <tr><td></td></tr>
   <tr>

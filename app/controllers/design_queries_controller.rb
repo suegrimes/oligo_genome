@@ -308,12 +308,12 @@ private
     end
     
     if params[:design_query][:sel_5prime_U0] && params[:design_query][:sel_5prime_U0].to_i > 0
-      flds_for_where.push('oligo_annotations.sel_5prime_U0 < ?')
+      flds_for_where.push('oligo_annotations.sel_5prime_U0 <= ?')
       values_for_where.push(params[:design_query][:sel_5prime_U0].to_i)
     end
     
     if params[:design_query][:sel_3prime_U0] && params[:design_query][:sel_3prime_U0].to_i > 0
-      flds_for_where.push('oligo_annotations.sel_3prime_U0 < ?')
+      flds_for_where.push('oligo_annotations.sel_3prime_U0 <= ?')
       values_for_where.push(params[:design_query][:sel_3prime_U0].to_i)
     end
     

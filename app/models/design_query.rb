@@ -33,7 +33,7 @@ class DesignQuery < NoTable
   
   ALL_FLDS     = %w{chromosome_nr, chr_start_pos, chr_end_pos}
   
-  MAX_BED_LINES = 500
+  MAX_BED_LINES = 50
   MAX_BASES = 1000000
   
 private

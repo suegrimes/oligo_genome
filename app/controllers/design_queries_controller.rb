@@ -298,15 +298,24 @@ private
     values_for_where = []
     filter_notes = []
     
+    enzymes = []
     if params[:enzyme_params]
-      enzymes = []
-      enzymes.push(OligoDesign::ENZYMES[0]) if params[:enzyme_params]['0']
-      enzymes.push(OligoDesign::ENZYMES[1]) if params[:enzyme_params]['1']
-      enzymes.push(OligoDesign::ENZYMES[2]) if params[:enzyme_params]['2']
-      enzymes.push(OligoDesign::ENZYMES[2]) if params[:enzyme_params]['3']
+      params[:enzyme_params].each do |enzyme_idx, val|
+        enzymes.push(OligoDesign::ENZYMES[enzyme_idx.to_i]) if val
+      end
       flds_for_where.push('enzyme_code NOT IN (?)')
       values_for_where.push(enzymes)
       filter_notes.push('Enzymes: ' + enzymes.join(','))
+    end
+    
+    tiers = []
+    if params[:tier_params]
+      params[:tier_params].each do |tier, val|
+        tiers.push(tier.to_i) if val
+      end
+      flds_for_where.push('tier_nr NOT IN (?)')
+      values_for_where.push(tiers)
+      filter_notes.push('Tiers: ' + tiers.join(','))
     end
     
     if params[:design_query]   

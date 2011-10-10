@@ -15,7 +15,7 @@
 <span class="notes"><%= @filter_text %></span>
 <table class="list">
   <tr>
-  	<th colspan="8">&nbsp;</th>
+  	<th colspan="9">&nbsp;</th>
 	<th colspan="4">5&#39; Capture Arm</th>
 	<th colspan="4">3&#39; Capture Arm</th>
   </tr>
@@ -27,6 +27,7 @@
 	<th>Length</th>
 	<th>Polarity</th>
 	<th>Enzyme</th>
+	<th>Tier</th>
 	<th>#Paralogs</th>
 	<th>U0</th>
 	<th>U1</th>
@@ -49,6 +50,7 @@
 	<td style="text-align:center"><%=h oligo_design.amplicon_length %></td>
 	<td><%=h oligo_design.polarity %></td>
 	<td><%=h oligo_design.enzyme_code %></td>
+	<td><%=h oligo_design.tier_nr %></td>
 	<% if oligo_design.oligo_annotation %>
 	<td style="text-align:center"><%=h oligo_design.oligo_annotation.sel_paralog_cnt %></td>
 	<td><%=h oligo_design.oligo_annotation.sel_5prime_U0 %></td>

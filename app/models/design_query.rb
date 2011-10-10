@@ -21,6 +21,7 @@ class DesignQuery < NoTable
   column :sel_3prime_U0,   :integer
   column :sel_5prime_U0,   :integer
   column :sel_paralog_cnt, :integer
+  column :tier_nr,         :string
                               
   validates_inclusion_of :chromosome_nr, :in => OligoDesign::CHROMOSOMES.push(''), :message => "is not a valid chromosome"
   validates_numericality_of :chr_start_pos, :chr_end_pos, :sel_3prime_U0, :sel_5prime_U0, :sel_paralog_cnt, 
@@ -29,7 +30,7 @@ class DesignQuery < NoTable
   
   validate :chr_coord, :if => Proc.new{|query| !query.chromosome_nr.blank? && !query.chr_start_pos.blank? && !query.chr_end_pos.blank?}
   
-  ALL_FLDS     = %w{chromosome_nr chr_start_pos chr_end_pos enzyme_code sel_3prime_U0 sel_5prime_U0 sel_paralog_cnt}
+  ALL_FLDS     = %w{chromosome_nr chr_start_pos chr_end_pos enzyme_code sel_3prime_U0 sel_5prime_U0 sel_paralog_cnt tier_nr}
   
   MAX_BED_LINES = 50
   MAX_BASES = 1000000

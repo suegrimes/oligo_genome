@@ -1,6 +1,5 @@
 class DownloadsController < ApplicationController
-  COORDS_FILE = 'oligo_design_v18_chr#.' + (CAPISTRANO_DEPLOY ? 'coordinates.gff.zip' : 'txt.gz')
-  ANNOT_FILE  = 'oligo_design_v18_chr#.annotations.zip'
+  CHROMOSOME_FILE = (CAPISTRANO_DEPLOY ? 'chr#.txt.bz2' : 'oligo_design_v18_chr#.txt.gz')
   
   def index
     @chromosomes = OligoDesign::CHROMOSOMES
@@ -11,9 +10,8 @@ class DownloadsController < ApplicationController
   #*******************************************************************************************#
   def zip_download
     params[:chr_num] ||= 'X'
-    params[:file_type] ||= 'Coord'
     
-    file_name = (params[:file_type] == 'Annot' ? ANNOT_FILE : COORDS_FILE).gsub(/#/, params[:chr_num].to_s)
+    file_name = CHROMOSOME_FILE.gsub(/#/, params[:chr_num].to_s)
     filepath = File.join(ZIP_ABS_PATH, file_name)
 #
     if FileTest.file?(filepath)

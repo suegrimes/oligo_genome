@@ -6,6 +6,7 @@ All coordinates are in <a href="http://genome.ucsc.edu/FAQ/FAQformat.html#format
   sequences.  You can do this using the following steps:
 <ol>
   <li>Download and unzip the oligo files for the chromosome(s) of interest.</li>
+  <li>Convert the downloaded file to GFF or BED format for use with BEDtools.</li>
   <li>Download and install BEDTools (v. 0.1.12+) as described on the BEDtools <a href="http://code.google.com/p/bedtools/">site</a></li>
   <li>Format a set of intervals of interest as a <a href="http://genome.ucsc.edu/FAQ/FAQformat.html#format3">GFF</a> file or a 
        <a href="http://genome.ucsc.edu/FAQ/FAQformat.html#format1">BED</a> file.  Bed format is preferable because only the chromosome, 
@@ -25,9 +26,7 @@ All coordinates are in <a href="http://genome.ucsc.edu/FAQ/FAQformat.html#format
   <tr><th colspan="3">Chromosome Files</th></tr>
   <% @chromosomes[0..23].each do |chromosome| %>
     <tr>
-      <td><%=h chromosome %></td>
-      <td><%= link_to "Coordinates", zip_download_path(:chr_num => chromosome, :file_type => 'Coord') %></td>
-	  <td><%= link_to "Annotations", zip_download_path(:chr_num => chromosome, :file_type => 'Annot') %></td>
+      <td><%= link_to "Chromosome #{chromosome}", zip_download_path(:chr_num => chromosome) %></td>
 	</tr>
 <% end %>
 </table>

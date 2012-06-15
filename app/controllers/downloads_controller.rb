@@ -1,5 +1,5 @@
 class DownloadsController < ApplicationController
-  CHROMOSOME_FILE = (CAPISTRANO_DEPLOY ? 'chr#.txt.bz2' : 'oligo_design_v18_chr#.txt.gz')
+  CHROMOSOME_FILE = (CAPISTRANO_DEPLOY ? 'oligogenome_chr#.txt.bz2' : 'oligo_design_v18_chr#.txt.gz')
   
   def index
     @chromosomes = OligoDesign::CHROMOSOMES

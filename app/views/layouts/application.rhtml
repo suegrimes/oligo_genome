@@ -41,10 +41,19 @@
 <div id="container" style="width: 98%;">
     
 <div id="header">
-  <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom: 0;">
+  <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom: 0;"> 
     <tr>
-      <td valign="top" rowspan="2" width="180"><div class="logo"><%= image_tag("SU_Seal_Card_pos_89.gif", :height => "89", :alt => "Stanford University") %></div></td>
-      <td valign="top"><div class="sitename-graphic"><%= image_tag("oligo-genome-sitename.gif", :height => "58", :alt => "Stanford Human OligoGenome Project") %></div></td>
+      <td valign="top" rowspan="2" width="180"><div class="logo"><%= image_tag("SU_Seal_Card_pos_89.gif", :height => "89", :alt => "Stanford Genome Technology") %></div></td>
+      <td>          
+        <table align="center">
+          <tr>
+            <td>
+              <div class="sitename-graphic"><%= image_tag("oligo-genome-sitename.gif", :height => "45", :title => "Stanford Human OligoGenome Project", :alt => "Stanford Human OligoGenome Project") %></div>
+              <div class="sitename-description">Stanford Human Oligo Genome Project</div>         
+            </td>
+          </tr>
+        </table> 
+      </td>
       <td valign="top" width="180"><div class="version"><% if Version::APP_VERSION %>Version: <%= Version::APP_VERSION %><% end %></div></td>
     </tr>
     <tr>
@@ -121,16 +130,15 @@
     </li> 
 	<div class="sidebar-label">PUBLICATIONS:<br />
 	<span style="font-size:.9em; font-style: normal; color:#000;">
-	 <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0021088">A Flexible Approach for Highly Multiplexed Candidate Gene Targeted Resequencing</a></span>
+	<a href="http://www.ncbi.nlm.nih.gov/pubmed/22102592">The Human OligoGenome Resource</a><br style="line-height:.6" />
+	<a href="http://www.ncbi.nlm.nih.gov/pubmed/21738606">A Flexible Approach for Highly Multiplexed Candidate Gene Targeted Resequencing</a>
+	</span>
 	</div>
 	<!--<li><a href="/files/supporting_info_PLoSONE_20110224.doc">PLoSONE (word doc)</a></li>-->    
 
 	<div class="sidebar-label">DATA DERIVED FROM:</div>
     <li><a href="ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/ARCHIVE/BUILD.37.1/">Human genome build: 37.1</a></li>
     <li><a href="ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606/database/b131_archive/">dbSNP build id: 131</a></li>
-    <% if Version::DESIGN_VERSION %> 
-    <li><a href="#" style="color: #888;">OligoGenome <%= Version::DESIGN_VERSION.design_version %></a></li>
-    <% end %>
     
     <div class="sidebar-label">OTHER LINKS:</div>
     <li><a href="http://cancer.stanford.edu/">Stanford Cancer Center</a></li>
@@ -154,7 +162,7 @@
     <td valign="top">
       <a href="http://med.stanford.edu/sgtc/">Stanford Genome Tech Center</a>&nbsp;|
       <a href="mailto:sgrimes@stanford.edu">Contact</a>
-      <div class="site-blurb">Website provided by the Ji Research Group<br />School of Medicine and Genome Technology Center at Stanford University<br />
+      <div class="site-blurb">Website provided by the <a href="http://dna-discovery.stanford.edu/">Ji Research Group</a><br />School of Medicine and Genome Technology Center at Stanford University<br />
       This website and its content &copy; Stanford University, <%= Time.now.localtime.strftime("%Y") %>. All rights reserved.
       </div>
     </td>

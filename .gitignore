@@ -10,3 +10,4 @@ public/javascripts/all.js
 config/database*.yml*
 script/*
 test/*
+.project

@@ -7,6 +7,6 @@ public/files/*.gz
 public/files/*.bz2
 public/bed_files/*
 public/javascripts/all.js
-config/database.yml
+config/database*.yml*
 script/*
 test/*

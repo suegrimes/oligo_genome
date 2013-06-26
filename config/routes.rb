@@ -1,81 +1,81 @@
-ActionController::Routing::Routes.draw do |map|
-  # Home page
-  map.root :controller => "oligo_designs", :action => "welcome" 
-  
-  # Signup/Login 
-  map.signup  '/signup',           :controller => 'users',   :action => 'new' 
-  map.forgot  '/forgot',           :controller => 'users',   :action => 'forgot'  
-  map.reset   'reset/:reset_code', :controller => 'users',   :action => 'reset'
-  map.login  '/login',  :controller => 'sessions', :action => 'new'
-  map.logout '/logout', :controller => 'sessions', :action => 'destroy'
-  
-  map.resources :users
-  map.resource :session
-  
-  # Help/FAQ
-  map.faq_statistics  '/faq_statistics',  :controller => 'help', :action => 'statistics'
-  map.faq_technology  '/faq_technology',  :controller => 'help', :action => 'technology'
-  map.faq_protocol    '/faq_protocol',    :controller => 'help', :action => 'protocol'
-  map.faq_annotations '/faq_annotations', :controller => 'help', :action => 'annotations'
-  map.faq_ucsc_view   '/faq_ucsc_view',   :controller => 'help', :action => 'ucsc_view'
-  map.faq_contact     '/faq_contact',     :controller => 'help', :action => 'contact'
-  
-  # Oligo Designs
-  map.resources :oligo_designs
-  
-  # Design Queries
-  map.resources :design_queries, :only => :index
-  map.designquery 'designquery', :controller => 'design_queries', :action => 'new_query'
-  map.showdepth   'showdepth',   :controller => 'design_queries', :action => 'show_depth'
-  map.export 'export',           :controller => 'design_queries', :action => 'export'
-  
-  # Downloads 
-  map.zip_list     'zip_list',     :controller => 'downloads', :action => 'index'
-  map.zip_download 'zip_download', :controller => 'downloads', :action => 'zip_download'
-
-  # Error/not implemented
-  map.notimplemented 'notimplemented', :controller => 'dummy',         :action => 'notimplemented'
-  
-  # The priority is based upon order of creation: first created -> highest priority.
+OligoGenome::Application.routes.draw do
+  match '/' => 'oligo_designs#welcome'
+  match '/signup' => 'users#new', :as => :signup
+  match '/forgot' => 'users#forgot', :as => :forgot
+  match 'reset/:reset_code' => 'users#reset', :as => :reset
+  match '/login' => 'sessions#new', :as => :login
+  match '/logout' => 'sessions#destroy', :as => :logout
+  resources :users
+  resource :session
+  match '/faq_statistics' => 'help#statistics', :as => :faq_statistics
+  match '/faq_technology' => 'help#technology', :as => :faq_technology
+  match '/faq_protocol' => 'help#protocol', :as => :faq_protocol
+  match '/faq_annotations' => 'help#annotations', :as => :faq_annotations
+  match '/faq_ucsc_view' => 'help#ucsc_view', :as => :faq_ucsc_view
+  match '/faq_contact' => 'help#contact', :as => :faq_contact
+  resources :oligo_designs
+  resources :design_queries, :only => :index
+  match 'designquery' => 'design_queries#new_query', :as => :designquery
+  match 'showdepth' => 'design_queries#show_depth', :as => :showdepth
+  match 'export' => 'design_queries#export', :as => :export
+  match 'zip_list' => 'downloads#index', :as => :zip_list
+  match 'zip_download' => 'downloads#zip_download', :as => :zip_download
+  match 'notimplemented' => 'dummy#notimplemented', :as => :notimplemented
+  match '/:controller(/:action(/:id))'
+  # The priority is based upon order of creation:
+  # first created -> highest priority.
 
   # Sample of regular route:
-  #map.resources :recipes, :collection => { :search => :get }
-  
+  #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action
 
   # Sample of named route:
-  #   map.purchase 'products/:id/purchase', :controller => 'catalog', :action => 'purchase'
+  #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
   # This route can be invoked with purchase_url(:id => product.id)
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
-  #   map.resources :products
+  #   resources :products
 
   # Sample resource route with options:
-  #   map.resources :products, :member => { :short => :get, :toggle => :post }, :collection => { :sold => :get }
+  #   resources :products do
+  #     member do
+  #       get 'short'
+  #       post 'toggle'
+  #     end
+  #
+  #     collection do
+  #       get 'sold'
+  #     end
+  #   end
 
   # Sample resource route with sub-resources:
-  #   map.resources :products, :has_many => [ :comments, :sales ], :has_one => :seller
-  
+  #   resources :products do
+  #     resources :comments, :sales
+  #     resource :seller
+  #   end
+
   # Sample resource route with more complex sub-resources
-  #   map.resources :products do |products|
-  #     products.resources :comments
-  #     products.resources :sales, :collection => { :recent => :get }
+  #   resources :products do
+  #     resources :comments
+  #     resources :sales do
+  #       get 'recent', :on => :collection
+  #     end
   #   end
 
   # Sample resource route within a namespace:
-  #   map.namespace :admin do |admin|
-  #     # Directs /admin/products/* to Admin::ProductsController (app/controllers/admin/products_controller.rb)
-  #     admin.resources :products
+  #   namespace :admin do
+  #     # Directs /admin/products/* to Admin::ProductsController
+  #     # (app/controllers/admin/products_controller.rb)
+  #     resources :products
   #   end
 
-  # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
-  # map.root :controller => "welcome"
+  # You can have the root of your site routed with "root"
+  # just remember to delete public/index.html.
+  # root :to => 'welcome#index'
 
   # See how all your routes lay out with "rake routes"
 
-  # Install the default routes as the lowest priority.
-  # Note: These default routes make all actions in every controller accessible via GET requests. You should
-  # consider removing the them or commenting them out if you're using named routes and resources.
-  map.connect ':controller/:action/:id'
-  map.connect ':controller/:action/:id.:format'
+  # This is a legacy wild controller route that's not recommended for RESTful applications.
+  # Note: This route will make all actions in every controller accessible via GET requests.
+  # match ':controller(/:action(/:id))(.:format)'
 end

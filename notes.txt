@@ -1,0 +1,88 @@
+Upgrade Plugin:
+
+Thanks for installing the Rails upgrade plugin.  This is a set of generators and analysis tools to help you upgrade your application to Rails 3.  It consists of three tasks...
+
+To get a feel for what you'll need to change to get your app running, run the application analysis:
+
+    rake rails:upgrade:check
+    
+This should give you an idea of the manual changes that need to be done, but you'll probably want to upgrade some of those automatically.  The fastest way to do this is to run 'rails .', which will simply generate a new app on top of your existing code.  But this generation also has the effect of replacing some existing files, some of which you might not want to replace.  To back those up, first run:
+
+    rake rails:upgrade:backup
+    
+That will backup files you've probably edited that will be replaced in the upgrade; if you finish the upgrade and find that you don't need the old copies, just delete them.  Otherwise, copy their contents back into the new files or run one of the following upgraders...
+
+Routes upgrader
+===============
+
+To generate a new routes file from your existing routes file, simply run the following Rake task:
+
+    rake rails:upgrade:routes
+    
+This will output a new routes file that you can copy and paste or pipe into a new, Rails 3 compatible config/routes.rb.
+
+Gemfile generator
+=================  
+
+Creating a new Gemfile is as simple as running:
+
+    rake rails:upgrade:gems
+    
+This task will extract your config.gem calls and generate code you can put into a bundler compatible Gemfile.
+
+Configuration generator
+=======================
+
+Much of the configuration information that lived in environment.rb now belongs in a new file named config/application.rb; use the following task to generate code you can put into config/application.rb from your existing config/environment.rb:
+
+    rake rails:upgrade:configuration
+    
+Output from upgrade check:
+Deprecated filter_parameter_logging calls
+The list of filtered parameters are now stored in /config/application.rb. For example: config.filter_parameters += [:password]
+More information: http://asciicasts.com/episodes/224-controllers-in-rails-3
+
+The culprits: 
+	- app/controllers/application_controller.rb
+
+New file needed: config/application.rb
+You need to add a config/application.rb.
+More information: http://omgbloglol.com/post/353978923/the-path-to-rails-3-approaching-the-upgrade
+
+The culprits: 
+	- config/application.rb
+
+Deprecated ERb helper calls
+Block helpers that use concat (e.g., form_for) should use <%= instead of <%.  The current form will continue to work for now, but you will get deprecation warnings since this form will go away in the future.
+More information: http://weblog.rubyonrails.org/
+
+The culprits: 
+	- app/views/design_queries/new_query.html.erb
+	- app/views/design_queries/index.html.erb
+
+Soon-to-be-deprecated ActiveRecord calls
+Methods such as find(:all), find(:first), finds with conditions, and the :joins option will soon be deprecated.
+More information: http://m.onkey.org/2010/1/22/active-record-query-interface
+
+The culprits: 
+	- app//controllers/oligo_designs_controller.rb
+	- app//models/export_field.rb
+	- app//models/oligo_design.rb
+	- app//models/version.rb
+	- app//models/version.rb
+	- app//models/export_field.rb
+
+named_scope is now just scope
+The named_scope method has been renamed to just scope.
+More information: http://github.com/rails/rails/commit/d60bb0a9e4be2ac0a9de9a69041a4ddc2e0cc914
+
+The culprits: 
+	- app/models//oligo_design.rb
+	- app/models//version.rb
+
+Old router API
+The router API has totally changed.
+More information: http://yehudakatz.com/2009/12/26/the-rails-3-router-rack-it-up/
+
+The culprits: 
+	- config/routes.rb

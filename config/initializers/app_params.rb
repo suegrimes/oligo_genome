@@ -2,8 +2,8 @@ META_TAGS = {:description => "Stanford Human OligoGenome comprises capture oligo
              :keywords => ["stanford university, hanlee ji, george natsoulis, oligogenome, oligo genome, oligo, oligonucleotide, human genome,
                             cancer, cancer research, resequencing, dna sequencing, capture sequence, primer"]}
 
-CAPISTRANO_DEPLOY = RAILS_ROOT.include?('releases')
+CAPISTRANO_DEPLOY = "#{Rails.root}".include?('releases')
 ZIP_REL_PATH = (CAPISTRANO_DEPLOY ? File.join("..", "..", "shared", "files") : File.join("public", "files"))
-ZIP_ABS_PATH = File.join(RAILS_ROOT, ZIP_REL_PATH)
+ZIP_ABS_PATH = File.join("#{Rails.root}", ZIP_REL_PATH)
 
-BED_ABS_PATH = File.join(RAILS_ROOT, "public", "bed_files")
+BED_ABS_PATH = File.join("#{Rails.root}", "public", "bed_files")

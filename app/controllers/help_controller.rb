@@ -1,6 +1,7 @@
 class HelpController < ApplicationController
   skip_before_filter :login_required
-  FILE_PATH = File.join(Rails.root, "app/assets/files")
+  
+  FILE_PATH = Rails.root.join('app', 'assets', 'files')
   
   def technology
   end

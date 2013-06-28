@@ -24,17 +24,18 @@
   </tr>
   <tr><td></td></tr>
 
-  <% fields_for BedFile.new do |b|%>
+  <!--% fields_for BedFile.new do |b|%-->
   <tr>
   	<th>Upload .bed format file:</th>
-	<td colspan="5"><%= b.upload_column_field :filenm, :size=>55%> </td>
+	<td colspan="5"><!--%= b.upload_column_field :filenm, :size=>55%--> </td>
   </tr>
+  <!--% end %-->
   <tr>
   	<td></td>
   	<td colspan="5" class="notes">Note: Maximum of 50 bed intervals in file; large queries may take several minutes</td>
   </tr>
 </table>
-<% end %>
+
 </fieldset>
 <%= break_clear %>
 

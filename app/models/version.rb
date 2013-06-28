@@ -17,7 +17,8 @@
 #
 
 class Version < ActiveRecord::Base  
-  named_scope :curr_version, :conditions => {:archive_flag => 'C'}, :order => 'id DESC'
+  #named_scope :curr_version, :conditions => {:archive_flag => 'C'}, :order => 'id DESC'
+  scope :curr_version, :conditions => {:archive_flag => 'C'}, :order => 'id DESC'
   
   before_save do |version|
     version.archive_flag = 'C'
@@ -32,7 +33,7 @@ class Version < ActiveRecord::Base
  
   #read App_Versions file to set current application version #
   #version# is first row, first column
-  filepath = "#{RAILS_ROOT}/public/app_versions.txt"
+  filepath = "#{Rails.root}/public/app_versions.txt"
   if FileTest.file?(filepath)
     app_version_row1 = FasterCSV.read(filepath, {:col_sep => "\t"})[0]
     end

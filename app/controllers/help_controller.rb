@@ -1,6 +1,6 @@
 class HelpController < ApplicationController
   skip_before_filter :login_required
-  FILE_PATH = File.join(RAILS_ROOT, "public/files")
+  FILE_PATH = File.join(Rails.root, "app/assets/files")
   
   def technology
   end
@@ -24,6 +24,6 @@ class HelpController < ApplicationController
 
 protected
   def read_table(file_path)
-    FasterCSV.read(file_path, {:col_sep => "\t"})
+    CSV.read(file_path, {:col_sep => "\t"})
   end
 end

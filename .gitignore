@@ -21,6 +21,14 @@ public/files/*.gz
 public/files/*.bz2
 public/bed_files/*
 public/javascripts/all.js
+
+app/assets/files/*.zip
+app/assets/files/*.gz
+app/assets/files/*.bz2
+app/assets/bed_files/*
+app/assets/javascripts/all.js
+
+
 config/database*.yml*
 script/*
 test/*

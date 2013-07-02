@@ -6,8 +6,6 @@
     <p>Error(s) in query parameters: <%= msg %></p>
 <% end %>
 
-
-
 <fieldset class="form">
 <legend>Select chromosome coordinates</legend>
 <table class="form">
@@ -24,12 +22,12 @@
   </tr>
   <tr><td></td></tr>
 
-  <!--% fields_for BedFile.new do |b|%-->
+  <%= form_for :file_upload, :html => {:multipart => true} do |b| %>
   <tr>
   	<th>Upload .bed format file:</th>
-	<td colspan="5"><!--%= b.upload_column_field :filenm, :size=>55%--> </td>
+	<td colspan="5"><%= b.file_field :filenm %><%= b.submit "Upload" %></td>
   </tr>
-  <!--% end %-->
+  <% end %>
   <tr>
   	<td></td>
   	<td colspan="5" class="notes">Note: Maximum of 50 bed intervals in file; large queries may take several minutes</td>
@@ -37,7 +35,7 @@
 </table>
 
 </fieldset>
-<%= break_clear %>
+<%= raw break_clear %>
 
 <fieldset class="form">
 <legend>Exclusions (optional)</legend>
@@ -71,8 +69,5 @@
 </table>
 </fieldset>
 
-<%= break_clear(f.submit 'Submit')%>
+<%= raw break_clear(f.submit 'Submit')%>
 <% end %>
-
-
-  

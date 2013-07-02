@@ -8,6 +8,15 @@ class DesignQueriesController < ApplicationController
     OligoDesign::ENZYMES.each {|enzyme| @enzymes.push([enzyme, false])}
   end
   
+  def file_upload  
+    require 'fileutils'
+    tmp = params[:bed_file][:filenm].tempfile
+    file = File.join(BED_ABS_PATH, params[:file_upload][:filenm].original_filename)
+    FileUtils.cp tmp.path, file
+    # YOUR PARSING JOB
+    #FileUtils.rm file
+  end
+  
   def index_debug_file
     bed_lines = read_bedfile(25)
     rc, val_lines = validate_bed_lines(25, bed_lines)

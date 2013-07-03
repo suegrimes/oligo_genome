@@ -20,14 +20,15 @@
   <tr>
   	<td>-OR-</td>
   </tr>
-  <tr><td></td></tr>
 
-  <%= form_for :file_upload, :html => {:multipart => true} do |b| %>
+  <%= form_tag(get_bedfile_path, multipart: true) do %>
   <tr>
-  	<th>Upload .bed format file:</th>
-	<td colspan="5"><%= b.file_field :filenm %><%= b.submit "Upload" %></td>
+    <td colspan="5">
+    <%= file_field_tag 'filenm' %>
+    </td>
   </tr>
   <% end %>
+
   <tr>
   	<td></td>
   	<td colspan="5" class="notes">Note: Maximum of 50 bed intervals in file; large queries may take several minutes</td>

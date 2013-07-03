@@ -78,7 +78,6 @@ class DesignQueriesController < ApplicationController
         render :action => :new_query
       end
     end   
-=end
   end
   
   #*******************************************************************************************#

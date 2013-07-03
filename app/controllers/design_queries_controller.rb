@@ -8,13 +8,13 @@ class DesignQueriesController < ApplicationController
     OligoDesign::ENZYMES.each {|enzyme| @enzymes.push([enzyme, false])}
   end
   
-  def file_upload  
-    require 'fileutils'
-    tmp = params[:bed_file][:filenm].tempfile
-    file = File.join(BED_ABS_PATH, params[:file_upload][:filenm].original_filename)
-    FileUtils.cp tmp.path, file
-    # YOUR PARSING JOB
-    #FileUtils.rm file
+  def file_upload 
+    uploaded_io = params[:filenm]
+    File.open(Rails.root.join(BED_ABS_PATH, uploaded_io.original_filename), 'w') do |file|
+      file.write(uploaded_io.read)
+    end
+    redirect_to(:action => 'index', :filnm => uploaded_io)
+    return
   end
   
   def index_debug_file
@@ -40,8 +40,10 @@ class DesignQueriesController < ApplicationController
   # Method for listing oligo designs, based on parameters entered above                       #
   #*******************************************************************************************#
   def index
-    if !params[:bed_file][:filenm].blank?
-      @bed_file = BedFile.new(params[:bed_file])
+
+    if !params[:filenm].blank?
+    
+      @bed_file = BedFile.new(params[:filenm])
       
       rc1 = (@bed_file.filenm.nil? ? -5 : 0)  # Filename set to nil by upload_column plug-in if invalid file extension
       if rc1 == 0
@@ -76,6 +78,7 @@ class DesignQueriesController < ApplicationController
         render :action => :new_query
       end
     end   
+=end
   end
   
   #*******************************************************************************************#

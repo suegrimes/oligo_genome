@@ -1,6 +1,6 @@
 <h1>Capture Sequences - Query Results<a name="top"></a></h1>
 
-<% form_tag :action => "export_design" do %>
+<%= form_tag :action => "export_design" do %>
 <table>
 <% if @oligo_designs && @oligo_designs.size > 0 %>
   <tr><td colspan="2">To view or download these <%=h @oligo_designs.size %> oligos click below:</td></tr>

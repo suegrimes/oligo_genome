@@ -6,7 +6,8 @@ class OligoDesignsController < ApplicationController
   
   # GET /oligo_designs
   def index
-    @oligo_designs = OligoDesign.curr_ver.find(:all)
+    #@oligo_designs = OligoDesign.curr_ver.find(:all)
+    @oligo_designs = OligoDesign.curr_ver.all
   end
   #
   # GET /oligo_designs/1

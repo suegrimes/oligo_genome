@@ -10,28 +10,29 @@
 <legend>Select chromosome coordinates</legend>
 <table class="form">
   <tr>
-  	<th>Chromosome Number:</th>
-	<td><%= f.text_field(:chromosome_nr, :size => 2) %></td>
-  	<th>Start Position:</th>
-	<td><%= f.text_field(:chr_start_pos, :size => 12) %></td>
-	<th>End Position:</th>
-	<td><%= f.text_field(:chr_end_pos, :size => 12) %></td>
+   <th>Chromosome Number:</th>
+<td><%= f.text_field(:chromosome_nr, :size => 2) %></td>
+   <th>Start Position:</th>
+<td><%= f.text_field(:chr_start_pos, :size => 12) %></td>
+<th>End Position:</th>
+<td><%= f.text_field(:chr_end_pos, :size => 12) %></td>
   </tr>
   <tr>
-  	<td>-OR-</td>
+   <td>-OR-</td>
   </tr>
 
   <%= form_tag(get_bedfile_path, multipart: true) do %>
   <tr>
-    <td colspan="6">
+  	<th>Upload .bed format file:</th>
+    <td colspan="5">
     <%= file_field_tag 'filenm' %>
     </td>
   </tr>
   <% end %>
 
   <tr>
-  	<td></td>
-  	<td colspan="5" class="notes">Note: Maximum of 50 bed intervals in file; large queries may take several minutes</td>
+   <td></td>
+   <td colspan="5" class="notes">Note: Maximum of 50 bed intervals in file; large queries may take several minutes</td>
   </tr>
 </table>
 
@@ -42,30 +43,30 @@
 <legend>Exclusions (optional)</legend>
 <table class="form">
   <tr>
-	<th>Tiers:</th>
-	<td colspan="2">
-	  <% [1,2,3].each do |tier| %>
-	    <%= tier %><%= check_box_tag("tier_params[#{tier}]", tier, false) -%>
-	  <% end %>
-	</td>
+<th>Tiers:</th>
+<td colspan="2">
+<% [1,2,3].each do |tier| %>
+<%= tier %><%= check_box_tag("tier_params[#{tier}]", tier, false) -%>
+<% end %>
+</td>
   </tr>
   <tr><td></td></tr>
   <tr>
-  	<th>5' exact matches <a href=http://oligogenome.stanford.edu/faq_annotations>(U0)</a> &gt;</th>
-	<td><%= f.text_field(:sel_5prime_U0, :size => 3) %></td>
-	<th>3' exact matches <a href=http://oligogenome.stanford.edu/faq_annotations>(U0)</a> &gt;</th>
-	<td><%= f.text_field(:sel_3prime_U0, :size => 3) %></td>
-	<th><a href=http://oligogenome.stanford.edu/faq_annotations>Paralogs</a> &gt;</th>
-	<td><%= f.text_field(:sel_paralog_cnt, :size => 3) %></td>
-  </tr>  
+   <th>5' exact matches <a href=http://oligogenome.stanford.edu/faq_annotations>(U0)</a> &gt;</th>
+<td><%= f.text_field(:sel_5prime_U0, :size => 3) %></td>
+<th>3' exact matches <a href=http://oligogenome.stanford.edu/faq_annotations>(U0)</a> &gt;</th>
+<td><%= f.text_field(:sel_3prime_U0, :size => 3) %></td>
+<th><a href=http://oligogenome.stanford.edu/faq_annotations>Paralogs</a> &gt;</th>
+<td><%= f.text_field(:sel_paralog_cnt, :size => 3) %></td>
+  </tr>
   <tr><td></td></tr>
   <tr>
-  	<th>Restriction Enzyme(s):</th>
-	<td colspan="2">
-	  <% @enzymes.each_with_index do |enzyme, i|%>
-  	    <%= enzyme[0] %><%= check_box_tag("enzyme_params[#{i}]", enzyme[0], enzyme[1]) -%>
-	  <% end %>
-	</td>
+   <th>Restriction Enzyme(s):</th>
+<td colspan="2">
+<% @enzymes.each_with_index do |enzyme, i|%>
+   <%= enzyme[0] %><%= check_box_tag("enzyme_params[#{i}]", enzyme[0], enzyme[1]) -%>
+<% end %>
+</td>
   </tr>
 </table>
 </fieldset>

@@ -8,15 +8,6 @@ class DesignQueriesController < ApplicationController
     OligoDesign::ENZYMES.each {|enzyme| @enzymes.push([enzyme, false])}
   end
   
-  def file_upload
-    uploaded_io = params[:filenm]
-    File.open(Rails.root.join(BED_ABS_PATH, uploaded_io.original_filename), 'w') do |file|
-      file.write(uploaded_io.read)
-    end
-    redirect_to(:action => 'index', :filnm => uploaded_io)
-    return
-  end
-  
   def index_debug_file
     params[:bed_file] = 'chr1_coord_jb.bed'
     bed_errors, @bed_lines = BedFile.parse_bedfile(params[:bed_file])
@@ -40,7 +31,11 @@ class DesignQueriesController < ApplicationController
   # Method for listing oligo designs, based on parameters entered above                       #
   #*******************************************************************************************#
   def index
-    params[:bed_file] = 'chr1_coord_jb.bed'
+        
+    if !params[:filenm].blank?
+      uploaded_filename = file_upload(params[:filenm]) 
+      params[:bed_file] = uploaded_filename
+    end
     
     if !params[:bed_file].blank?
       bed_errors, @bed_lines = BedFile.parse_bedfile(params[:bed_file])
@@ -73,7 +68,8 @@ class DesignQueriesController < ApplicationController
         OligoDesign::ENZYMES.each {|enzyme| @enzymes.push([enzyme, false])}  
         render :action => :new_query
       end
-    end   
+    end
+          
   end
   
   #*******************************************************************************************#
@@ -120,6 +116,16 @@ class DesignQueriesController < ApplicationController
         csv_string = export_designs_csv(@oligo_designs)
         render :text => csv_string
     end
+  end
+  
+  def file_upload(ul_file = params[:bed_file])
+    uploaded_io = ul_file
+    fn = ''
+    File.open(Rails.root.join(BED_ABS_PATH, uploaded_io.original_filename), 'w') do |file|
+      file.write(uploaded_io.read)
+      fn = uploaded_io.original_filename 
+    end 
+    return fn  
   end 
   
 private

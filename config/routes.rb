@@ -14,8 +14,7 @@ OligoGenome::Application.routes.draw do
   match '/faq_ucsc_view' => 'help#ucsc_view', :as => :faq_ucsc_view
   match '/faq_contact' => 'help#contact', :as => :faq_contact
   resources :oligo_designs
-  match 'get_bedfile' => 'design_queries#file_upload', :as => :get_bedfile, :via => 'post'
-  resources :design_queries, :only => :index
+  resources :design_queries, :only => :index, :via => 'post'
   match 'designquery' => 'design_queries#new_query', :as => :designquery
   match 'showdepth' => 'design_queries#show_depth', :as => :showdepth
   match 'export' => 'design_queries#export', :as => :export

@@ -53,6 +53,9 @@ class DesignQueriesController < ApplicationController
         handle_bed_errors(params[:bed_file], bed_errors) # Error messages for invalid bed file
         render :action => :new_query
       end
+       
+      file = File.join("#{Rails.root}", "app/assets/bed_files/", params[:bed_file])
+      File.delete(file) if File.exists?(file)
      
     else
       @design_query = DesignQuery.new(params[:design_query])   

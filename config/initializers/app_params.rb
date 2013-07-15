@@ -3,9 +3,9 @@ META_TAGS = {description: "Stanford Human OligoGenome comprises capture oligonuc
                             cancer, cancer research, resequencing, dna sequencing, capture sequence, primer"]}
 
 CAPISTRANO_DEPLOY = "#{Rails.root}".include?('releases')
-ZIP_REL_PATH = (CAPISTRANO_DEPLOY ? File.join("..", "..", "shared", "files") : File.join("app/assets/", "files"))
+ZIP_REL_PATH = (CAPISTRANO_DEPLOY ? File.join("..", "..", "shared", "files") : File.join("app/assets/files"))
 ZIP_ABS_PATH = File.join("#{Rails.root}", ZIP_REL_PATH)
 
-BED_ABS_PATH = File.join("#{Rails.root}", "app/assets/", "bed_files")
+BED_ABS_PATH = File.join("#{Rails.root}", "app/assets/bed_files")
 
 

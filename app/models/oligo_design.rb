@@ -29,7 +29,7 @@ class OligoDesign < ActiveRecord::Base
                           :on  => :create  
                           
   #named_scope :curr_ver, :conditions => ['version_id = (?)', Version::DESIGN_VERSION.id ]
-  scope :curr_ver, :conditions => ['version_id = (?)', Version::DESIGN_VERSION.id ]
+  scope :curr_ver, where(:version_id => Version::DESIGN_VERSION.id)
   
   CHROMOSOMES = %w{1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X Y}
   ENZYMES = %w{BfaI CviQI MseI Sau3AI}
@@ -73,9 +73,7 @@ class OligoDesign < ActiveRecord::Base
   #****************************************************************************************#
    
   def self.find_and_sort_for_query(condition_array)
-    self.find(:all, :include => :oligo_annotation,
-                    :order => 'chromosome_nr, amplicon_chr_start_pos',
-                    :conditions => condition_array)
+    self.where(*condition_array).order("chromosome_nr, amplicon_chr_start_pos").includes(:oligo_annotation).all
   end
   
 end

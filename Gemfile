@@ -6,8 +6,10 @@ gem 'rails', '3.2.13'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 #gem 'sqlite3'
-gem 'mysql2'
+#gem 'mysql', '2.9.1'
+#gem 'activerecord-mysql-adapter', '0.0.1'
 
+gem 'mysql2', '0.3.13'
 
 # Gems used only for assets and not required
 # in production environments by default.

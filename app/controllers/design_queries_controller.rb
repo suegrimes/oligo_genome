@@ -54,7 +54,7 @@ class DesignQueriesController < ApplicationController
         render :action => :new_query
       end
        
-      file = File.join("#{Rails.root}", "app/assets/bed_files/", params[:bed_file])
+      file = File.join(BED_ABS_PATH, params[:bed_file])
       File.delete(file) if File.exists?(file)
      
     else

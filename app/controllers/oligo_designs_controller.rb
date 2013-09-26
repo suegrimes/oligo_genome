@@ -5,14 +5,14 @@ class OligoDesignsController < ApplicationController
   end
   
   # GET /oligo_designs
-  def index
-    #@oligo_designs = OligoDesign.curr_ver.find(:all)
-    @oligo_designs = OligoDesign.curr_ver.all
-  end
+  #def index
+  #  #@oligo_designs = OligoDesign.curr_ver.find(:all)
+  #  @oligo_designs = OligoDesign.curr_ver.all.limit(1000)
+  #end
   #
   # GET /oligo_designs/1
   def show
-    @oligo_design = OligoDesign.find(params[:id], :include => :oligo_annotation )
+    @oligo_design = OligoDesign.find(params[:id]).includes(:oligo_annotation)
   end
 
 end

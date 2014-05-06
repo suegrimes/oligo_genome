@@ -29,8 +29,12 @@ app/assets/files/*.bz2
 app/assets/bed_files/*
 app/assets/javascripts/all.js
 
+/config/database.yml
+# Ignore config/initializers 
+/config/initializers/secret_token.rb
+/config/initializers/session_store.rb
+/config/initializers/setup_mailer.rb
+/config/deploy.rb
 
-config/database*.yml*
-script/*
 test/*
 .project

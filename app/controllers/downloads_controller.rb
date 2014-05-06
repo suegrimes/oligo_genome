@@ -13,7 +13,7 @@ class DownloadsController < ApplicationController
     
     file_name = CHROMOSOME_FILE.gsub(/#/, params[:chr_num].to_s)
     filepath = File.join(ZIP_ABS_PATH, file_name)
-#
+    
     if FileTest.file?(filepath)
       flash.now[:notice] = "Zip file for chromosome " + params[:chr_num] + " successfully downloaded"
       send_file(filepath, :disposition => 'attachment')

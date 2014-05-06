@@ -1,5 +1,5 @@
-# Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
+  
   def div_toggle(div, div1=nil)
     update_page do |page|
       page[div].toggle
@@ -30,5 +30,5 @@ module ApplicationHelper
     out << '</td></tr></table>'
     out
   end
-
+  
 end

@@ -1,14 +1,9 @@
-# Filters added to this controller apply to all controllers in the application.
-# Likewise, all the methods added will be available for all controllers.
-
 class ApplicationController < ActionController::Base
-  #include AuthenticatedSystem
-  #include RoleRequirementSystem
-  #before_filter :login_required
+  protect_from_forgery
   
   include OligoExtensions
   include CoverageDepth
-  require 'fastercsv'
+  require 'csv'
   
   helper :all # include all helpers, all the time
   
@@ -22,7 +17,7 @@ class ApplicationController < ActionController::Base
   # See ActionController::Base for details 
   # Uncomment this to filter the contents of submitted sensitive data parameters
   # from your application log (in this case, all fields with names like "password"). 
-  filter_parameter_logging :password
+  #filter_parameter_logging :password
   
   #*******************************************************************************************#
   # Increment download counter                                                                #
@@ -37,5 +32,5 @@ class ApplicationController < ActionController::Base
 
     ExportCount.increment_counter(fld.to_sym, 1) if fld
   end
-
+  
 end

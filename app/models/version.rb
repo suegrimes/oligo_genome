@@ -16,25 +16,25 @@
 #  updated_at            :timestamp       not null
 #
 
-class Version < ActiveRecord::Base  
-  named_scope :curr_version, :conditions => {:archive_flag => 'C'}, :order => 'id DESC'
+class Version < ActiveRecord::Base
+  scope :curr_version, where(:archive_flag => 'C').order("id DESC")
   
   before_save do |version|
     version.archive_flag = 'C'
   end
-  
-  DESIGN_VERSION = self.curr_version.find(:first)
+
+  DESIGN_VERSION = self.curr_version.first
   DESIGN_VERSION_ID = DESIGN_VERSION.id
   DESIGN_VERSION_NAMES = DESIGN_VERSION.genome_build + "/" + DESIGN_VERSION.design_version
-  
-  BUILD_VERSION_NAMES = self.find(:all).map {|version| [version.id, 
+
+  BUILD_VERSION_NAMES = self.all.map {|version| [version.id, 
                             [version.genome_build, version.design_version].join('/')]}
  
   #read App_Versions file to set current application version #
   #version# is first row, first column
-  filepath = "#{RAILS_ROOT}/public/app_versions.txt"
+  filepath = File.join("#{Rails.root}", "app", "assets", "app_versions.txt")
   if FileTest.file?(filepath)
-    app_version_row1 = FasterCSV.read(filepath, {:col_sep => "\t"})[0]
+    app_version_row1 = CSV.read(filepath, {:col_sep => "\t"})[0]
     end
   APP_VERSION = (app_version_row1 ? app_version_row1[0] : '??')
   

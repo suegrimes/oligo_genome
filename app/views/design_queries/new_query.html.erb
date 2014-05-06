@@ -1,7 +1,9 @@
 <h1>Query Capture Sequences</h1>
 
-<% upload_form_for(@design_query, :action => 'index') do |f| %>
-<%= f.error_messages(:header_message => "Error(s) in query parameters") %>
+<%= form_for(@design_query,:html => { :multipart => true }) do |f| %>
+<% @design_query.errors.full_messages.each do |msg| %>
+    <p>Error(s) in query parameters: <%= msg %></p>
+<% end %>
 
 <fieldset class="form">
 <legend>Select chromosome coordinates</legend>
@@ -19,19 +21,18 @@
   </tr>
   <tr><td></td></tr>
 
-  <% fields_for BedFile.new do |b|%>
   <tr>
   	<th>Upload .bed format file:</th>
-	<td colspan="5"><%= b.upload_column_field :filenm, :size=>55%> </td>
+	<td colspan="5"><%= file_field_tag 'filenm' %> </td>
   </tr>
   <tr>
   	<td></td>
   	<td colspan="5" class="notes">Note: Maximum of 50 bed intervals in file; large queries may take several minutes</td>
   </tr>
 </table>
-<% end %>
+
 </fieldset>
-<%= break_clear %>
+<%= raw break_clear %>
 
 <fieldset class="form">
 <legend>Exclusions (optional)</legend>
@@ -65,7 +66,7 @@
 </table>
 </fieldset>
 
-<%= break_clear(f.submit 'Submit')%>
+<%= raw break_clear(f.submit 'Submit')%>
 <% end %>
 
 
